@@ -12,13 +12,13 @@ namespace BHOUserScript
     /// </summary>
     class ParseScriptMetadata
     {
-        static string name = @"// +@name +([a-zA-Z\d :.,/\*_-]+)";
-        static string description = @"// +@description +([a-zA-Z\d :.,/\*_-]+)";
-        static string author = @"// +@author +([a-zA-Z\d :.,/\*_-]+)";
-        static string version = @"// +@version +([a-zA-Z\d :.,/\*_-]+)";
-        static string match = @"// +@match +([a-zA-Z\d :.,/\*_-]+)";
-        static string include = @"// +@include +([a-zA-Z\d :.,/\*_-]+)";
-        static string updateURL = @"// +@updateURL +([a-zA-Z\d :.,/\*_-]+)";
+        static string name = @"// +@name( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static string description = @"// +@description( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static string author = @"// +@author( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static string version = @"// +@version( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static string match = @"// +@match( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static string include = @"// +@include( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static string updateURL = @"// +@updateURL( |\t)+([a-zA-Z\d :.,/\*_-]+)";
         
         public static Script Parse(string path)
         {
@@ -54,7 +54,7 @@ namespace BHOUserScript
             scr.Include = new string[_matches3.Count];
             for (int i = 0; i < _matches3.Count; i++)
             {
-                scr.Include[i] = _matches3[i].Groups[1].Value;
+                scr.Include[i] = _matches3[i].Groups[2].Value;
             }
             scr.UpdateURL = GetContents(contents, updateURL);
 
@@ -69,7 +69,7 @@ namespace BHOUserScript
             if (m == null)
                 return "";
             else
-                return m.Groups[1].Value;
+                return m.Groups[2].Value;
         }
     }
 }
