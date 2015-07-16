@@ -7,6 +7,6 @@ A userscript manager for Internet Explorer
 
 ## Notes to contributors
 *	This project uses the .NET Framework version 4.5 and 3.0
-*	You will need to install the [Visual Studio Installer Projects](https://visualstudiogallery.msdn.microsoft.com/9abe329c-9bba-44a1-be59-0fbf6151054d) addon from the gallery to opent the `Setup` project.
+*	You will need to install the [Visual Studio Installer Projects](https://visualstudiogallery.msdn.microsoft.com/9abe329c-9bba-44a1-be59-0fbf6151054d) addon from the gallery to open the `Setup` project.
 
 TODO list: [TODO.md](TODO.md) 
