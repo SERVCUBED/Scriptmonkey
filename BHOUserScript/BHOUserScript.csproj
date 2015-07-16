@@ -131,7 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="BHOUserScript.pfx" />
     <None Include="icons\Icon.psd" />
     <Content Include="icons\Icon.ico" />
     <Content Include="icons\Icon.png" />
