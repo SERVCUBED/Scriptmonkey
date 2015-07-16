@@ -75,6 +75,8 @@ namespace CanIRunIt
             {
                 if (Directory.Exists("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\"))
                     _file = true;
+                if (Directory.Exists("C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\"))
+                    _file = true;
             }
             catch (Exception) { }
 
