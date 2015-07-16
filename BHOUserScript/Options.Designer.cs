@@ -39,11 +39,13 @@
             this.enabledChk = new System.Windows.Forms.CheckBox();
             this.eachEnabledChk = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.btnMoveUp = new System.Windows.Forms.Button();
+            this.btnMoveDown = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // okBtn
             // 
-            this.okBtn.Location = new System.Drawing.Point(285, 188);
+            this.okBtn.Location = new System.Drawing.Point(285, 217);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 6;
@@ -56,7 +58,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 12);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(267, 238);
+            this.listBox1.Size = new System.Drawing.Size(267, 264);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
@@ -93,7 +95,7 @@
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(285, 159);
+            this.cancelBtn.Location = new System.Drawing.Point(285, 188);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 5;
@@ -104,7 +106,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 256);
+            this.label1.Location = new System.Drawing.Point(9, 285);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(339, 26);
             this.label1.TabIndex = 7;
@@ -116,7 +118,7 @@
             this.enabledChk.AutoSize = true;
             this.enabledChk.Checked = true;
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enabledChk.Location = new System.Drawing.Point(285, 100);
+            this.enabledChk.Location = new System.Drawing.Point(285, 129);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(78, 17);
             this.enabledChk.TabIndex = 8;
@@ -128,7 +130,7 @@
             // 
             this.eachEnabledChk.AutoSize = true;
             this.eachEnabledChk.Enabled = false;
-            this.eachEnabledChk.Location = new System.Drawing.Point(285, 123);
+            this.eachEnabledChk.Location = new System.Drawing.Point(285, 152);
             this.eachEnabledChk.Name = "eachEnabledChk";
             this.eachEnabledChk.Size = new System.Drawing.Size(70, 30);
             this.eachEnabledChk.TabIndex = 9;
@@ -138,7 +140,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(286, 218);
+            this.button1.Location = new System.Drawing.Point(286, 247);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 35);
             this.button1.TabIndex = 10;
@@ -146,11 +148,33 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // btnMoveUp
+            // 
+            this.btnMoveUp.Location = new System.Drawing.Point(285, 100);
+            this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Size = new System.Drawing.Size(36, 23);
+            this.btnMoveUp.TabIndex = 11;
+            this.btnMoveUp.Text = "/\\";
+            this.btnMoveUp.UseVisualStyleBackColor = true;
+            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
+            // 
+            // btnMoveDown
+            // 
+            this.btnMoveDown.Location = new System.Drawing.Point(325, 100);
+            this.btnMoveDown.Name = "btnMoveDown";
+            this.btnMoveDown.Size = new System.Drawing.Size(35, 23);
+            this.btnMoveDown.TabIndex = 12;
+            this.btnMoveDown.Text = "\\/";
+            this.btnMoveDown.UseVisualStyleBackColor = true;
+            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(372, 289);
+            this.ClientSize = new System.Drawing.Size(372, 318);
+            this.Controls.Add(this.btnMoveDown);
+            this.Controls.Add(this.btnMoveUp);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.eachEnabledChk);
             this.Controls.Add(this.enabledChk);
@@ -185,5 +209,7 @@
         private System.Windows.Forms.CheckBox enabledChk;
         private System.Windows.Forms.CheckBox eachEnabledChk;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnMoveUp;
+        private System.Windows.Forms.Button btnMoveDown;
     }
 }

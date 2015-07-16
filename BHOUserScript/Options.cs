@@ -54,8 +54,10 @@ namespace BHOUserScript
                 sw.LoadFromEditedScript();
                 if (sw.ShowDialog() == DialogResult.OK)
                 {
-                    prefs.AllScripts[listBox1.SelectedIndex] = sw.editedScript;
+                    int index = listBox1.SelectedIndex;
+                    prefs.AllScripts[index] = sw.editedScript;
                     RefreshList();
+                    listBox1.SetSelected(index, true);
                 }
             }
         }
@@ -116,6 +118,34 @@ namespace BHOUserScript
             p.StartInfo.FileName = "explorer.exe";
             p.StartInfo.Arguments = Scriptmonkey.installPath;
             p.Start();
+        }
+
+        private void btnMoveUp_Click(object sender, System.EventArgs e)
+        {
+            if (listBox1.SelectedIndex > -1 && listBox1.SelectedIndex > 0)
+            {
+                int index = listBox1.SelectedIndex;
+                listBox1.Items.RemoveAt(index);
+                Script t = prefs[index];
+                prefs.AllScripts.RemoveAt(index);
+                prefs.AllScripts.Insert(index - 1, t);
+                RefreshList();
+                listBox1.SetSelected(index - 1, true);
+            }
+        }
+
+        private void btnMoveDown_Click(object sender, System.EventArgs e)
+        {
+            if (listBox1.SelectedIndex > -1 && listBox1.SelectedIndex < listBox1.Items.Count - 1)
+            {
+                int index = listBox1.SelectedIndex;
+                listBox1.Items.RemoveAt(index);
+                Script t = prefs[index];
+                prefs.AllScripts.RemoveAt(index);
+                prefs.AllScripts.Insert(index + 1, t);
+                RefreshList();
+                listBox1.SetSelected(index + 1, true);
+            }
         }
     }
 }
