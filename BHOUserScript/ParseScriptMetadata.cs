@@ -22,7 +22,7 @@ namespace BHOUserScript
         
         public static Script Parse(string path)
         {
-            StreamReader str = new StreamReader(BHOUserScript.Scriptmonkey.installPath + "scripts\\" + path);
+            StreamReader str = new StreamReader(Scriptmonkey.scriptPath + path);
             string contents = str.ReadToEnd();
             str.Close();
 
