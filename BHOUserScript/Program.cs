@@ -165,7 +165,7 @@ namespace BHOUserScript
                                 str.Close();
                                 try
                                 {
-                                    window.execScript(_c);
+                                    window.execScript("(function(){" + _c + "})();");
                                 }
                                 catch (Exception) { }
                             }
