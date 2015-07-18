@@ -190,6 +190,11 @@ namespace BHOUserScript
             AssemblyName name = new AssemblyName(thisApp.FullName);
             return name.Version;
         }
+
+        public static string AssemblyPath()
+        {
+            return System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
+        }
         #endregion
 
         [Guid("6D5140C1-7436-11CE-8034-00AA006009FA")]
@@ -305,8 +310,8 @@ namespace BHOUserScript
                 key.SetValue("ButtonText", "Manage Userscripts");
                 key.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
                 key.SetValue("ClsidExtension", guid);
-                key.SetValue("Icon", "");
-                key.SetValue("HotIcon", "");
+                key.SetValue("Icon", Scriptmonkey.AssemblyPath() + ",1");
+                key.SetValue("HotIcon", Scriptmonkey.AssemblyPath() + ",1");
                 key.SetValue("Default Visible", "Yes");
                 key.SetValue("MenuText", "&Manage Userscripts");
                 key.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");

@@ -108,6 +108,11 @@
     <Compile Include="ParseScriptMetadata.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ReadSettingsFailureFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,7 +139,10 @@
     <None Include="icons\Icon.psd" />
     <Content Include="icons\Icon.ico" />
     <Content Include="icons\Icon.png" />
+    <None Include="icons\search.png" />
     <Content Include="Register.NETv4.0.30319.bat" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\search.bmp" />
     <Content Include="Unregister.NETv4.0.30319.bat" />
     <None Include="Key.snk" />
     <None Include="packages.config" />
@@ -159,6 +167,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ReadSettingsFailureFrm.resx">
       <DependentUpon>ReadSettingsFailureFrm.cs</DependentUpon>
