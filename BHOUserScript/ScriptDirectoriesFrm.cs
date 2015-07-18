@@ -66,6 +66,7 @@ namespace BHOUserScript
                         MessageBox.Show(ex.Message, "Scriptmonkey");
                     }
                     ReloadList();
+                    listBox1.SelectedItem = form.openFileDialog1.SafeFileName;
                 }
                 else
                 {
@@ -79,9 +80,9 @@ namespace BHOUserScript
                         MessageBox.Show(ex.Message, "Scriptmonkey");
                     }
                     ReloadList();
+                    listBox1.SelectedItem = form.URL.Substring(form.URL.LastIndexOf('/'));
                 }
                 Enabled = true;
-                listBox1.SelectedItem = form.FromFile;
             }
         }
 

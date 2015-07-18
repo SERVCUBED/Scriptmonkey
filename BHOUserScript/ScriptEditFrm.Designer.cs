@@ -50,6 +50,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.editBtn = new System.Windows.Forms.Button();
             this.enabledChk = new System.Windows.Forms.CheckBox();
+            this.refBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -73,7 +74,7 @@
             this.okBtn.Location = new System.Drawing.Point(424, 262);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
-            this.okBtn.TabIndex = 13;
+            this.okBtn.TabIndex = 14;
             this.okBtn.Text = "Save";
             this.okBtn.UseVisualStyleBackColor = true;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
@@ -83,7 +84,7 @@
             this.cancelBtn.Location = new System.Drawing.Point(343, 262);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 12;
+            this.cancelBtn.TabIndex = 13;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
@@ -102,7 +103,7 @@
             this.fileTxt.Location = new System.Drawing.Point(89, 11);
             this.fileTxt.Name = "fileTxt";
             this.fileTxt.ReadOnly = true;
-            this.fileTxt.Size = new System.Drawing.Size(376, 20);
+            this.fileTxt.Size = new System.Drawing.Size(295, 20);
             this.fileTxt.TabIndex = 1;
             // 
             // authorTxt
@@ -209,7 +210,7 @@
             // button1
             // 
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(471, 9);
+            this.button1.Location = new System.Drawing.Point(390, 9);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(28, 23);
             this.button1.TabIndex = 2;
@@ -221,7 +222,7 @@
             this.editBtn.Location = new System.Drawing.Point(262, 262);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(75, 23);
-            this.editBtn.TabIndex = 11;
+            this.editBtn.TabIndex = 12;
             this.editBtn.Text = "Edit File";
             this.editBtn.UseVisualStyleBackColor = true;
             this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
@@ -234,15 +235,26 @@
             this.enabledChk.Location = new System.Drawing.Point(89, 266);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(64, 17);
-            this.enabledChk.TabIndex = 18;
+            this.enabledChk.TabIndex = 11;
             this.enabledChk.Text = "Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
+            // 
+            // refBtn
+            // 
+            this.refBtn.Location = new System.Drawing.Point(424, 9);
+            this.refBtn.Name = "refBtn";
+            this.refBtn.Size = new System.Drawing.Size(75, 23);
+            this.refBtn.TabIndex = 3;
+            this.refBtn.Text = "Refresh";
+            this.refBtn.UseVisualStyleBackColor = true;
+            this.refBtn.Click += new System.EventHandler(this.refBtn_Click);
             // 
             // ScriptEditFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 293);
+            this.Controls.Add(this.refBtn);
             this.Controls.Add(this.enabledChk);
             this.Controls.Add(this.editBtn);
             this.Controls.Add(this.button1);
@@ -299,5 +311,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button editBtn;
         private System.Windows.Forms.CheckBox enabledChk;
+        private System.Windows.Forms.Button refBtn;
     }
 }

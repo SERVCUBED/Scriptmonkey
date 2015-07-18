@@ -124,5 +124,15 @@ namespace BHOUserScript
             p.StartInfo.Arguments = Scriptmonkey.scriptPath + fileTxt.Text;
             p.Start();
         }
+
+        private void refBtn_Click(object sender, EventArgs e)
+        {
+            if (fileTxt.Text != "")
+            {
+                // Double check file actually exists
+                if (System.IO.File.Exists(Scriptmonkey.scriptPath + fileTxt.Text))
+                    LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
+            }
+        }
     }
 }
