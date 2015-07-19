@@ -5,6 +5,8 @@ A userscript manager for Internet Explorer
 
 It's recommended that you check out the [releases](https://github.com/SERVCUBED/Scriptmonkey/releases) page to discover what's new in the recent versions.
 
+[![Download Compatibility Checker](https://servc.eu/images/btnCanIRunIt.png)](https://github.com/SERVCUBED/Scriptmonkey/raw/master/dist/CanIRunIt.exe) [![Download Main Installer](https://servc.eu/images/btnScriptmonkeyInstaller.png)](https://github.com/SERVCUBED/Scriptmonkey/raw/master/dist/ScriptmonkeyInstaller.msi)
+
 1.	You should run [CanIRunIt.exe](dist/CanIRunIt.exe) to check if you have the required versions of the .NET Framework.
 2.	Run [ScriptmonkeyInstaller.exe](dist/ScriptmonkeyInstaller.exe) to install the BHO.
 
