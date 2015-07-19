@@ -119,6 +119,7 @@
     <Compile Include="ReadSettingsFailureFrm.Designer.cs">
       <DependentUpon>ReadSettingsFailureFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Resources.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="ScriptDirectoriesFrm.cs">
       <SubType>Form</SubType>

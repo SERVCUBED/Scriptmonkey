@@ -60,7 +60,7 @@ namespace BHOUserScript
             {
                 if(!File.Exists(installedFile))
                 {
-                    MessageBox.Show("Scriptmonkey is being set up for first time use. Please stand by. Your browser may appear unresponsive.", "Scriptmonkey");
+                    MessageBox.Show(Resources.firstTimeSetup, "Scriptmonkey");
                     Directory.CreateDirectory(installPath);
                     Directory.CreateDirectory(scriptPath);
                     File.Create(installedFile);
@@ -71,7 +71,7 @@ namespace BHOUserScript
 
                     jsonDB.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
                     jsonDB.Close();
-                    MessageBox.Show("Finished settings up Scriptmonkey. Enjoy! :)", "Scriptmonkey");
+                    MessageBox.Show(Resources.firstTimeSetupDone, "Scriptmonkey");
                 }
 
             }
@@ -135,8 +135,7 @@ namespace BHOUserScript
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show("Oops! Unable to automatically install the script. Please try again or install the script manually.\r\n\r\nError:\r\n"
-                                    + ex.Message, "Scriptmonkey");
+                                MessageBox.Show(Resources.automaticAddFailError + ex.Message, "Scriptmonkey");
                             }
                         }
                     }

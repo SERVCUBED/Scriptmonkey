@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Diagnostics;
+
 namespace BHOUserScript
 {
     /// <summary>
