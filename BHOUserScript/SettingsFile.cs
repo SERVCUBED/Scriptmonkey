@@ -17,6 +17,6 @@ namespace BHOUserScript
 
         public List<Script> Scripts = new List<Script>();
 
-        public Version BHOCreatedVersion = Scriptmonkey.CurrentVersion();
+        public Version BHOCreatedVersion;
     }
 }

@@ -129,7 +129,7 @@ namespace BHOUserScript
             if (Settings.BHOCreatedVersion == null) // Really old versions didn't have BHOCreatedVersion property
                 Settings.BHOCreatedVersion = new Version();
 
-            if(v > Settings.BHOCreatedVersion)
+            if(v != Settings.BHOCreatedVersion)
             {
                 // Do upgrades here
                 // ...

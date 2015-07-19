@@ -67,6 +67,7 @@ namespace BHOUserScript
 
                     StreamWriter jsonDB = new StreamWriter(settingsFile);
                     SettingsFile s = new SettingsFile();
+                    s.BHOCreatedVersion = Scriptmonkey.CurrentVersion();
 
                     jsonDB.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
                     jsonDB.Close();
