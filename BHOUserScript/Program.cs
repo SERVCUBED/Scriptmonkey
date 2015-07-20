@@ -149,13 +149,9 @@ namespace BHOUserScript
                             if (prefs[i].Include.Length > 0)
                             {
                                 shouldRun = false; // Default to false
-                                for (int f = 0; f < prefs[i].Include.Length; f++)
+                                if (Regex.IsMatch(URL.ToString(), WildcardToRegex(prefs[i].Include)))
                                 {
-                                    if (Regex.IsMatch(URL.ToString(), WildcardToRegex(prefs[i].Include)))
-                                    {
-                                        shouldRun = true;
-                                        break;
-                                    }
+                                    shouldRun = true;
                                 }
                             }
 
