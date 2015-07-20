@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using mshtml;
 using SHDocVw;
+using System.Text.RegularExpressions;
 
 /**
  *       ____        _     __                 __           
@@ -150,7 +151,7 @@ namespace BHOUserScript
                                 shouldRun = false; // Default to false
                                 for (int f = 0; f < prefs[i].Include.Length; f++)
                                 {
-                                    if (URL.ToString().Contains(prefs[i].Include[f].Replace("*", ""))) // Remove wildcards - not supported yet
+                                    if (Regex.IsMatch(URL.ToString(), WildcardToRegex(prefs[i].Include)))
                                     {
                                         shouldRun = true;
                                         break;
@@ -194,6 +195,20 @@ namespace BHOUserScript
         public static string AssemblyPath()
         {
             return System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
+        }
+
+        public static string WildcardToRegex(string[] pattern)
+        {
+            string _out = "";
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                _out += Regex.Escape(pattern[i]).
+                    Replace("\\*", ".*").
+                    Replace("\\?", ".");
+                if (i < pattern.Length - 1) // If not the last item
+                    _out += "|";
+            }
+            return _out;
         }
         #endregion
 
