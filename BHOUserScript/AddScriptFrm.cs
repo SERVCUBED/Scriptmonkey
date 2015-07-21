@@ -6,7 +6,7 @@ namespace BHOUserScript
     public partial class AddScriptFrm : Form
     {
         public bool FromFile = true;
-        public string URL;
+        public string Url;
 
         public AddScriptFrm()
         {
@@ -22,9 +22,9 @@ namespace BHOUserScript
         {
             FromFile = radioButton1.Checked;
             if (radioButton1.Checked)
-                URL = fileTxt.Text;
+                Url = fileTxt.Text;
             else
-                URL = urlTxt.Text;
+                Url = urlTxt.Text;
             DialogResult = DialogResult.OK;
         }
 

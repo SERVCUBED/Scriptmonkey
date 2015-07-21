@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.IO;
 using System.Net;
+using System.Windows.Forms;
 
 namespace BHOUserScript
 {
@@ -22,10 +22,10 @@ namespace BHOUserScript
         private void ReloadList()
         {
             listBox1.Items.Clear();
-            string[] files = Directory.GetFiles(Scriptmonkey.scriptPath);
+            string[] files = Directory.GetFiles(Scriptmonkey.ScriptPath);
             for (int i = 0; i < files.Length; i++)
             {
-                listBox1.Items.Add(files[i].Replace(Scriptmonkey.scriptPath, ""));
+                listBox1.Items.Add(files[i].Replace(Scriptmonkey.ScriptPath, ""));
             }
         }
 
@@ -53,11 +53,11 @@ namespace BHOUserScript
                 {
                     try
                     {
-                        File.Copy(form.URL, Scriptmonkey.scriptPath + form.openFileDialog1.SafeFileName);
+                        File.Copy(form.Url, Scriptmonkey.ScriptPath + form.openFileDialog1.SafeFileName);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Scriptmonkey");
+                        MessageBox.Show(ex.Message, Resources.Title);
                     }
                     ReloadList();
                     listBox1.SelectedItem = form.openFileDialog1.SafeFileName;
@@ -66,15 +66,15 @@ namespace BHOUserScript
                 {
                     try
                     {
-                        WebClient webClient = new WebClient();
-                        webClient.DownloadFile(form.URL, Scriptmonkey.scriptPath + form.URL.Substring(form.URL.LastIndexOf('/')));
+                        var webClient = new WebClient();
+                        webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + form.Url.Substring(form.Url.LastIndexOf('/')));
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Scriptmonkey");
+                        MessageBox.Show(ex.Message, Resources.Title);
                     }
                     ReloadList();
-                    listBox1.SelectedItem = form.URL.Substring(form.URL.LastIndexOf('/'));
+                    listBox1.SelectedItem = form.Url.Substring(form.Url.LastIndexOf('/'));
                 }
                 Enabled = true;
             }
@@ -84,7 +84,7 @@ namespace BHOUserScript
         {
             if(listBox1.SelectedIndex > -1)
             {
-                File.Delete(Scriptmonkey.scriptPath + listBox1.SelectedItem.ToString());
+                File.Delete(Scriptmonkey.ScriptPath + listBox1.SelectedItem.ToString());
                 listBox1.Items.RemoveAt(listBox1.SelectedIndex);
             }
         }

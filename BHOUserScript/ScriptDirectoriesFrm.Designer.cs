@@ -1,11 +1,14 @@
-﻿namespace BHOUserScript
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace BHOUserScript
 {
     partial class ScriptDirectoriesFrm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -107,10 +110,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button addBtn;
-        private System.Windows.Forms.Button removeBtn;
-        private System.Windows.Forms.Button selectBtn;
-        private System.Windows.Forms.Button cancelBtn;
+        private ListBox listBox1;
+        private Button addBtn;
+        private Button removeBtn;
+        private Button selectBtn;
+        private Button cancelBtn;
     }
 }

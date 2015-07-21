@@ -1,9 +1,6 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Windows.Forms;
+﻿using System;
 using System.IO;
+using Microsoft.Win32;
 
 namespace CanIRunIt
 {

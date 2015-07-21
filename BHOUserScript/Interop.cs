@@ -15,7 +15,7 @@ namespace BHOUserScript
 
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct OLECMDTEXT
+    public struct Olecmdtext
     {
         public uint cmdtextf;
         public uint cwActual;
@@ -25,7 +25,7 @@ namespace BHOUserScript
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct OLECMD
+    public struct Olecmd
     {
         public uint cmdID;
         public uint cmdf;
@@ -42,7 +42,7 @@ namespace BHOUserScript
         int QueryStatus(
             [In] IntPtr pguidCmdGroup,
             [In, MarshalAs(UnmanagedType.U4)] uint cCmds,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref OLECMD prgCmds,
+            [In, Out, MarshalAs(UnmanagedType.Struct)] ref Olecmd prgCmds,
             //This parameter must be IntPtr, as it can be null
             [In, Out] IntPtr pCmdText);
 
@@ -53,7 +53,7 @@ namespace BHOUserScript
             //have to be IntPtr, since null values are unacceptable
             //and null is used as default group!
             [In] IntPtr pguidCmdGroup,
-            [In, MarshalAs(UnmanagedType.U4)] uint nCmdID,
+            [In, MarshalAs(UnmanagedType.U4)] uint nCmdId,
             [In, MarshalAs(UnmanagedType.U4)] uint nCmdexecopt,
             [In] IntPtr pvaIn,
             [In, Out] IntPtr pvaOut);

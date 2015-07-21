@@ -14,6 +14,6 @@ namespace BHOUserScript
 
         public List<Script> Scripts = new List<Script>();
 
-        public Version BHOCreatedVersion;
+        public Version BhoCreatedVersion;
     }
 }

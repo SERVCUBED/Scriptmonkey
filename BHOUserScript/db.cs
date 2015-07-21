@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.IO;
-using BHOUserScript;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Reflection;
+using Newtonsoft.Json;
 
 namespace BHOUserScript
 {
     /// <summary>
     /// Settings manager.
     /// </summary>
-    public class db
+    public class Db
     {
-        Scriptmonkey main;
+        readonly Scriptmonkey _main;
 
-        public db(Scriptmonkey scr)
+        public Db(Scriptmonkey scr)
         {
             // This should be a pointer
-            main = scr;
+            _main = scr;
         }
 
         public SettingsFile Settings;
@@ -32,7 +30,7 @@ namespace BHOUserScript
 
         public void ReloadDataAsync()
         {
-            Task s = ReloadDataAsyncTask();
+            var s = ReloadDataAsyncTask();
         }
 
         private Task ReloadDataAsyncTask()
@@ -44,44 +42,43 @@ namespace BHOUserScript
         {
             try
             {
-                StreamReader str = new StreamReader(Scriptmonkey.settingsFile);
-                string _data = str.ReadToEnd();
+                StreamReader str = new StreamReader(Scriptmonkey.SettingsFile);
+                string data = str.ReadToEnd();
                 str.Close();
-                Settings = JsonConvert.DeserializeObject<SettingsFile>(_data);
+                Settings = JsonConvert.DeserializeObject<SettingsFile>(data);
             }
             catch (Exception ex)
             {
-                ReadSettingsFailureFrm form = new ReadSettingsFailureFrm();
-                form.errorTxt.Text = ex.Message;
-                DialogResult res = form.ShowDialog();
+                var form = new ReadSettingsFailureFrm {errorTxt = {Text = ex.Message}};
+                var res = form.ShowDialog();
                 if (res == DialogResult.Yes) // Delete everything
                 {
-                    DirectoryInfo info = new DirectoryInfo(Scriptmonkey.installPath);
-                    foreach (FileInfo file in info.GetFiles())
+                    DirectoryInfo info = new DirectoryInfo(Scriptmonkey.InstallPath);
+                    foreach (var file in info.GetFiles())
                     {
                         file.Delete();
                     }
-                    foreach (DirectoryInfo dir in info.GetDirectories())
+                    foreach (var dir in info.GetDirectories())
                     {
                         dir.Delete(true);
                     }
-                    main.checkInstall(); // Reinstall
+                    _main.CheckInstall(); // Reinstall
                 }
                 else if (res == DialogResult.No) // Delete everything but scripts folder
                 {
-                    File.Delete(Scriptmonkey.installedFile);
-                    File.Delete(Scriptmonkey.settingsFile);
-                    main.checkInstall();
+                    File.Delete(Scriptmonkey.InstalledFile);
+                    File.Delete(Scriptmonkey.SettingsFile);
+                    _main.CheckInstall();
                 }
             }
         }
 
         public void Save()
         {
-            string _data = JsonConvert.SerializeObject(Settings);
+            var data = JsonConvert.SerializeObject(Settings);
 
-            StreamWriter stw = new StreamWriter(Scriptmonkey.settingsFile);
-            stw.Write(_data);
+            var stw = new StreamWriter(Scriptmonkey.SettingsFile);
+            stw.Write(data);
             stw.Close();
         }
 
@@ -122,18 +119,18 @@ namespace BHOUserScript
         public void CheckUpdateStatus()
         {
             // Get assembly version
-            Version v = Scriptmonkey.CurrentVersion();
+            var v = Scriptmonkey.CurrentVersion();
 
-            if (Settings.BHOCreatedVersion == null) // Really old versions didn't have BHOCreatedVersion property
-                Settings.BHOCreatedVersion = new Version();
+            if (Settings.BhoCreatedVersion == null) // Really old versions didn't have BHOCreatedVersion property
+                Settings.BhoCreatedVersion = new Version();
 
-            if(v != Settings.BHOCreatedVersion)
+            if(v != Settings.BhoCreatedVersion)
             {
                 // Do upgrades here
                 // ...
 
                 // Finished upgrading settings file. Now to update stored version
-                Settings.BHOCreatedVersion = v;
+                Settings.BhoCreatedVersion = v;
                 Save();
             }
         }

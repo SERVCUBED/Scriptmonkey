@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
-using System.Reflection;
-using System.Diagnostics;
 
 namespace BHOUserScript
 {
     public partial class ScriptEditFrm : Form
     {
-        public Script editedScript = new Script();
-        public string editPath;
+        public Script EditedScript = new Script();
+        public string EditPath;
 
         public ScriptEditFrm()
         {
@@ -19,18 +19,18 @@ namespace BHOUserScript
 
         public void LoadFromEditedScript()
         {
-            enabledChk.Checked = editedScript.Enabled;
-            nameTxt.Text = editedScript.Name;
-            authorTxt.Text = editedScript.Author;
-            descriptionTxt.Text = editedScript.Description;
-            fileTxt.Text = editedScript.Path;
-            updateTxt.Text = editedScript.UpdateURL;
-            versionTxt.Text = editedScript.Version;
+            enabledChk.Checked = EditedScript.Enabled;
+            nameTxt.Text = EditedScript.Name;
+            authorTxt.Text = EditedScript.Author;
+            descriptionTxt.Text = EditedScript.Description;
+            fileTxt.Text = EditedScript.Path;
+            updateTxt.Text = EditedScript.UpdateUrl;
+            versionTxt.Text = EditedScript.Version;
 
             listBox1.Items.Clear();
-            for (int i = 0; i < editedScript.Include.Length; i++)
+            for (int i = 0; i < EditedScript.Include.Length; i++)
             {
-                listBox1.Items.Add(editedScript.Include[i]);
+                listBox1.Items.Add(EditedScript.Include[i]);
             }
         }
 
@@ -48,20 +48,20 @@ namespace BHOUserScript
                 return;
             }
 
-            editedScript.Enabled = enabledChk.Checked;
-            editedScript.Name = nameTxt.Text;
-            editedScript.Author = authorTxt.Text;
-            editedScript.Description = descriptionTxt.Text;
-            editedScript.Path = fileTxt.Text;
-            editedScript.InstallDate = DateTime.UtcNow;
-            editedScript.UpdateURL = updateTxt.Text;
-            editedScript.Version = versionTxt.Text;
-            editedScript.LastUsedBHOVersion = Scriptmonkey.CurrentVersion();
+            EditedScript.Enabled = enabledChk.Checked;
+            EditedScript.Name = nameTxt.Text;
+            EditedScript.Author = authorTxt.Text;
+            EditedScript.Description = descriptionTxt.Text;
+            EditedScript.Path = fileTxt.Text;
+            EditedScript.InstallDate = DateTime.UtcNow;
+            EditedScript.UpdateUrl = updateTxt.Text;
+            EditedScript.Version = versionTxt.Text;
+            EditedScript.LastUsedBhoVersion = Scriptmonkey.CurrentVersion();
 
-            editedScript.Include = new string[listBox1.Items.Count];
+            EditedScript.Include = new string[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
-                editedScript.Include[i] = listBox1.Items[i].ToString();
+                EditedScript.Include[i] = listBox1.Items[i].ToString();
             }
 
             DialogResult = DialogResult.OK;
@@ -107,16 +107,21 @@ namespace BHOUserScript
                     listBox1.Items.Add(s.Include[i]);
             }
             descriptionTxt.Text = s.Description;
-            updateTxt.Text = s.UpdateURL;
+            updateTxt.Text = s.UpdateUrl;
         }
 
         private void editBtn_Click(object sender, EventArgs e)
         {
             if (fileTxt.Text == "")
                 return;
-            Process p = new Process();
-            p.StartInfo.FileName = editPath;
-            p.StartInfo.Arguments = Scriptmonkey.scriptPath + fileTxt.Text;
+            var p = new Process
+            {
+                StartInfo =
+                {
+                    FileName = EditPath,
+                    Arguments = Scriptmonkey.ScriptPath + fileTxt.Text
+                }
+            };
             p.Start();
         }
 
@@ -125,7 +130,7 @@ namespace BHOUserScript
             if (fileTxt.Text != "")
             {
                 // Double check file actually exists
-                if (System.IO.File.Exists(Scriptmonkey.scriptPath + fileTxt.Text))
+                if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
                     LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
             }
         }

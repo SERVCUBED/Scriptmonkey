@@ -1,11 +1,14 @@
-﻿namespace BHOUserScript
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace BHOUserScript
 {
     partial class Options
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -199,17 +202,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Button okBtn;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button addBtn;
-        private System.Windows.Forms.Button removeBtn;
-        private System.Windows.Forms.Button editBtn;
-        private System.Windows.Forms.Button cancelBtn;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox enabledChk;
-        private System.Windows.Forms.CheckBox eachEnabledChk;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btnMoveUp;
-        private System.Windows.Forms.Button btnMoveDown;
+        private Button okBtn;
+        private ListBox listBox1;
+        private Button addBtn;
+        private Button removeBtn;
+        private Button editBtn;
+        private Button cancelBtn;
+        private Label label1;
+        private CheckBox enabledChk;
+        private CheckBox eachEnabledChk;
+        private Button button1;
+        private Button btnMoveUp;
+        private Button btnMoveDown;
     }
 }

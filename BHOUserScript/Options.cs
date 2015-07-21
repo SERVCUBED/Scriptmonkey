@@ -1,5 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace BHOUserScript
 {
@@ -8,28 +9,28 @@ namespace BHOUserScript
     /// </summary>
     public partial class Options : Form
     {
-        public db prefs;
-        private string editPath;
+        public Db Prefs;
+        private readonly string _editPath;
 
-        public Options(db _prefs)
+        public Options(Db prefs)
         {
-            prefs = _prefs;
+            Prefs = prefs;
             InitializeComponent();
-            editPath = prefs.Settings.EditorPath;
-            enabledChk.Checked = prefs.Settings.Enabled;
+            _editPath = Prefs.Settings.EditorPath;
+            enabledChk.Checked = Prefs.Settings.Enabled;
         }
         
-        private void okBtn_Click(object sender, System.EventArgs e)
+        private void okBtn_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }
 
-        private void cancelBtn_Click(object sender, System.EventArgs e)
+        private void cancelBtn_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
         }
 
-        private void Options_Load(object sender, System.EventArgs e)
+        private void Options_Load(object sender, EventArgs e)
         {
             RefreshList();
         }
@@ -37,74 +38,73 @@ namespace BHOUserScript
         private void RefreshList()
         {
             listBox1.Items.Clear();
-            for (int i = 0; i < prefs.AllScripts.Count; i++)
+            for (int i = 0; i < Prefs.AllScripts.Count; i++)
             {
-                listBox1.Items.Add(prefs[i].Name + 
-                    (prefs[i].Description == "" ? "" : ": " + prefs[i].Description));
+                listBox1.Items.Add(Prefs[i].Name + 
+                    (Prefs[i].Description == "" ? "" : ": " + Prefs[i].Description));
             }
         }
 
-        private void editBtn_Click(object sender, System.EventArgs e)
+        private void editBtn_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1)
             {
                 ScriptEditFrm sw = new ScriptEditFrm();
-                sw.editedScript = prefs.AllScripts[listBox1.SelectedIndex];
-                sw.editPath = editPath;
+                sw.EditedScript = Prefs.AllScripts[listBox1.SelectedIndex];
+                sw.EditPath = _editPath;
                 sw.LoadFromEditedScript();
                 if (sw.ShowDialog() == DialogResult.OK)
                 {
                     int index = listBox1.SelectedIndex;
-                    prefs.AllScripts[index] = sw.editedScript;
+                    Prefs.AllScripts[index] = sw.EditedScript;
                     RefreshList();
                     listBox1.SetSelected(index, true);
                 }
             }
         }
 
-        private void addBtn_Click(object sender, System.EventArgs e)
+        private void addBtn_Click(object sender, EventArgs e)
         {
-            ScriptEditFrm sw = new ScriptEditFrm();
-            sw.editPath = editPath;
+            var sw = new ScriptEditFrm {EditPath = _editPath};
             if (sw.ShowDialog() == DialogResult.OK)
             {
-                prefs.AllScripts.Add(sw.editedScript);
+                Prefs.AllScripts.Add(sw.EditedScript);
                 RefreshList();
             }
         }
 
-        private void removeBtn_Click(object sender, System.EventArgs e)
+        private void removeBtn_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1)
             {
                 // Add 'are you sure' dialog (also with options to remove file)
-                prefs.AllScripts.RemoveAt(listBox1.SelectedIndex);
+                Prefs.AllScripts.RemoveAt(listBox1.SelectedIndex);
                 eachEnabledChk.Enabled = false;
                 RefreshList();
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             eachEnabledChk.Enabled = (listBox1.SelectedIndex > -1);
 
             if (listBox1.SelectedIndex > -1)
             {
-                eachEnabledChk.Checked = prefs.AllScripts[listBox1.SelectedIndex].Enabled;
+                eachEnabledChk.Checked = Prefs.AllScripts[listBox1.SelectedIndex].Enabled;
             }
         }
 
-        private void eachEnabledChk_CheckedChanged(object sender, System.EventArgs e)
+        private void eachEnabledChk_CheckedChanged(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1)
             {
-                prefs.AllScripts[listBox1.SelectedIndex].Enabled = eachEnabledChk.Checked;
+                Prefs.AllScripts[listBox1.SelectedIndex].Enabled = eachEnabledChk.Checked;
             }
         }
 
-        private void enabledChk_CheckedChanged(object sender, System.EventArgs e)
+        private void enabledChk_CheckedChanged(object sender, EventArgs e)
         {
-            prefs.Settings.Enabled = enabledChk.Checked;
+            Prefs.Settings.Enabled = enabledChk.Checked;
         }
 
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -112,37 +112,42 @@ namespace BHOUserScript
             editBtn.PerformClick();
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            Process p = new Process();
-            p.StartInfo.FileName = "explorer.exe";
-            p.StartInfo.Arguments = Scriptmonkey.installPath;
+            var p = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "explorer.exe",
+                    Arguments = Scriptmonkey.InstallPath
+                }
+            };
             p.Start();
         }
 
-        private void btnMoveUp_Click(object sender, System.EventArgs e)
+        private void btnMoveUp_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1 && listBox1.SelectedIndex > 0)
             {
-                int index = listBox1.SelectedIndex;
+                var index = listBox1.SelectedIndex;
                 listBox1.Items.RemoveAt(index);
-                Script t = prefs[index];
-                prefs.AllScripts.RemoveAt(index);
-                prefs.AllScripts.Insert(index - 1, t);
+                var t = Prefs[index];
+                Prefs.AllScripts.RemoveAt(index);
+                Prefs.AllScripts.Insert(index - 1, t);
                 RefreshList();
                 listBox1.SetSelected(index - 1, true);
             }
         }
 
-        private void btnMoveDown_Click(object sender, System.EventArgs e)
+        private void btnMoveDown_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1 && listBox1.SelectedIndex < listBox1.Items.Count - 1)
             {
-                int index = listBox1.SelectedIndex;
+                var index = listBox1.SelectedIndex;
                 listBox1.Items.RemoveAt(index);
-                Script t = prefs[index];
-                prefs.AllScripts.RemoveAt(index);
-                prefs.AllScripts.Insert(index + 1, t);
+                var t = Prefs[index];
+                Prefs.AllScripts.RemoveAt(index);
+                Prefs.AllScripts.Insert(index + 1, t);
                 RefreshList();
                 listBox1.SetSelected(index + 1, true);
             }

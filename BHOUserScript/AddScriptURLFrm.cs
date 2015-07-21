@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace BHOUserScript
 {
-    public partial class AddScriptURLFrm : Form
+    public partial class AddScriptUrlFrm : Form
     {
-        public AddScriptURLFrm()
+        public AddScriptUrlFrm()
         {
             InitializeComponent();
         }

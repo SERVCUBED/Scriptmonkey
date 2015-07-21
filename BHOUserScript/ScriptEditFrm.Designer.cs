@@ -1,11 +1,14 @@
-﻿namespace BHOUserScript
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace BHOUserScript
 {
     partial class ScriptEditFrm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -290,27 +293,27 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox nameTxt;
-        private System.Windows.Forms.Button okBtn;
-        private System.Windows.Forms.Button cancelBtn;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox fileTxt;
-        private System.Windows.Forms.TextBox authorTxt;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox versionTxt;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button addMatchBtn;
-        private System.Windows.Forms.Button remMatchBtn;
-        private System.Windows.Forms.TextBox descriptionTxt;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox updateTxt;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button editBtn;
-        private System.Windows.Forms.CheckBox enabledChk;
-        private System.Windows.Forms.Button refBtn;
+        private Label label1;
+        private TextBox nameTxt;
+        private Button okBtn;
+        private Button cancelBtn;
+        private Label label2;
+        private TextBox fileTxt;
+        private TextBox authorTxt;
+        private Label label3;
+        private Label label4;
+        private TextBox versionTxt;
+        private ListBox listBox1;
+        private Label label5;
+        private Button addMatchBtn;
+        private Button remMatchBtn;
+        private TextBox descriptionTxt;
+        private Label label6;
+        private TextBox updateTxt;
+        private Label label7;
+        private Button button1;
+        private Button editBtn;
+        private CheckBox enabledChk;
+        private Button refBtn;
     }
 }

@@ -1,11 +1,14 @@
-﻿namespace BHOUserScript
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace BHOUserScript
 {
     partial class ReadSettingsFailureFrm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -122,11 +125,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        public System.Windows.Forms.TextBox errorTxt;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private Label label1;
+        private Button button1;
+        private Button button2;
+        private Button button3;
+        public TextBox errorTxt;
+        private LinkLabel linkLabel1;
     }
 }

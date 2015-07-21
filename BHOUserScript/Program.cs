@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Win32;
+using System.Net;
 using System.Reflection;
-using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Newtonsoft.Json;
-using mshtml;
-using SHDocVw;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using mshtml;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using SHDocVw;
 
 /**
  *       ____        _     __                 __           
@@ -41,115 +41,115 @@ namespace BHOUserScript
     public class Scriptmonkey : IObjectWithSite, IOleCommandTarget
     {
         #region Declarations
-        IWebBrowser2 browser;
-        private object site;
-        private bool installChecked = false;
+        IWebBrowser2 _browser;
+        private object _site;
+        private bool _installChecked;
 
-        public static string installPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+        public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
-        public static string scriptPath = installPath + "scripts" + Path.DirectorySeparatorChar;
-        public static string settingsFile = installPath + "settings.json";
-        public static string installedFile = installPath + "installed";
+        public static readonly string ScriptPath = InstallPath + "scripts" + Path.DirectorySeparatorChar;
+        public static readonly string SettingsFile = InstallPath + "settings.json";
+        public static readonly string InstalledFile = InstallPath + "installed";
 
-        public db prefs;
+        private Db _prefs;
         #endregion
 
         #region Is installed?
-        public void checkInstall()
+        public void CheckInstall()
         {
             try
             {
-                if(!File.Exists(installedFile))
+                if(!File.Exists(InstalledFile))
                 {
-                    MessageBox.Show(Resources.firstTimeSetup, "Scriptmonkey");
-                    Directory.CreateDirectory(installPath);
-                    Directory.CreateDirectory(scriptPath);
-                    File.Create(installedFile);
+                    MessageBox.Show(Resources.FirstTimeSetup, Resources.Title);
+                    Directory.CreateDirectory(InstallPath);
+                    Directory.CreateDirectory(ScriptPath);
+                    File.Create(InstalledFile);
 
-                    StreamWriter jsonDB = new StreamWriter(settingsFile);
+                    StreamWriter jsonDb = new StreamWriter(SettingsFile);
                     SettingsFile s = new SettingsFile();
-                    s.BHOCreatedVersion = Scriptmonkey.CurrentVersion();
+                    s.BhoCreatedVersion = CurrentVersion();
 
-                    jsonDB.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
-                    jsonDB.Close();
-                    MessageBox.Show(Resources.firstTimeSetupDone, "Scriptmonkey");
+                    jsonDb.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
+                    jsonDb.Close();
+                    MessageBox.Show(Resources.FirstTimeSetupDone, Resources.Title);
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Scriptmonkey");
+                MessageBox.Show(ex.Message, Resources.Title);
             }
 
-            prefs.LoadData();
+            _prefs.LoadData();
 
             // Has BHO been updated? Settings file needs to be updated
-            prefs.CheckUpdateStatus();
+            _prefs.CheckUpdateStatus();
 
-            installChecked = true;
+            _installChecked = true;
         }
         #endregion
 
         #region Main Function
-        void Run(object pDisp, ref object URL) // OnDocumentComplete handler
+        void Run(object pDisp, ref object url) // OnDocumentComplete handler
         {
-            if ((browser.Document as IHTMLDocument2) == null) // Prevents run from Windows Explorer
+            if ((_browser.Document as IHTMLDocument2) == null) // Prevents run from Windows Explorer
                 return;
 
-            if (browser.Document == null) // No point running if no document is being displayed
+            if (_browser.Document == null) // No point running if no document is being displayed
                 return;
 
             try
             {
 
-                if (pDisp != this.site)
+                if (pDisp != this._site)
                     return;
 
-                if (prefs == null)
-                    prefs = new db(this);
+                if (_prefs == null)
+                    _prefs = new Db(this);
 
-                if (prefs.AllScripts.Count > 10) // Lots of scripts?
-                    prefs.ReloadDataAsync(); // Reload asynchronously to prevent browser becoming unresponsive
+                if (_prefs.AllScripts.Count > 10) // Lots of scripts?
+                    _prefs.ReloadDataAsync(); // Reload asynchronously to prevent browser becoming unresponsive
                 else
-                    prefs.ReloadData();
+                    _prefs.ReloadData();
 
-                if (prefs.Settings.Enabled)
+                if (_prefs.Settings.Enabled)
                 {
-                    var document2 = browser.Document as IHTMLDocument2;
+                    var document2 = _browser.Document as IHTMLDocument2;
                     //var document3 = browser.Document as IHTMLDocument3;
 
                     var window = document2.parentWindow;
                     // Check if user wants to install script
                     if (document2.url.Contains(".user.js"))
                     {
-                        AddScriptURLFrm form = new AddScriptURLFrm();
+                        AddScriptUrlFrm form = new AddScriptUrlFrm();
                         if (form.ShowDialog() == DialogResult.OK) // Automatically
                         {
                             try
                             {
-                                System.Net.WebClient webClient = new System.Net.WebClient();
-                                webClient.DownloadFile(document2.url, BHOUserScript.Scriptmonkey.scriptPath 
+                                WebClient webClient = new WebClient();
+                                webClient.DownloadFile(document2.url, ScriptPath 
                                     + document2.url.Substring(document2.url.LastIndexOf('/') + 1));
                                 Script s = ParseScriptMetadata.Parse(document2.url.Substring(document2.url.LastIndexOf('/')));
                                 s.Path = document2.url.Substring(document2.url.LastIndexOf('/') + 1);
-                                prefs.AddScript(s);
+                                _prefs.AddScript(s);
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(Resources.automaticAddFailError + ex.Message, "Scriptmonkey");
+                                MessageBox.Show(Resources.AutomaticAddFailError + ex.Message, Resources.Title);
                             }
                         }
                     }
 
-                    for (int i = 0; i < prefs.AllScripts.Count; i++)
+                    for (int i = 0; i < _prefs.AllScripts.Count; i++)
                     {
-                        if (prefs[i].Enabled)
+                        if (_prefs[i].Enabled)
                         {
                             bool shouldRun = true;
-                            if (prefs[i].Include.Length > 0)
+                            if (_prefs[i].Include.Length > 0)
                             {
                                 shouldRun = false; // Default to false
-                                if (Regex.IsMatch(URL.ToString(), WildcardToRegex(prefs[i].Include)))
+                                if (Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Include)))
                                 {
                                     shouldRun = true;
                                 }
@@ -157,12 +157,12 @@ namespace BHOUserScript
 
                             if (shouldRun)
                             {
-                                StreamReader str = new StreamReader(scriptPath + prefs[i].Path);
-                                string _c = str.ReadToEnd();
+                                StreamReader str = new StreamReader(ScriptPath + _prefs[i].Path);
+                                string c = str.ReadToEnd();
                                 str.Close();
                                 try
                                 {
-                                    window.execScript("(function(){" + _c + "})();");
+                                    window.execScript("(function(){" + c + "})();");
                                 }
                                 catch (Exception) { }
                             }
@@ -172,8 +172,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace + "\r\nSouce: \r\n" + ex.Source, "Scriptmonkey");
-                checkInstall(); // Error may be caused by invalid installtion. Verify files haven't been deleted.
+                MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace + "\r\nSouce: \r\n" + ex.Source, Resources.Title);
+                CheckInstall(); // Error may be caused by invalid installtion. Verify files haven't been deleted.
             }
         }
 
@@ -190,7 +190,7 @@ namespace BHOUserScript
 
         public static string AssemblyPath()
         {
-            return System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
         }
 
         public static string WildcardToRegex(string[] pattern)
@@ -224,26 +224,26 @@ namespace BHOUserScript
         #region Implementation of IObjectWithSite
         int IObjectWithSite.SetSite(object site)
         {
-            if (prefs == null)
-                prefs = new db(this);
+            if (_prefs == null)
+                _prefs = new Db(this);
 
             // Only need to check for install once per run.
-            if (!installChecked)
-                checkInstall();
+            if (!_installChecked)
+                CheckInstall();
 
-            this.site = site;
+            this._site = site;
 
             if (site != null)
             {
-                var serviceProv = (IServiceProvider)this.site;
+                var serviceProv = (IServiceProvider)this._site;
                 var guidIWebBrowserApp = Marshal.GenerateGuidForType(typeof(IWebBrowserApp));
                 var guidIWebBrowser2 = Marshal.GenerateGuidForType(typeof(IWebBrowser2));
                 IntPtr intPtr;
                 serviceProv.QueryService(ref guidIWebBrowserApp, ref guidIWebBrowser2, out intPtr);
 
-                browser = (IWebBrowser2)Marshal.GetObjectForIUnknown(intPtr);
+                _browser = (IWebBrowser2)Marshal.GetObjectForIUnknown(intPtr);
 
-                ((DWebBrowserEvents2_Event)browser).DocumentComplete +=
+                ((DWebBrowserEvents2_Event)_browser).DocumentComplete +=
                     new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
             }
             else
@@ -251,13 +251,13 @@ namespace BHOUserScript
                 // Disabled this handler - no point running if there is not a site displayed
                 //((DWebBrowserEvents2_Event)browser).DocumentComplete -=
                 //    new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
-                browser = null;
+                _browser = null;
             }
             return 0;
         }
         int IObjectWithSite.GetSite(ref Guid guid, out IntPtr ppvSite)
         {
-            IntPtr punk = Marshal.GetIUnknownForObject(browser);
+            IntPtr punk = Marshal.GetIUnknownForObject(_browser);
             int hr = Marshal.QueryInterface(punk, ref guid, out ppvSite);
             Marshal.Release(punk);
             return hr;
@@ -265,29 +265,29 @@ namespace BHOUserScript
         #endregion
 
         #region Implementation of IOleCommandTarget
-        int IOleCommandTarget.QueryStatus(IntPtr pguidCmdGroup, uint cCmds, ref OLECMD prgCmds, IntPtr pCmdText)
+        int IOleCommandTarget.QueryStatus(IntPtr pguidCmdGroup, uint cCmds, ref Olecmd prgCmds, IntPtr pCmdText)
         {
             return 0;
         }
-        int IOleCommandTarget.Exec(IntPtr pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+        int IOleCommandTarget.Exec(IntPtr pguidCmdGroup, uint nCmdId, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
             try
             {
-                if (!installChecked) // Prevent loading if not installed
+                if (!_installChecked) // Prevent loading if not installed
                     return 0;
                 
-                prefs.LoadData();
-                Options form = new Options(prefs);
+                _prefs.LoadData();
+                Options form = new Options(_prefs);
                 if (form.ShowDialog() != DialogResult.Cancel)
                 {
-                    prefs = form.prefs;
-                    prefs.Save();
-                    prefs.ReloadDataAsync();
+                    _prefs = form.Prefs;
+                    _prefs.Save();
+                    _prefs.ReloadDataAsync();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace, "Scriptmonkey");
+                MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace, Resources.Title);
             }
 
             return 0;
@@ -295,19 +295,19 @@ namespace BHOUserScript
         #endregion
 
         #region Registering with regasm
-        public static string RegBHO = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
+        public static string RegBho = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
         public static string RegCmd = "Software\\Microsoft\\Internet Explorer\\Extensions";
 
         [ComRegisterFunction]
-        public static void RegisterBHO(Type type)
+        public static void RegisterBho(Type type)
         {
             string guid = type.GUID.ToString("B");
 
             // BHO
             {
-                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegBHO, true);
+                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegBho, true);
                 if (registryKey == null)
-                    registryKey = Registry.LocalMachine.CreateSubKey(RegBHO);
+                    registryKey = Registry.LocalMachine.CreateSubKey(RegBho);
                 RegistryKey key = registryKey.OpenSubKey(guid);
                 if (key == null)
                     key = registryKey.CreateSubKey(guid);
@@ -318,17 +318,14 @@ namespace BHOUserScript
 
             // Command
             {
-                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegCmd, true);
-                if (registryKey == null)
-                    registryKey = Registry.LocalMachine.CreateSubKey(RegCmd);
-                RegistryKey key = registryKey.OpenSubKey(guid);
-                if (key == null)
-                    key = registryKey.CreateSubKey(guid);
+                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegCmd, true) ??
+                                          Registry.LocalMachine.CreateSubKey(RegCmd);
+                RegistryKey key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
                 key.SetValue("ButtonText", "Manage Userscripts");
                 key.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
                 key.SetValue("ClsidExtension", guid);
-                key.SetValue("Icon", Scriptmonkey.AssemblyPath() + ",1");
-                key.SetValue("HotIcon", Scriptmonkey.AssemblyPath() + ",1");
+                key.SetValue("Icon", AssemblyPath() + ",1");
+                key.SetValue("HotIcon", AssemblyPath() + ",1");
                 key.SetValue("Default Visible", "Yes");
                 key.SetValue("MenuText", "&Manage Userscripts");
                 key.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");
@@ -339,12 +336,12 @@ namespace BHOUserScript
         }
 
         [ComUnregisterFunction]
-        public static void UnregisterBHO(Type type)
+        public static void UnregisterBho(Type type)
         {
             string guid = type.GUID.ToString("B");
             // BHO
             {
-                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegBHO, true);
+                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegBho, true);
                 if (registryKey != null)
                     registryKey.DeleteSubKey(guid, false);
             }

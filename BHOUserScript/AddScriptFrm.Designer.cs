@@ -1,11 +1,14 @@
-﻿namespace BHOUserScript
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace BHOUserScript
 {
     partial class AddScriptFrm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -140,13 +143,13 @@
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.TextBox fileTxt;
-        private System.Windows.Forms.Button browseBtn;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.TextBox urlTxt;
-        private System.Windows.Forms.Button cancelBtn;
-        private System.Windows.Forms.Button okBtn;
-        public System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private RadioButton radioButton1;
+        private TextBox fileTxt;
+        private Button browseBtn;
+        private RadioButton radioButton2;
+        private TextBox urlTxt;
+        private Button cancelBtn;
+        private Button okBtn;
+        public OpenFileDialog openFileDialog1;
     }
 }
