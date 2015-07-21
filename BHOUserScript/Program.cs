@@ -198,9 +198,15 @@ namespace BHOUserScript
             string _out = "";
             for (int i = 0; i < pattern.Length; i++)
             {
-                _out += Regex.Escape(pattern[i]).
-                    Replace("\\*", ".*").
-                    Replace("\\?", ".");
+                // Allow regex in include/match (http://wiki.greasespot.net/Include_and_exclude_rules#Regular_Expressions)
+                if (pattern[i].Length > 3 && pattern[i].StartsWith("/") && pattern[i].EndsWith("/"))
+                    _out += pattern[i].Substring(1, pattern[i].Length - 1); // Remove leading and trailing '/'
+                else
+                {
+                    _out += Regex.Escape(pattern[i]).
+                        Replace("\\*", ".*").
+                        Replace("\\?", ".");
+                }
                 if (i < pattern.Length - 1) // If not the last item
                     _out += "|";
             }
