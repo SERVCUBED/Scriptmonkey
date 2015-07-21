@@ -223,3 +223,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# =========================
+# Other Services
+# =========================
+
+# Coverity
+# =========================
+/cov-int/
+/cov-int.zip
