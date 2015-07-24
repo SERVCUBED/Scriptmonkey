@@ -97,6 +97,12 @@
     <Compile Include="AddScriptURLFrm.Designer.cs">
       <DependentUpon>AddScriptURLFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlreadyExistsFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlreadyExistsFrm.Designer.cs">
+      <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="db.cs" />
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
@@ -166,6 +172,9 @@
     <EmbeddedResource Include="AddScriptURLFrm.resx">
       <DependentUpon>AddScriptURLFrm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AlreadyExistsFrm.resx">
+      <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
@@ -191,15 +200,11 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\gacutil.exe" /f /i "$(TargetDir)$(TargetFileName)"
+    <PostBuildEvent>"C:\Program Files\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\gacutil.exe" /f /i "$(TargetDir)$(TargetFileName)"
 
 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe" /unregister "$(TargetDir)$(TargetFileName)"
 
-"C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe" "$(TargetDir)$(TargetFileName)"
-
-"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\RegAsm.exe" /unregister "$(TargetDir)$(TargetFileName)"
-
-"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\RegAsm.exe" "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+"C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe" "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

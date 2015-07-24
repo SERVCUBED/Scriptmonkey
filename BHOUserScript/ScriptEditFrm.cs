@@ -10,6 +10,7 @@ namespace BHOUserScript
     public partial class ScriptEditFrm : Form
     {
         public Script EditedScript = new Script();
+        public Db Prefs;
         public string EditPath;
 
         public ScriptEditFrm()
@@ -28,9 +29,9 @@ namespace BHOUserScript
             versionTxt.Text = EditedScript.Version;
 
             listBox1.Items.Clear();
-            for (int i = 0; i < EditedScript.Include.Length; i++)
+            foreach (string t in EditedScript.Include)
             {
-                listBox1.Items.Add(EditedScript.Include[i]);
+                listBox1.Items.Add(t);
             }
         }
 
@@ -77,8 +78,26 @@ namespace BHOUserScript
             ScriptDirectoriesFrm form = new ScriptDirectoriesFrm();
             if(form.ShowDialog() == DialogResult.OK)
             {
+                var fail = false;
+                if (form.SelectedPath != fileTxt.Text)
+                {
+                    for (int i = 0; i < Prefs.AllScripts.Count; i++)
+                    {
+                        if (Prefs[i].Path == form.SelectedPath)
+                        {
+                            AlreadyExistsFrm frm = new AlreadyExistsFrm();
+                            if (frm.ShowDialog() == DialogResult.No)
+                                fail = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!fail)
+                {
                 fileTxt.Text = form.SelectedPath;
                 LoadFromParse(ParseScriptMetadata.Parse(form.SelectedPath));
+                }
             }
         }
 
@@ -101,10 +120,10 @@ namespace BHOUserScript
             authorTxt.Text = s.Author;
             versionTxt.Text = s.Version;
             listBox1.Items.Clear();
-            for (int i = 0; i < s.Include.Length; i++)
+            foreach (string t in s.Include)
             {
-                if (s.Include[i] != null)
-                    listBox1.Items.Add(s.Include[i]);
+                if (t != null)
+                    listBox1.Items.Add(t);
             }
             descriptionTxt.Text = s.Description;
             updateTxt.Text = s.UpdateUrl;
