@@ -44,6 +44,7 @@ namespace BHOUserScript
             this.button1 = new System.Windows.Forms.Button();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // okBtn
@@ -109,12 +110,12 @@ namespace BHOUserScript
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 285);
+            this.label1.Location = new System.Drawing.Point(9, 279);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(339, 26);
+            this.label1.Size = new System.Drawing.Size(252, 39);
             this.label1.TabIndex = 7;
-            this.label1.Text = "Scriptmonkey userscript manager is free software. It offers no warranty \r\nof any " +
-    "kind. For license and source code see GitHub repository.";
+            this.label1.Text = "Scriptmonkey userscript manager is free software. It \r\noffers no warranty of any " +
+    "kind. For license and \r\nsource code see GitHub repository.";
             // 
             // enabledChk
             // 
@@ -143,7 +144,7 @@ namespace BHOUserScript
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(286, 247);
+            this.button1.Location = new System.Drawing.Point(285, 246);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 35);
             this.button1.TabIndex = 10;
@@ -171,11 +172,22 @@ namespace BHOUserScript
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(285, 287);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 35);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "Get Userscripts";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(372, 318);
+            this.ClientSize = new System.Drawing.Size(372, 335);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.btnMoveDown);
             this.Controls.Add(this.btnMoveUp);
             this.Controls.Add(this.button1);
@@ -214,5 +226,6 @@ namespace BHOUserScript
         private Button button1;
         private Button btnMoveUp;
         private Button btnMoveDown;
+        private Button button2;
     }
 }

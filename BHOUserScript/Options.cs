@@ -155,5 +155,15 @@ namespace BHOUserScript
                 listBox1.SetSelected(index + 1, true);
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            GetUserscriptsFrm form = new GetUserscriptsFrm();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                okBtn.PerformClick();
+            }
+            form.Dispose();
+        }
     }
 }

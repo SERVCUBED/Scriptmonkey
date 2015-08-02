@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+
 namespace BHOUserScript
 {
     [ComVisible(true)]
@@ -33,7 +34,7 @@ namespace BHOUserScript
 
     [ComImport(), ComVisible(true),
     Guid("B722BCCB-4E68-101B-A2BC-00AA00404770"),
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IOleCommandTarget
     {
 

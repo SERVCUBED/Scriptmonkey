@@ -139,6 +139,7 @@ namespace BHOUserScript
                                 MessageBox.Show(Resources.AutomaticAddFailError + ex.Message, Resources.Title);
                             }
                         }
+                        form.Dispose();
                     }
 
                     for (int i = 0; i < _prefs.AllScripts.Count; i++)

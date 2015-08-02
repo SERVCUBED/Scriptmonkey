@@ -104,6 +104,12 @@
       <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="db.cs" />
+    <Compile Include="GetUserscriptsFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetUserscriptsFrm.Designer.cs">
+      <DependentUpon>GetUserscriptsFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AlreadyExistsFrm.resx">
       <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetUserscriptsFrm.resx">
+      <DependentUpon>GetUserscriptsFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
