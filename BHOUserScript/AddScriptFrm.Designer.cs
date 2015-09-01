@@ -60,17 +60,18 @@ namespace BHOUserScript
             this.fileTxt.Location = new System.Drawing.Point(113, 12);
             this.fileTxt.Name = "fileTxt";
             this.fileTxt.ReadOnly = true;
-            this.fileTxt.Size = new System.Drawing.Size(216, 20);
+            this.fileTxt.Size = new System.Drawing.Size(170, 20);
             this.fileTxt.TabIndex = 1;
             // 
             // browseBtn
             // 
-            this.browseBtn.Location = new System.Drawing.Point(336, 12);
+            this.browseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.browseBtn.Location = new System.Drawing.Point(288, 9);
             this.browseBtn.Name = "browseBtn";
-            this.browseBtn.Size = new System.Drawing.Size(27, 23);
+            this.browseBtn.Size = new System.Drawing.Size(75, 23);
             this.browseBtn.TabIndex = 2;
-            this.browseBtn.Text = "...";
-            this.browseBtn.UseVisualStyleBackColor = true;
+            this.browseBtn.Text = "Browse";
+            this.browseBtn.UseVisualStyleBackColor = false;
             this.browseBtn.Click += new System.EventHandler(this.browseBtn_Click);
             // 
             // radioButton2
@@ -93,7 +94,7 @@ namespace BHOUserScript
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(289, 64);
+            this.cancelBtn.Location = new System.Drawing.Point(207, 64);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 5;
@@ -103,12 +104,13 @@ namespace BHOUserScript
             // 
             // okBtn
             // 
-            this.okBtn.Location = new System.Drawing.Point(208, 64);
+            this.okBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.okBtn.Location = new System.Drawing.Point(288, 64);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 6;
             this.okBtn.Text = "Ok";
-            this.okBtn.UseVisualStyleBackColor = true;
+            this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
             // 
             // openFileDialog1

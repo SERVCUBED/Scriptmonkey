@@ -52,31 +52,32 @@ namespace BHOUserScript
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(230, 35);
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.button1.Location = new System.Drawing.Point(294, 37);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(252, 23);
+            this.button1.Size = new System.Drawing.Size(188, 37);
             this.button1.TabIndex = 1;
             this.button1.Text = "Delete everything and restart (recommended)";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(97, 35);
+            this.button2.Location = new System.Drawing.Point(97, 37);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(127, 23);
+            this.button2.Size = new System.Drawing.Size(191, 37);
             this.button2.TabIndex = 2;
-            this.button2.Text = "Keep scripts folder";
+            this.button2.Text = "Keep scripts folder (may cause problems when reinstalling scripts)";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(16, 35);
+            this.button3.Location = new System.Drawing.Point(16, 37);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(75, 37);
             this.button3.TabIndex = 3;
             this.button3.Text = "Do nothing";
             this.button3.UseVisualStyleBackColor = true;
@@ -107,7 +108,7 @@ namespace BHOUserScript
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(490, 67);
+            this.ClientSize = new System.Drawing.Size(490, 83);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -117,6 +118,7 @@ namespace BHOUserScript
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ReadSettingsFailureFrm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Scriptmonkey";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -133,12 +133,6 @@
     </Compile>
     <Compile Include="Resources.cs" />
     <Compile Include="Script.cs" />
-    <Compile Include="ScriptDirectoriesFrm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScriptDirectoriesFrm.Designer.cs">
-      <DependentUpon>ScriptDirectoriesFrm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ScriptEditFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,9 +188,6 @@
     <EmbeddedResource Include="ReadSettingsFailureFrm.resx">
       <DependentUpon>ReadSettingsFailureFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ScriptDirectoriesFrm.resx">
-      <DependentUpon>ScriptDirectoriesFrm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ScriptEditFrm.resx">
       <DependentUpon>ScriptEditFrm.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,11 +200,15 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\gacutil.exe" /f /i "$(TargetDir)$(TargetFileName)"
+    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\gacutil.exe" /f /i "$(TargetDir)$(TargetFileName)"
 
 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe" /unregister "$(TargetDir)$(TargetFileName)"
 
-"C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe" "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+"C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe" "$(TargetDir)$(TargetFileName)"
+
+"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\RegAsm.exe" /unregister "$(TargetDir)$(TargetFileName)"
+
+"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\RegAsm.exe" "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

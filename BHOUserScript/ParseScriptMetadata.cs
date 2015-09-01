@@ -9,13 +9,13 @@ namespace BHOUserScript
     /// </summary>
     static class ParseScriptMetadata
     {
-        static readonly string Name = @"// +@name( |\t)+([a-zA-Z\d :.,/\*_-]+)";
-        static readonly string Description = @"// +@description( |\t)+([a-zA-Z\d :.,/\*_-]+)";
-        static readonly string Author = @"// +@author( |\t)+([a-zA-Z\d :.,/\*_-]+)";
-        static readonly string Version = @"// +@version( |\t)+([a-zA-Z\d :.,/\*_-]+)";
-        static readonly string Match = @"// +@match( |\t)+([a-zA-Z\d :.,/\*_-]+)";
-        static readonly string Include = @"// +@include( |\t)+([a-zA-Z\d :.,/\*_-]+)";
-        static readonly string UpdateUrl = @"// +@updateURL( |\t)+([a-zA-Z\d :.,/\*_-]+)";
+        static readonly string Name = @"// +@name( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
+        static readonly string Description = @"// +@description( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
+        static readonly string Author = @"// +@author( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
+        static readonly string Version = @"// +@version( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
+        static readonly string Match = @"// +@match( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
+        static readonly string Include = @"// +@include( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
+        static readonly string UpdateUrl = @"// +@updateURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!-]+)";
         
         public static Script Parse(string path)
         {

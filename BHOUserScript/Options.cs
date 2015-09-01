@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace BHOUserScript
@@ -74,13 +75,20 @@ namespace BHOUserScript
                 Prefs.AllScripts.Add(sw.EditedScript);
                 RefreshList();
             }
+            else
+            {
+                // If file was selected and then form cancelled delete file
+                if (sw.fileTxt.Text != "" && File.Exists(Scriptmonkey.ScriptPath + sw.fileTxt.Text))
+                    File.Delete(Scriptmonkey.ScriptPath + sw.fileTxt.Text);
+            }
         }
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1)
             {
-                // Add 'are you sure' dialog (also with options to remove file)
+                if (File.Exists(Scriptmonkey.ScriptPath + Prefs.AllScripts[listBox1.SelectedIndex].Path))
+                    File.Delete(Scriptmonkey.ScriptPath + Prefs.AllScripts[listBox1.SelectedIndex].Path);
                 Prefs.AllScripts.RemoveAt(listBox1.SelectedIndex);
                 eachEnabledChk.Enabled = false;
                 RefreshList();
@@ -164,6 +172,11 @@ namespace BHOUserScript
                 okBtn.PerformClick();
             }
             form.Dispose();
+        }
+
+        private void Options_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DialogResult = DialogResult.OK;
         }
     }
 }

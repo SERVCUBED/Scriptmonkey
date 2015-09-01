@@ -119,8 +119,19 @@ namespace BHOUserScript
                     //var document3 = browser.Document as IHTMLDocument3;
 
                     var window = document2.parentWindow;
+                    if (document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
+                        try
+                        {
+                            // Tell webpage Scriptmonkey is installed
+                            var v = Scriptmonkey.CurrentVersion();
+                            window.execScript(String.Format("ld_Scriptmonkey_Installed({0},{1},{2},{3});", v.Major, v.Minor, v.Revision, _prefs.AllScripts.Count));
+                        }
+                        catch (Exception) { }
+
+                    if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
+                        ShowOptions();
                     // Check if user wants to install script
-                    if (document2.url.Contains(".user.js"))
+                    else if (document2.url.Contains(".user.js"))
                     {
                         AddScriptUrlFrm form = new AddScriptUrlFrm();
                         if (form.ShowDialog() == DialogResult.OK) // Automatically
@@ -128,7 +139,7 @@ namespace BHOUserScript
                             try
                             {
                                 WebClient webClient = new WebClient();
-                                webClient.DownloadFile(document2.url, ScriptPath 
+                                webClient.DownloadFile(document2.url, ScriptPath
                                     + document2.url.Substring(document2.url.LastIndexOf('/') + 1));
                                 Script s = ParseScriptMetadata.Parse(document2.url.Substring(document2.url.LastIndexOf('/')));
                                 s.Path = document2.url.Substring(document2.url.LastIndexOf('/') + 1);
@@ -174,7 +185,7 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace + "\r\nSouce: \r\n" + ex.Source, Resources.Title);
-                CheckInstall(); // Error may be caused by invalid installtion. Verify files haven't been deleted.
+                CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
 
@@ -276,15 +287,8 @@ namespace BHOUserScript
             {
                 if (!_installChecked) // Prevent loading if not installed
                     return 0;
-                
-                _prefs.LoadData();
-                Options form = new Options(_prefs);
-                if (form.ShowDialog() != DialogResult.Cancel)
-                {
-                    _prefs = form.Prefs;
-                    _prefs.Save();
-                    _prefs.ReloadDataAsync();
-                }
+
+                ShowOptions();
             }
             catch (Exception ex)
             {
@@ -354,5 +358,17 @@ namespace BHOUserScript
             }
         }
         #endregion
+
+        private void ShowOptions()
+        {
+            _prefs.LoadData();
+            Options form = new Options(_prefs);
+            if (form.ShowDialog() != DialogResult.Cancel)
+            {
+                _prefs = form.Prefs;
+                _prefs.Save();
+                _prefs.ReloadDataAsync();
+            }
+        }
     }
 }

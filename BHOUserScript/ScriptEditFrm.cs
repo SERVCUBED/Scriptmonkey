@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using System.Net;
 
 namespace BHOUserScript
 {
@@ -75,29 +76,44 @@ namespace BHOUserScript
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ScriptDirectoriesFrm form = new ScriptDirectoriesFrm();
-            if(form.ShowDialog() == DialogResult.OK)
+            AddScriptFrm form = new AddScriptFrm();
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                var fail = false;
-                if (form.SelectedPath != fileTxt.Text)
+                Enabled = false; // Disable form while working
+
+                // Delete old script
+                if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
+                    File.Delete(Scriptmonkey.ScriptPath + fileTxt.Text);
+
+                if (form.FromFile)
                 {
-                    for (int i = 0; i < Prefs.AllScripts.Count; i++)
+                    try
                     {
-                        if (Prefs[i].Path == form.SelectedPath)
-                        {
-                            AlreadyExistsFrm frm = new AlreadyExistsFrm();
-                            if (frm.ShowDialog() == DialogResult.No)
-                                fail = true;
-                            break;
-                        }
+                        File.Copy(form.Url, Scriptmonkey.ScriptPath + form.openFileDialog1.SafeFileName);
+                        fileTxt.Text = form.openFileDialog1.SafeFileName;
+                        LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, Resources.Title);
                     }
                 }
-
-                if (!fail)
+                else
                 {
-                fileTxt.Text = form.SelectedPath;
-                LoadFromParse(ParseScriptMetadata.Parse(form.SelectedPath));
+                    try
+                    {
+                        var webClient = new WebClient();
+                        var f_ = WebUtility.HtmlDecode(form.Url);
+                        webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + f_.Substring(f_.LastIndexOf('/')));
+                        fileTxt.Text = f_.Substring(f_.LastIndexOf('/'));
+                        LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, Resources.Title);
+                    }
                 }
+                Enabled = true;
             }
         }
 
@@ -106,12 +122,14 @@ namespace BHOUserScript
             string t = Interaction.InputBox("Add URL Match");
             if (t != "")
                 listBox1.Items.Add(t);
+            CheckURLWarningLabel();
         }
 
         private void remMatchBtn_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1)
                 listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+            CheckURLWarningLabel();
         }
 
         private void LoadFromParse(Script s)
@@ -127,6 +145,7 @@ namespace BHOUserScript
             }
             descriptionTxt.Text = s.Description;
             updateTxt.Text = s.UpdateUrl;
+            CheckURLWarningLabel();
         }
 
         private void editBtn_Click(object sender, EventArgs e)
@@ -152,6 +171,18 @@ namespace BHOUserScript
                 if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
                     LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
             }
+        }
+
+        private void CheckURLWarningLabel()
+        {
+            var is_ = listBox1.Items.Count > 0;
+            noURLWarningLbl.Visible = !is_;
+            listBox1.Enabled = is_;
+        }
+
+        private void ScriptEditFrm_Load(object sender, EventArgs e)
+        {
+            CheckURLWarningLabel();
         }
     }
 }

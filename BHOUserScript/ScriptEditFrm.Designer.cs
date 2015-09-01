@@ -54,6 +54,7 @@ namespace BHOUserScript
             this.editBtn = new System.Windows.Forms.Button();
             this.enabledChk = new System.Windows.Forms.CheckBox();
             this.refBtn = new System.Windows.Forms.Button();
+            this.noURLWarningLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -74,12 +75,13 @@ namespace BHOUserScript
             // 
             // okBtn
             // 
+            this.okBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.okBtn.Location = new System.Drawing.Point(424, 262);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 14;
             this.okBtn.Text = "Save";
-            this.okBtn.UseVisualStyleBackColor = true;
+            this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
             // 
             // cancelBtn
@@ -143,6 +145,7 @@ namespace BHOUserScript
             // 
             // listBox1
             // 
+            this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(89, 117);
             this.listBox1.Name = "listBox1";
@@ -154,9 +157,9 @@ namespace BHOUserScript
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(13, 117);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 13);
+            this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 11;
-            this.label5.Text = "Match:";
+            this.label5.Text = "URLs:";
             // 
             // addMatchBtn
             // 
@@ -212,12 +215,13 @@ namespace BHOUserScript
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
             this.button1.Location = new System.Drawing.Point(390, 9);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(28, 23);
             this.button1.TabIndex = 2;
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // editBtn
@@ -252,11 +256,22 @@ namespace BHOUserScript
             this.refBtn.UseVisualStyleBackColor = true;
             this.refBtn.Click += new System.EventHandler(this.refBtn_Click);
             // 
+            // noURLWarningLbl
+            // 
+            this.noURLWarningLbl.AutoSize = true;
+            this.noURLWarningLbl.BackColor = System.Drawing.SystemColors.Window;
+            this.noURLWarningLbl.Location = new System.Drawing.Point(91, 119);
+            this.noURLWarningLbl.Name = "noURLWarningLbl";
+            this.noURLWarningLbl.Size = new System.Drawing.Size(212, 13);
+            this.noURLWarningLbl.TabIndex = 18;
+            this.noURLWarningLbl.Text = "No items! This script will run on all websites!";
+            // 
             // ScriptEditFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 293);
+            this.Controls.Add(this.noURLWarningLbl);
             this.Controls.Add(this.refBtn);
             this.Controls.Add(this.enabledChk);
             this.Controls.Add(this.editBtn);
@@ -286,6 +301,7 @@ namespace BHOUserScript
             this.Name = "ScriptEditFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit userscript";
+            this.Load += new System.EventHandler(this.ScriptEditFrm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,7 +314,6 @@ namespace BHOUserScript
         private Button okBtn;
         private Button cancelBtn;
         private Label label2;
-        private TextBox fileTxt;
         private TextBox authorTxt;
         private Label label3;
         private Label label4;
@@ -315,5 +330,7 @@ namespace BHOUserScript
         private Button editBtn;
         private CheckBox enabledChk;
         private Button refBtn;
+        public TextBox fileTxt;
+        private Label noURLWarningLbl;
     }
 }
