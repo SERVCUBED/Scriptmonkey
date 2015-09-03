@@ -9,6 +9,8 @@ using mshtml;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using SHDocVw;
+using System.Text;
+using System.Diagnostics;
 
 /**
  *       ____        _     __                 __           
@@ -69,6 +71,7 @@ namespace BHOUserScript
                     StreamWriter jsonDb = new StreamWriter(SettingsFile);
                     SettingsFile s = new SettingsFile();
                     s.BhoCreatedVersion = CurrentVersion();
+                    s.LastUpdateCheckDate = DateTime.Now;
 
                     jsonDb.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
                     jsonDb.Close();
@@ -224,6 +227,71 @@ namespace BHOUserScript
             }
             return _out;
         }
+
+        private void CheckUpdate()
+        {
+            if (_prefs.Settings.LastUpdateCheckDate < DateTime.Now - TimeSpan.FromDays(3))
+            {
+                try
+                {
+                    HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri("https://servc.eu/p/scriptmonkey/version.php"));
+                    StringBuilder sb = new StringBuilder();
+                    byte[] buf = new byte[8192];
+                    Stream resStream = wc.GetResponse().GetResponseStream();
+
+                    string tempString = null;
+                    int count = 0;
+                    do
+                    {
+                        count = resStream.Read(buf, 0, buf.Length);
+                        if (count != 0)
+                        {
+                            tempString = Encoding.ASCII.GetString(buf, 0, count);
+                            sb.Append(tempString);
+                        }
+                    }
+                    while (count > 0);
+
+                    UpdateResponse response = JsonConvert.DeserializeObject<UpdateResponse>(sb.ToString());
+
+                    if (response.Success && response.LatestVersion > CurrentVersion())
+                    {
+                        UpdateBHOFrm form = new UpdateBHOFrm();
+                        form.currentVersionTxt.Text = CurrentVersion().ToString();
+                        form.newVersionTxt.Text = response.LatestVersion.ToString();
+                        form.textBox1.Text = response.Changes;
+                        form.ShowDialog();
+
+                        if (form.Response != UpdateBHOFrm.UpdateBHOFrmResponse.NextTime)
+                        {
+                            _prefs.Settings.LastUpdateCheckDate = DateTime.Now;
+                            _prefs.Save();
+                            _prefs.ReloadData();
+                        }
+                        if (form.Response == UpdateBHOFrm.UpdateBHOFrmResponse.Now)
+                        {
+                            new Process
+                            {
+                                StartInfo =
+                                {
+                                    FileName = "iexplore.exe",
+                                    Arguments = "https://servc.eu/p/scriptmonkey/update.html"
+                                }
+                            }.Start();
+
+                        }
+                    }
+                    else
+                    {
+                        _prefs.Settings.LastUpdateCheckDate = DateTime.Now;
+                        _prefs.Save();
+                        _prefs.ReloadData();
+                    }
+                }
+                catch (Exception ex) { }
+            }
+
+        }
         #endregion
 
         [Guid("6D5140C1-7436-11CE-8034-00AA006009FA")]
@@ -241,7 +309,11 @@ namespace BHOUserScript
 
             // Only need to check for install once per run.
             if (!_installChecked)
+            {
                 CheckInstall();
+                CheckUpdate();
+            }
+
 
             this._site = site;
 
