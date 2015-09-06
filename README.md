@@ -1,5 +1,7 @@
 # Scriptmonkey
-A userscript manager for Internet Explorer
+A userscript manager for Internet Explorer.
+
+For more information see the [official Scriptmonkey wiki](https://servc.eu/p/scriptmonkey/wiki/Main_Page)
 
 ## How to install
 
