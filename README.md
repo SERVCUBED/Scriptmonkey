@@ -12,9 +12,13 @@ It's recommended that you check out the [releases](https://github.com/SERVCUBED/
 1.	You should run [CanIRunIt.exe](dist/CanIRunIt.exe) to check if you have the required versions of the .NET Framework.
 2.	Run [ScriptmonkeyInstaller.exe](dist/ScriptmonkeyInstaller.exe) to install the BHO.
 
+See also: https://servc.eu/p/scriptmonkey/wiki/How_to_install
+
 ## How to uninstall
 
 Select `Scriptmonkey` in `Control Panel` >`Programs and Features` and click `Uninstall`.
+
+See also: https://servc.eu/p/scriptmonkey/wiki/How_to_uninstall
 
 ## Notes to contributors
 *	This project uses the .NET Framework version 4.5 and 3.0
