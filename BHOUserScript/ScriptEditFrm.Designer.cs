@@ -55,6 +55,11 @@ namespace BHOUserScript
             this.enabledChk = new System.Windows.Forms.CheckBox();
             this.refBtn = new System.Windows.Forms.Button();
             this.noURLWarningLbl = new System.Windows.Forms.Label();
+            this.excludesBox = new System.Windows.Forms.ListBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.addExcludeBtn = new System.Windows.Forms.Button();
+            this.remExcludeBtn = new System.Windows.Forms.Button();
+            this.noExcludeWarningLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -76,20 +81,20 @@ namespace BHOUserScript
             // okBtn
             // 
             this.okBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.okBtn.Location = new System.Drawing.Point(424, 262);
+            this.okBtn.Location = new System.Drawing.Point(424, 346);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
-            this.okBtn.TabIndex = 14;
+            this.okBtn.TabIndex = 17;
             this.okBtn.Text = "Save";
             this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(343, 262);
+            this.cancelBtn.Location = new System.Drawing.Point(343, 346);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 13;
+            this.cancelBtn.TabIndex = 16;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
@@ -183,15 +188,15 @@ namespace BHOUserScript
             // 
             // descriptionTxt
             // 
-            this.descriptionTxt.Location = new System.Drawing.Point(89, 209);
+            this.descriptionTxt.Location = new System.Drawing.Point(89, 293);
             this.descriptionTxt.Name = "descriptionTxt";
             this.descriptionTxt.Size = new System.Drawing.Size(410, 20);
-            this.descriptionTxt.TabIndex = 9;
+            this.descriptionTxt.TabIndex = 12;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 212);
+            this.label6.Location = new System.Drawing.Point(13, 296);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(63, 13);
             this.label6.TabIndex = 15;
@@ -199,15 +204,15 @@ namespace BHOUserScript
             // 
             // updateTxt
             // 
-            this.updateTxt.Location = new System.Drawing.Point(89, 236);
+            this.updateTxt.Location = new System.Drawing.Point(89, 320);
             this.updateTxt.Name = "updateTxt";
             this.updateTxt.Size = new System.Drawing.Size(410, 20);
-            this.updateTxt.TabIndex = 10;
+            this.updateTxt.TabIndex = 13;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 239);
+            this.label7.Location = new System.Drawing.Point(13, 323);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(70, 13);
             this.label7.TabIndex = 17;
@@ -226,10 +231,10 @@ namespace BHOUserScript
             // 
             // editBtn
             // 
-            this.editBtn.Location = new System.Drawing.Point(262, 262);
+            this.editBtn.Location = new System.Drawing.Point(262, 346);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(75, 23);
-            this.editBtn.TabIndex = 12;
+            this.editBtn.TabIndex = 15;
             this.editBtn.Text = "Edit File";
             this.editBtn.UseVisualStyleBackColor = true;
             this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
@@ -239,10 +244,10 @@ namespace BHOUserScript
             this.enabledChk.AutoSize = true;
             this.enabledChk.Checked = true;
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enabledChk.Location = new System.Drawing.Point(89, 266);
+            this.enabledChk.Location = new System.Drawing.Point(89, 350);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(64, 17);
-            this.enabledChk.TabIndex = 11;
+            this.enabledChk.TabIndex = 14;
             this.enabledChk.Text = "Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
             // 
@@ -266,11 +271,60 @@ namespace BHOUserScript
             this.noURLWarningLbl.TabIndex = 18;
             this.noURLWarningLbl.Text = "No items! This script will run on all websites!";
             // 
+            // excludesBox
+            // 
+            this.excludesBox.Enabled = false;
+            this.excludesBox.FormattingEnabled = true;
+            this.excludesBox.Location = new System.Drawing.Point(89, 205);
+            this.excludesBox.Name = "excludesBox";
+            this.excludesBox.Size = new System.Drawing.Size(410, 82);
+            this.excludesBox.TabIndex = 9;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 205);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(45, 26);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Exclude\r\nURLs:";
+            // 
+            // addExcludeBtn
+            // 
+            this.addExcludeBtn.Location = new System.Drawing.Point(16, 234);
+            this.addExcludeBtn.Name = "addExcludeBtn";
+            this.addExcludeBtn.Size = new System.Drawing.Size(26, 23);
+            this.addExcludeBtn.TabIndex = 10;
+            this.addExcludeBtn.Text = "+";
+            this.addExcludeBtn.UseVisualStyleBackColor = true;
+            this.addExcludeBtn.Click += new System.EventHandler(this.addExcludeBtn_Click);
+            // 
+            // remExcludeBtn
+            // 
+            this.remExcludeBtn.Location = new System.Drawing.Point(48, 234);
+            this.remExcludeBtn.Name = "remExcludeBtn";
+            this.remExcludeBtn.Size = new System.Drawing.Size(24, 23);
+            this.remExcludeBtn.TabIndex = 11;
+            this.remExcludeBtn.Text = "-";
+            this.remExcludeBtn.UseVisualStyleBackColor = true;
+            this.remExcludeBtn.Click += new System.EventHandler(this.remExcludeBtn_Click);
+            // 
+            // noExcludeWarningLbl
+            // 
+            this.noExcludeWarningLbl.AutoSize = true;
+            this.noExcludeWarningLbl.BackColor = System.Drawing.SystemColors.Window;
+            this.noExcludeWarningLbl.Location = new System.Drawing.Point(91, 207);
+            this.noExcludeWarningLbl.Name = "noExcludeWarningLbl";
+            this.noExcludeWarningLbl.Size = new System.Drawing.Size(51, 13);
+            this.noExcludeWarningLbl.TabIndex = 18;
+            this.noExcludeWarningLbl.Text = "No items!";
+            // 
             // ScriptEditFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(511, 293);
+            this.ClientSize = new System.Drawing.Size(511, 376);
+            this.Controls.Add(this.noExcludeWarningLbl);
             this.Controls.Add(this.noURLWarningLbl);
             this.Controls.Add(this.refBtn);
             this.Controls.Add(this.enabledChk);
@@ -280,9 +334,13 @@ namespace BHOUserScript
             this.Controls.Add(this.updateTxt);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.descriptionTxt);
+            this.Controls.Add(this.remExcludeBtn);
             this.Controls.Add(this.remMatchBtn);
+            this.Controls.Add(this.addExcludeBtn);
             this.Controls.Add(this.addMatchBtn);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.excludesBox);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.versionTxt);
             this.Controls.Add(this.label4);
@@ -332,5 +390,10 @@ namespace BHOUserScript
         private Button refBtn;
         public TextBox fileTxt;
         private Label noURLWarningLbl;
+        private ListBox excludesBox;
+        private Label label8;
+        private Button addExcludeBtn;
+        private Button remExcludeBtn;
+        private Label noExcludeWarningLbl;
     }
 }

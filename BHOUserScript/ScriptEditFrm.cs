@@ -34,6 +34,12 @@ namespace BHOUserScript
             {
                 listBox1.Items.Add(t);
             }
+
+            excludesBox.Items.Clear();
+            foreach (string t in EditedScript.Exclude)
+            {
+                excludesBox.Items.Add(t);
+            }
         }
 
         private void okBtn_Click(object sender, EventArgs e)
@@ -64,6 +70,12 @@ namespace BHOUserScript
             for (int i = 0; i < listBox1.Items.Count; i++)
             {
                 EditedScript.Include[i] = listBox1.Items[i].ToString();
+            }
+
+            EditedScript.Exclude = new string[excludesBox.Items.Count];
+            for (int i = 0; i < excludesBox.Items.Count; i++)
+            {
+                EditedScript.Exclude[i] = excludesBox.Items[i].ToString();
             }
 
             DialogResult = DialogResult.OK;
@@ -143,6 +155,12 @@ namespace BHOUserScript
                 if (t != null)
                     listBox1.Items.Add(t);
             }
+            excludesBox.Items.Clear();
+            foreach (string t in s.Exclude)
+            {
+                if (t != null)
+                    excludesBox.Items.Add(t);
+            }
             descriptionTxt.Text = s.Description;
             updateTxt.Text = s.UpdateUrl;
             CheckURLWarningLabel();
@@ -180,9 +198,32 @@ namespace BHOUserScript
             listBox1.Enabled = is_;
         }
 
+        private void CheckExcludeWarningLabel()
+        {
+            var is_ = excludesBox.Items.Count > 0;
+            noExcludeWarningLbl.Visible = !is_;
+            excludesBox.Enabled = is_;
+        }
+
         private void ScriptEditFrm_Load(object sender, EventArgs e)
         {
             CheckURLWarningLabel();
+            CheckExcludeWarningLabel();
+        }
+
+        private void addExcludeBtn_Click(object sender, EventArgs e)
+        {
+            string t = Interaction.InputBox("Add URL Exclude");
+            if (t != "")
+                excludesBox.Items.Add(t);
+            CheckExcludeWarningLabel();
+        }
+
+        private void remExcludeBtn_Click(object sender, EventArgs e)
+        {
+            if (excludesBox.SelectedIndex > -1)
+                excludesBox.Items.RemoveAt(excludesBox.SelectedIndex);
+            CheckExcludeWarningLabel();
         }
     }
 }

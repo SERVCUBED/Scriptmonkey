@@ -132,6 +132,12 @@ namespace BHOUserScript
                 if (Settings.LastUpdateCheckDate == null)
                     Settings.LastUpdateCheckDate = DateTime.Now;
 
+                foreach (Script s in AllScripts)
+                {
+                    if (s.Exclude == null)
+                        s.Exclude = new string[0];
+                }
+
                 // Finished upgrading settings file. Now to update stored version
                 Settings.BhoCreatedVersion = v;
                 Save();

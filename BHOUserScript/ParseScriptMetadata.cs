@@ -15,6 +15,7 @@ namespace BHOUserScript
         static readonly string Version = @"// +@version( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Match = @"// +@match( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Include = @"// +@include( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
+        static readonly string Exclude = @"// +@exclude( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string UpdateUrl = @"// +@updateURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         
         public static Script Parse(string path)
@@ -51,6 +52,15 @@ namespace BHOUserScript
             {
                 scr.Include[i] = matches3[i].Groups[2].Value;
             }
+
+            reg = new Regex(Exclude);
+            matches = reg.Matches(contents);
+            scr.Include = new string[matches.Count];
+            for (int i = 0; i < matches.Count; i++)
+            {
+                scr.Exclude[i] = matches[i].Groups[2].Value;
+            }
+
             scr.UpdateUrl = GetContents(contents, UpdateUrl);
 
             scr.Enabled = true;

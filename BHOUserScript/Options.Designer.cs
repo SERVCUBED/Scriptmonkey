@@ -52,7 +52,7 @@ namespace BHOUserScript
             this.okBtn.Location = new System.Drawing.Point(348, 295);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
-            this.okBtn.TabIndex = 6;
+            this.okBtn.TabIndex = 11;
             this.okBtn.Text = "Save";
             this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
@@ -118,7 +118,7 @@ namespace BHOUserScript
             this.enabledChk.Location = new System.Drawing.Point(348, 129);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(78, 17);
-            this.enabledChk.TabIndex = 8;
+            this.enabledChk.TabIndex = 7;
             this.enabledChk.Text = "All Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
             this.enabledChk.CheckedChanged += new System.EventHandler(this.enabledChk_CheckedChanged);
@@ -130,7 +130,7 @@ namespace BHOUserScript
             this.eachEnabledChk.Location = new System.Drawing.Point(348, 152);
             this.eachEnabledChk.Name = "eachEnabledChk";
             this.eachEnabledChk.Size = new System.Drawing.Size(70, 30);
-            this.eachEnabledChk.TabIndex = 9;
+            this.eachEnabledChk.TabIndex = 8;
             this.eachEnabledChk.Text = "Selected \r\nEnabled";
             this.eachEnabledChk.UseVisualStyleBackColor = true;
             this.eachEnabledChk.CheckedChanged += new System.EventHandler(this.eachEnabledChk_CheckedChanged);
@@ -140,7 +140,7 @@ namespace BHOUserScript
             this.button1.Location = new System.Drawing.Point(348, 188);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 35);
-            this.button1.TabIndex = 10;
+            this.button1.TabIndex = 9;
             this.button1.Text = "Open Install Directory";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -150,7 +150,7 @@ namespace BHOUserScript
             this.btnMoveUp.Location = new System.Drawing.Point(348, 100);
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Size = new System.Drawing.Size(36, 23);
-            this.btnMoveUp.TabIndex = 11;
+            this.btnMoveUp.TabIndex = 5;
             this.btnMoveUp.Text = "/\\";
             this.btnMoveUp.UseVisualStyleBackColor = true;
             this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
@@ -160,7 +160,7 @@ namespace BHOUserScript
             this.btnMoveDown.Location = new System.Drawing.Point(388, 100);
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(35, 23);
-            this.btnMoveDown.TabIndex = 12;
+            this.btnMoveDown.TabIndex = 6;
             this.btnMoveDown.Text = "\\/";
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
@@ -170,7 +170,7 @@ namespace BHOUserScript
             this.button2.Location = new System.Drawing.Point(348, 229);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 35);
-            this.button2.TabIndex = 13;
+            this.button2.TabIndex = 10;
             this.button2.Text = "Get Userscripts";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);

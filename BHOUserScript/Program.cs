@@ -170,6 +170,14 @@ namespace BHOUserScript
                                 }
                             }
 
+                            if (_prefs[i].Exclude.Length > 0)
+                            {
+                                if (Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Exclude)))
+                                {
+                                    shouldRun = false;
+                                }
+                            }
+
                             if (shouldRun)
                             {
                                 StreamReader str = new StreamReader(ScriptPath + _prefs[i].Path);

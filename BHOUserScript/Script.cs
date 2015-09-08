@@ -25,6 +25,8 @@ namespace BHOUserScript
         // URLs for the script to be run on
         public string[] Include { get; set; }
 
+        public string[] Exclude { get; set; }
+
         // Needed when checking if BHO has been updated after script data has been saved due to possibility of changes to storage system
         public Version LastUsedBhoVersion { get; set; }
 
