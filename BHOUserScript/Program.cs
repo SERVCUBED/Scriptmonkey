@@ -81,7 +81,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, Resources.Title);
+                MessageBox.Show(ex.Message + Environment.NewLine + ": Installer", Resources.Title);
             }
 
             _prefs.LoadData();
@@ -150,7 +150,7 @@ namespace BHOUserScript
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(Resources.AutomaticAddFailError + ex.Message, Resources.Title);
+                                MessageBox.Show(Resources.AutomaticAddFailError + ex.Message + Environment.NewLine + ": AutoAdd", Resources.Title);
                             }
                         }
                         form.Dispose();
@@ -195,7 +195,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace + "\r\nSouce: \r\n" + ex.Source, Resources.Title);
+                MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main", Resources.Title);
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
@@ -340,9 +340,9 @@ namespace BHOUserScript
             }
             else
             {
-                // Disabled this handler - no point running if there is not a site displayed
-                //((DWebBrowserEvents2_Event)browser).DocumentComplete -=
-                //    new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                // No site. Remove handler
+                ((DWebBrowserEvents2_Event)_browser).DocumentComplete -=
+                    new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
                 _browser = null;
             }
             return 0;
@@ -372,7 +372,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\r\nStack: \r\n" + ex.StackTrace, Resources.Title);
+                MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + ": IOleCommandTarget.Exec", Resources.Title);
             }
 
             return 0;

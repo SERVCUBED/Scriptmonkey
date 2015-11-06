@@ -55,7 +55,7 @@ namespace BHOUserScript
 
             reg = new Regex(Exclude);
             matches = reg.Matches(contents);
-            scr.Include = new string[matches.Count];
+            scr.Exclude = new string[matches.Count];
             for (int i = 0; i < matches.Count; i++)
             {
                 scr.Exclude[i] = matches[i].Groups[2].Value;
