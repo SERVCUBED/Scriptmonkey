@@ -134,6 +134,7 @@ namespace BHOUserScript
                 }
             };
             p.Start();
+            DialogResult = DialogResult.OK;
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
