@@ -81,7 +81,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + Environment.NewLine + ": Installer", Resources.Title);
+                Log(ex, "Installer");
             }
 
             _prefs.LoadData();
@@ -150,7 +150,7 @@ namespace BHOUserScript
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(Resources.AutomaticAddFailError + ex.Message + Environment.NewLine + ": AutoAdd", Resources.Title);
+                                Log(ex, Resources.AutomaticAddFailError + ":AutoAdd");
                             }
                         }
                         form.Dispose();
@@ -195,7 +195,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main", Resources.Title);
+                Log(ex);
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
@@ -234,6 +234,12 @@ namespace BHOUserScript
                     _out += "|";
             }
             return _out;
+        }
+
+        public static void Log(Exception ex, string extraInfo = null)
+        {
+            //TODO: Log to file
+            MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
         }
 
         private void CheckUpdate()

@@ -107,7 +107,7 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, Resources.Title);
+                        Scriptmonkey.Log(ex);
                     }
                 }
                 else
@@ -122,7 +122,7 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, Resources.Title);
+                        Scriptmonkey.Log(ex);
                     }
                 }
                 Enabled = true;

@@ -179,5 +179,24 @@ namespace BHOUserScript
         {
             DialogResult = DialogResult.OK;
         }
+
+        private void optionsBtn_Click(object sender, EventArgs e)
+        {
+            optionsContextMenuStrip.Show(this, new System.Drawing.Point(
+                optionsBtn.Left, optionsBtn.Top + optionsBtn.Height));
+        }
+
+        private void setScriptEditorPathToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            scriptEditorOpenFileDialog.FileName = Prefs.Settings.EditorPath;
+            if (scriptEditorOpenFileDialog.ShowDialog() == DialogResult.OK)
+                Prefs.Settings.EditorPath = scriptEditorOpenFileDialog.FileName;
+        }
+
+        private void resetAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Prefs.Reset(new Exception("User initiated. Are you sure you want to reset? Press 'Do Nothing' to cancel."));
+            RefreshList();
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace BHOUserScript
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             this.okBtn = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -44,15 +45,22 @@ namespace BHOUserScript
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.optionsBtn = new System.Windows.Forms.Button();
+            this.optionsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.setScriptEditorPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptEditorOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.optionsContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // okBtn
             // 
             this.okBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.okBtn.Location = new System.Drawing.Point(348, 295);
+            this.okBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.okBtn.Location = new System.Drawing.Point(348, 300);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
-            this.okBtn.TabIndex = 11;
+            this.okBtn.TabIndex = 12;
             this.okBtn.Text = "Save";
             this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
@@ -117,7 +125,7 @@ namespace BHOUserScript
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabledChk.Location = new System.Drawing.Point(348, 129);
             this.enabledChk.Name = "enabledChk";
-            this.enabledChk.Size = new System.Drawing.Size(78, 17);
+            this.enabledChk.Size = new System.Drawing.Size(79, 17);
             this.enabledChk.TabIndex = 7;
             this.enabledChk.Text = "All Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
@@ -129,7 +137,7 @@ namespace BHOUserScript
             this.eachEnabledChk.Enabled = false;
             this.eachEnabledChk.Location = new System.Drawing.Point(348, 152);
             this.eachEnabledChk.Name = "eachEnabledChk";
-            this.eachEnabledChk.Size = new System.Drawing.Size(70, 30);
+            this.eachEnabledChk.Size = new System.Drawing.Size(71, 30);
             this.eachEnabledChk.TabIndex = 8;
             this.eachEnabledChk.Text = "Selected \r\nEnabled";
             this.eachEnabledChk.UseVisualStyleBackColor = true;
@@ -175,11 +183,49 @@ namespace BHOUserScript
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // optionsBtn
+            // 
+            this.optionsBtn.Location = new System.Drawing.Point(349, 271);
+            this.optionsBtn.Name = "optionsBtn";
+            this.optionsBtn.Size = new System.Drawing.Size(75, 23);
+            this.optionsBtn.TabIndex = 11;
+            this.optionsBtn.Text = "Options";
+            this.optionsBtn.UseVisualStyleBackColor = true;
+            this.optionsBtn.Click += new System.EventHandler(this.optionsBtn_Click);
+            // 
+            // optionsContextMenuStrip
+            // 
+            this.optionsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setScriptEditorPathToolStripMenuItem,
+            this.resetAllToolStripMenuItem});
+            this.optionsContextMenuStrip.Name = "optionsContextMenuStrip";
+            this.optionsContextMenuStrip.Size = new System.Drawing.Size(184, 48);
+            // 
+            // setScriptEditorPathToolStripMenuItem
+            // 
+            this.setScriptEditorPathToolStripMenuItem.Name = "setScriptEditorPathToolStripMenuItem";
+            this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.setScriptEditorPathToolStripMenuItem.Text = "Set script editor path";
+            this.setScriptEditorPathToolStripMenuItem.Click += new System.EventHandler(this.setScriptEditorPathToolStripMenuItem_Click);
+            // 
+            // resetAllToolStripMenuItem
+            // 
+            this.resetAllToolStripMenuItem.Name = "resetAllToolStripMenuItem";
+            this.resetAllToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.resetAllToolStripMenuItem.Text = "Reset all";
+            this.resetAllToolStripMenuItem.Click += new System.EventHandler(this.resetAllToolStripMenuItem_Click);
+            // 
+            // scriptEditorOpenFileDialog
+            // 
+            this.scriptEditorOpenFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(435, 326);
+            this.CancelButton = this.okBtn;
+            this.ClientSize = new System.Drawing.Size(435, 329);
+            this.Controls.Add(this.optionsBtn);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnMoveDown);
             this.Controls.Add(this.btnMoveUp);
@@ -200,6 +246,7 @@ namespace BHOUserScript
             this.Text = "Scriptmonkey Options";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Options_FormClosed);
             this.Load += new System.EventHandler(this.Options_Load);
+            this.optionsContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,5 +266,10 @@ namespace BHOUserScript
         private Button btnMoveUp;
         private Button btnMoveDown;
         private Button button2;
+        private Button optionsBtn;
+        private ContextMenuStrip optionsContextMenuStrip;
+        private ToolStripMenuItem setScriptEditorPathToolStripMenuItem;
+        private ToolStripMenuItem resetAllToolStripMenuItem;
+        private OpenFileDialog scriptEditorOpenFileDialog;
     }
 }

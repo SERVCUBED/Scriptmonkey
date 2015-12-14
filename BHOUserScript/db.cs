@@ -49,27 +49,32 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                var form = new ReadSettingsFailureFrm {errorTxt = {Text = ex.Message}};
-                var res = form.ShowDialog();
-                if (res == DialogResult.Yes) // Delete everything
+                Reset(ex);
+            }
+        }
+
+        public void Reset(Exception ex)
+        {
+            var form = new ReadSettingsFailureFrm { errorTxt = { Text = ex.Message } };
+            var res = form.ShowDialog();
+            if (res == DialogResult.Yes) // Delete everything
+            {
+                DirectoryInfo info = new DirectoryInfo(Scriptmonkey.InstallPath);
+                foreach (var file in info.GetFiles())
                 {
-                    DirectoryInfo info = new DirectoryInfo(Scriptmonkey.InstallPath);
-                    foreach (var file in info.GetFiles())
-                    {
-                        file.Delete();
-                    }
-                    foreach (var dir in info.GetDirectories())
-                    {
-                        dir.Delete(true);
-                    }
-                    _main.CheckInstall(); // Reinstall
+                    file.Delete();
                 }
-                else if (res == DialogResult.No) // Delete everything but scripts folder
+                foreach (var dir in info.GetDirectories())
                 {
-                    File.Delete(Scriptmonkey.InstalledFile);
-                    File.Delete(Scriptmonkey.SettingsFile);
-                    _main.CheckInstall();
+                    dir.Delete(true);
                 }
+                _main.CheckInstall(); // Reinstall
+            }
+            else if (res == DialogResult.No) // Delete everything but scripts folder
+            {
+                File.Delete(Scriptmonkey.InstalledFile);
+                File.Delete(Scriptmonkey.SettingsFile);
+                _main.CheckInstall();
             }
         }
 
