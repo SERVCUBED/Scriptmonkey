@@ -17,5 +17,7 @@ namespace BHOUserScript
         public Version BhoCreatedVersion;
 
         public DateTime LastUpdateCheckDate;
+
+        public bool CheckForUpdates = true;
     }
 }

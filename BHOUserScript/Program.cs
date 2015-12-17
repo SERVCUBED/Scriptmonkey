@@ -244,7 +244,7 @@ namespace BHOUserScript
 
         private void CheckUpdate()
         {
-            if (_prefs.Settings.LastUpdateCheckDate < DateTime.Now - TimeSpan.FromDays(3))
+            if (_prefs.Settings.CheckForUpdates && _prefs.Settings.LastUpdateCheckDate < DateTime.Now - TimeSpan.FromDays(3))
             {
                 try
                 {
