@@ -74,6 +74,12 @@ namespace BHOUserScript
             {
                 File.Delete(Scriptmonkey.InstalledFile);
                 File.Delete(Scriptmonkey.SettingsFile);
+                DirectoryInfo resourceDir = new DirectoryInfo(Scriptmonkey.ResourcePath);
+                foreach (var file in resourceDir.GetFiles())
+                {
+                    file.Delete();
+                }
+                Directory.Delete(Scriptmonkey.ResourcePath);
                 _main.CheckInstall();
             }
         }
