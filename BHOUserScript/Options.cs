@@ -19,6 +19,7 @@ namespace BHOUserScript
             InitializeComponent();
             _editPath = Prefs.Settings.EditorPath;
             enabledChk.Checked = Prefs.Settings.Enabled;
+            Text += " v" + Scriptmonkey.CurrentVersion().ToString();
         }
         
         private void okBtn_Click(object sender, EventArgs e)

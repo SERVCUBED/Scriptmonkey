@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 using SHDocVw;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.InteropServices.Expando;
+using System.Security.Permissions;
+using System.Collections.Generic;
 
 /**
  *       ____        _     __                 __           
@@ -36,20 +39,31 @@ namespace BHOUserScript
     /// <summary>
     /// Scriptmonky BHO (Browser Helper Object) userscript manager for Internet Explorer.
     /// </summary>
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    [Guid("7f724466-7c51-4b14-80a1-7b0568b4226c")]
-    [ProgId("SERVCUBED.Scriptmonkey")]
-    public class Scriptmonkey : IObjectWithSite, IOleCommandTarget
+    [ComVisible(true),
+    ClassInterface(ClassInterfaceType.None),
+    Guid("7f724466-7c51-4b14-80a1-7b0568b4226c"),
+    ProgId("Scriptmonkey"),
+    ComDefaultInterface(typeof(IExtension))]
+    public class Scriptmonkey : IObjectWithSite, IOleCommandTarget, IExtension
     {
         #region Declarations
         IWebBrowser2 _browser;
         private object _site;
         private bool _installChecked;
+        // Contents of Wrapper.js, minified and split to allow scriptIndex to be set easily
+        private readonly string wrapperJS_before = "function GM_deleteValue(e){window.Scriptmonkey.deleteScriptValue(e,scriptIndex)}" +
+            "function GM_getValue(e,t){return window.Scriptmonkey.getScriptValue(e,t,scriptIndex)}function GM_listValues(){" +
+            "return window.Scriptmonkey.getScriptValuesList(scriptIndex)}function GM_setValue(e,t){window.Scriptmonkey.setScriptValue(e,t,scriptIndex)}" +
+        "function GM_addStyle(e){css=document.createElement(\"style\"),css.type=\"text/css\",css.innerHTML=e,document.body.appendChild(css)}" +
+        "function GM_openInTab(e){window.open(e)}function GM_log(e){console.log(\"Scriptmonkey: \"+e)}function GM_setClipboard(e){" +
+        "window.Scriptmonkey.setClipboard(e)}function GM_getResourceText(e){window.Scriptmonkey.getScriptResourceText(e,scriptIndex)}" +
+        "function GM_getResourceURL(e){window.Scriptmonkey.getScriptResourceUrl(e,scriptIndex)}scriptIndex=";
+        private readonly string wrapperJS_after = ",unsafeWindow=window;";
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
         public static readonly string ScriptPath = InstallPath + "scripts" + Path.DirectorySeparatorChar;
+        public static readonly string ResourcePath = InstallPath + "resources" + Path.DirectorySeparatorChar;
         public static readonly string SettingsFile = InstallPath + "settings.json";
         public static readonly string InstalledFile = InstallPath + "installed";
 
@@ -66,6 +80,7 @@ namespace BHOUserScript
                     MessageBox.Show(Resources.FirstTimeSetup, Resources.Title);
                     Directory.CreateDirectory(InstallPath);
                     Directory.CreateDirectory(ScriptPath);
+                    Directory.CreateDirectory(ResourcePath);
                     File.Create(InstalledFile);
 
                     StreamWriter jsonDb = new StreamWriter(SettingsFile);
@@ -118,10 +133,13 @@ namespace BHOUserScript
 
                 if (_prefs.Settings.Enabled)
                 {
-                    var document2 = _browser.Document as IHTMLDocument2;
+                    var document2 = _browser.Document as HTMLDocument;
                     //var document3 = browser.Document as IHTMLDocument3;
 
                     var window = document2.parentWindow;
+
+                    SetupWindow((dynamic)window);
+
                     if (document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
                         try
                         {
@@ -181,13 +199,15 @@ namespace BHOUserScript
                             if (shouldRun)
                             {
                                 StreamReader str = new StreamReader(ScriptPath + _prefs[i].Path);
-                                string c = str.ReadToEnd();
-                                str.Close();
                                 try
                                 {
-                                    window.execScript("(function(){" + c + "})();");
+                                    string c = str.ReadToEnd();
+                                    window.execScript("(function(){" + wrapperJS_before + i + wrapperJS_after + c + "})();");
                                 }
-                                catch (Exception) { }
+                                catch (Exception ex) {
+                                     window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
+                                }
+                                str.Close();
                             }
                         }
                     }
@@ -198,6 +218,13 @@ namespace BHOUserScript
                 Log(ex);
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
+        }
+
+        public void SetupWindow(dynamic window)
+        {
+            IExpando exp = (IExpando)window;
+            PropertyInfo info = exp.AddProperty("Scriptmonkey");
+            info.SetValue(exp, this);
         }
 
         /// <summary>
@@ -302,7 +329,7 @@ namespace BHOUserScript
                         _prefs.ReloadData();
                     }
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
             }
 
         }
@@ -456,5 +483,111 @@ namespace BHOUserScript
                 _prefs.ReloadDataAsync();
             }
         }
+
+        #region Implementation of IExtension
+        public void setScriptValue(string name, string value, int scriptIndex)
+        {
+            try
+            {
+                if (!_prefs[scriptIndex].SavedValues.ContainsKey(name))
+                    _prefs[scriptIndex].SavedValues.Add(name, value);
+                else
+                    _prefs[scriptIndex].SavedValues[name] = value;
+                _prefs.Save();
+            }
+            catch (Exception) { }
+        }
+
+        public string getScriptValue(string name, string defaultValue, int scriptIndex)
+        {
+            try
+            {
+                return _prefs[scriptIndex].SavedValues[name];
+            }
+            catch (Exception) { }
+            return defaultValue;
+        }
+
+        public void deleteScriptValue(string name, int scriptIndex)
+        {
+            try
+            {
+                _prefs[scriptIndex].SavedValues.Remove(name);
+                _prefs.Save();
+            }
+            catch (Exception) { }
+        }
+
+        public string getScriptValuesList(int scriptIndex)
+        {
+            try
+            {
+                if (_prefs[scriptIndex].SavedValues.Count == 0)
+                    return String.Empty;
+
+                string o = String.Empty;
+                foreach (KeyValuePair<string, string> item in _prefs[scriptIndex].SavedValues)
+                {
+                    o += item.Key;
+                    o += ',';
+                }
+                return o.Substring(0, o.Length - 1);
+            }
+            catch (Exception) { }
+            return null;
+        }
+
+        public void setClipboard(object data)
+        {
+            System.Windows.Forms.Clipboard.SetDataObject(data);
+        }
+
+        public string getScriptResourceText(string resourceName, int scriptIndex)
+        {
+            try
+            {
+                string filepath = ResourcePath + _prefs[scriptIndex].Path + '.' + resourceName;
+                if (!File.Exists(filepath))
+                {
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile(_prefs[scriptIndex].Resources[resourceName], filepath);
+                    webClient.Dispose();
+                }
+                
+                StreamReader str = new StreamReader(filepath);
+                string o = str.ReadToEnd();
+                str.Close();
+                return o;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public string getScriptResourceUrl(string resourceName, int scriptIndex)
+        {
+            try 
+	        {	        
+		        return _prefs[scriptIndex].Resources[resourceName];
+	        }
+	        catch (Exception)
+	        {
+                return null;
+	        }
+        }
+
+        public string getVersion()
+        {
+            return CurrentVersion().ToString();
+        }
+
+        public int getScriptCount()
+        {
+            return _prefs.AllScripts.Count;
+        }
+
+        public void showOptions() { ShowOptions(); }
+        #endregion
     }
 }

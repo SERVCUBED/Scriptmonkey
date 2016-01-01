@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BHOUserScript
 {
@@ -34,5 +35,9 @@ namespace BHOUserScript
         public DateTime InstallDate { get; set; }
 
         public bool Enabled { get; set; }
+
+        public Dictionary<string, string> SavedValues { get; set; }
+
+        public Dictionary<string, string> Resources { get; set; }
     }
 }

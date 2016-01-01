@@ -141,6 +141,15 @@ namespace BHOUserScript
                 {
                     if (s.Exclude == null)
                         s.Exclude = new string[0];
+
+                    if (s.SavedValues == null)
+                        s.SavedValues = new Dictionary<string, string>();
+
+                    if (s.Resources == null)
+                        s.Resources = new Dictionary<string, string>();
+
+                    if (!Directory.Exists(Scriptmonkey.ResourcePath))
+                        Directory.CreateDirectory(Scriptmonkey.ResourcePath);
                 }
 
                 // Finished upgrading settings file. Now to update stored version

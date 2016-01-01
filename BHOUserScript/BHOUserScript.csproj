@@ -110,6 +110,7 @@
     <Compile Include="GetUserscriptsFrm.Designer.cs">
       <DependentUpon>GetUserscriptsFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IExtension.cs" />
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +150,7 @@
     <Compile Include="UpdateResponse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Wrapper.js" />
     <None Include="App.config" />
     <None Include="icons\Icon.psd" />
     <Content Include="icons\Icon.ico" />
