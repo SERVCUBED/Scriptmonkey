@@ -20,6 +20,7 @@ namespace BHOUserScript
             _editPath = Prefs.Settings.EditorPath;
             enabledChk.Checked = Prefs.Settings.Enabled;
             Text += " v" + Scriptmonkey.CurrentVersion().ToString();
+            refreshChk.Checked = Prefs.Settings.RefreshOnSave;
         }
         
         private void okBtn_Click(object sender, EventArgs e)
@@ -51,7 +52,7 @@ namespace BHOUserScript
         {
             if (listBox1.SelectedIndex > -1)
             {
-                ScriptEditFrm sw = new ScriptEditFrm
+                ScriptEditFrm sw = new ScriptEditFrm(true)
                 {
                     EditedScript = Prefs.AllScripts[listBox1.SelectedIndex],
                     EditPath = _editPath,
@@ -70,7 +71,7 @@ namespace BHOUserScript
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            var sw = new ScriptEditFrm {EditPath = _editPath, Prefs = this.Prefs};
+            var sw = new ScriptEditFrm(false) {EditPath = _editPath, Prefs = this.Prefs};
             if (sw.ShowDialog() == DialogResult.OK)
             {
                 Prefs.AllScripts.Add(sw.EditedScript);
@@ -198,6 +199,11 @@ namespace BHOUserScript
         {
             Prefs.Reset(new Exception("User initiated. Are you sure you want to reset? Press 'Do Nothing' to cancel."));
             RefreshList();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Prefs.Settings.RefreshOnSave = refreshChk.Checked;
         }
     }
 }

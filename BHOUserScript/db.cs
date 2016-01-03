@@ -55,6 +55,7 @@ namespace BHOUserScript
 
         public void Reset(Exception ex)
         {
+            Scriptmonkey.Log(ex, "\r\nReset?");
             var form = new ReadSettingsFailureFrm { errorTxt = { Text = ex.Message } };
             var res = form.ShowDialog();
             if (res == DialogResult.Yes) // Delete everything
@@ -86,11 +87,18 @@ namespace BHOUserScript
 
         public void Save()
         {
-            var data = JsonConvert.SerializeObject(Settings);
+            try
+            {
+                var data = JsonConvert.SerializeObject(Settings);
 
-            var stw = new StreamWriter(Scriptmonkey.SettingsFile);
-            stw.Write(data);
-            stw.Close();
+                var stw = new StreamWriter(Scriptmonkey.SettingsFile);
+                stw.Write(data);
+                stw.Close();
+            }
+            catch (Exception ex)
+            {
+                Scriptmonkey.Log(ex, "Unable to save");
+            }
         }
 
         public void AddScript(Script add)

@@ -59,6 +59,9 @@ namespace BHOUserScript
         "window.Scriptmonkey.setClipboard(e)}function GM_getResourceText(e){window.Scriptmonkey.getScriptResourceText(e,scriptIndex)}" +
         "function GM_getResourceURL(e){window.Scriptmonkey.getScriptResourceUrl(e,scriptIndex)}scriptIndex=";
         private readonly string wrapperJS_after = ",unsafeWindow=window;";
+        private object currentURL;
+        private bool refresh = false;
+        private bool normalLoad = true;
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -111,6 +114,8 @@ namespace BHOUserScript
         #region Main Function
         void Run(object pDisp, ref object url) // OnDocumentComplete handler
         {
+            currentURL = url;
+
             if ((_browser.Document as IHTMLDocument2) == null) // Prevents run from Windows Explorer
                 return;
 
@@ -122,6 +127,10 @@ namespace BHOUserScript
 
                 if (pDisp != this._site)
                     return;
+
+                refresh = true;
+                if (_prefs.Settings.RunOnPageRefresh)
+                    normalLoad = false;
 
                 if (_prefs == null)
                     _prefs = new Db(this);
@@ -138,7 +147,7 @@ namespace BHOUserScript
 
                     var window = document2.parentWindow;
 
-                    SetupWindow((dynamic)window);
+                    SetupWindow(window);
 
                     if (document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
                         try
@@ -147,7 +156,10 @@ namespace BHOUserScript
                             var v = Scriptmonkey.CurrentVersion();
                             window.execScript(String.Format("ld_Scriptmonkey_Installed({0},{1},{2},{3});", v.Major, v.Minor, v.Revision, _prefs.AllScripts.Count));
                         }
-                        catch (Exception) { }
+                        catch (Exception ex)
+                        {
+                            Log(ex, "\r\nUnable to inject JavaScript into webpage");
+                        }
 
                     if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
                         ShowOptions();
@@ -205,7 +217,8 @@ namespace BHOUserScript
                                     window.execScript("(function(){" + wrapperJS_before + i + wrapperJS_after + c + "})();");
                                 }
                                 catch (Exception ex) {
-                                     window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
+                                    window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
+                                    Log(ex, "\r\nAt script: " + _prefs[i].Name);
                                 }
                                 str.Close();
                             }
@@ -215,16 +228,24 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex);
+                Log(ex, "\r\nAt: main");
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
 
         public void SetupWindow(dynamic window)
         {
-            IExpando exp = (IExpando)window;
-            PropertyInfo info = exp.AddProperty("Scriptmonkey");
-            info.SetValue(exp, this);
+            try
+            {
+                IExpando exp = (IExpando)window;
+                PropertyInfo info = exp.AddProperty("Scriptmonkey");
+                if (info.CanWrite && info.SetMethod != null)
+                    info.SetValue(exp, this);
+            }
+            catch (Exception ex)
+            {
+                Log(ex, "SetupWindow");
+            }
         }
 
         /// <summary>
@@ -265,8 +286,16 @@ namespace BHOUserScript
 
         public static void Log(Exception ex, string extraInfo = null)
         {
-            //TODO: Log to file
-            MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
+            try
+            {
+                using (StreamWriter writer = File.AppendText(Scriptmonkey.InstallPath + "log.txt"))
+                {
+                    writer.WriteLine(ex.Message + extraInfo);
+                    writer.Close();
+                }
+            }
+            catch (Exception) { }
+            //MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
         }
 
         private void CheckUpdate()
@@ -355,8 +384,9 @@ namespace BHOUserScript
                 CheckUpdate();
             }
 
-
             this._site = site;
+            normalLoad = true;
+            refresh = false;
 
             if (site != null)
             {
@@ -370,16 +400,76 @@ namespace BHOUserScript
 
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete +=
                     new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                if (_prefs.Settings.RunOnPageRefresh)
+                {
+                    ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 += NavigateComplete2;
+                    ((DWebBrowserEvents2_Event)_browser).DownloadComplete += DownloadComplete;
+                }
             }
             else
             {
                 // No site. Remove handler
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete -=
                     new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                if (_prefs.Settings.RunOnPageRefresh)
+                {
+                    ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 -= NavigateComplete2;
+                    ((DWebBrowserEvents2_Event)_browser).DownloadComplete -= DownloadComplete;
+                }
                 _browser = null;
             }
             return 0;
         }
+
+        void NavigateComplete2(object pDisp, ref object URL)
+        {
+            if (pDisp != null)
+                _browser = (IWebBrowser2)pDisp;
+            currentURL = URL;
+        }
+
+        private void RefreshHandler(IHTMLEventObj e)
+        {
+            // Refresh event caught in here.
+            if (refresh)
+            {
+                try
+                {
+                    Run(_browser, ref currentURL);
+                }
+                catch (Exception) { }
+            }
+            refresh = true;
+
+        }
+
+        private void DownloadComplete()
+        {
+            HTMLDocument doc = _browser.Document as HTMLDocument;
+            if (doc != null && !normalLoad)
+            {
+                IHTMLWindow2 tmpWindow = doc.parentWindow;
+                if (tmpWindow != null)
+                {
+                    HTMLWindowEvents2_Event events = (tmpWindow as HTMLWindowEvents2_Event);
+                    try
+                    {
+                        if (events != null)
+                        {
+                            events.onload -= new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
+                        }
+                    }
+                    catch (Exception) { }
+
+                    try
+                    {
+                        events.onload += new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
+                    }
+                    catch (Exception) { }
+                }
+            }
+        }
+
         int IObjectWithSite.GetSite(ref Guid guid, out IntPtr ppvSite)
         {
             IntPtr punk = Marshal.GetIUnknownForObject(_browser);
@@ -481,6 +571,15 @@ namespace BHOUserScript
                 _prefs = form.Prefs;
                 _prefs.Save();
                 _prefs.ReloadDataAsync();
+                if (_prefs.Settings.RefreshOnSave)
+                    try
+                    {
+                        // Refresh the page (run on refresh is disabled by default so navigate to the current location)
+                        ((HTMLDocument)(_browser.Document)).parentWindow.execScript("window.location.href = window.location.href;");
+                    }
+                    catch (Exception ex) {
+                        Log(ex, "Try refresh after save");
+                    }
             }
         }
 
@@ -495,7 +594,9 @@ namespace BHOUserScript
                     _prefs[scriptIndex].SavedValues[name] = value;
                 _prefs.Save();
             }
-            catch (Exception) { }
+            catch (Exception ex) {
+                Log(ex, "\r\nAt: setScriptValue");
+            }
         }
 
         public string getScriptValue(string name, string defaultValue, int scriptIndex)
@@ -504,7 +605,10 @@ namespace BHOUserScript
             {
                 return _prefs[scriptIndex].SavedValues[name];
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                Log(ex, "\r\nAt: getScriptValue");
+            }
             return defaultValue;
         }
 
@@ -515,7 +619,10 @@ namespace BHOUserScript
                 _prefs[scriptIndex].SavedValues.Remove(name);
                 _prefs.Save();
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                Log(ex, "\r\nAt: deleteScriptValue");
+            }
         }
 
         public string getScriptValuesList(int scriptIndex)
@@ -533,7 +640,10 @@ namespace BHOUserScript
                 }
                 return o.Substring(0, o.Length - 1);
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                Log(ex, "\r\nAt: getScriptValuesList");
+            }
             return null;
         }
 

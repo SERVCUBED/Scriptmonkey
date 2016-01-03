@@ -50,6 +50,7 @@ namespace BHOUserScript
             this.setScriptEditorPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptEditorOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.refreshChk = new System.Windows.Forms.CheckBox();
             this.optionsContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,7 +126,7 @@ namespace BHOUserScript
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabledChk.Location = new System.Drawing.Point(348, 129);
             this.enabledChk.Name = "enabledChk";
-            this.enabledChk.Size = new System.Drawing.Size(79, 17);
+            this.enabledChk.Size = new System.Drawing.Size(78, 17);
             this.enabledChk.TabIndex = 7;
             this.enabledChk.Text = "All Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
@@ -137,7 +138,7 @@ namespace BHOUserScript
             this.eachEnabledChk.Enabled = false;
             this.eachEnabledChk.Location = new System.Drawing.Point(348, 152);
             this.eachEnabledChk.Name = "eachEnabledChk";
-            this.eachEnabledChk.Size = new System.Drawing.Size(71, 30);
+            this.eachEnabledChk.Size = new System.Drawing.Size(70, 30);
             this.eachEnabledChk.TabIndex = 8;
             this.eachEnabledChk.Text = "Selected \r\nEnabled";
             this.eachEnabledChk.UseVisualStyleBackColor = true;
@@ -199,19 +200,19 @@ namespace BHOUserScript
             this.setScriptEditorPathToolStripMenuItem,
             this.resetAllToolStripMenuItem});
             this.optionsContextMenuStrip.Name = "optionsContextMenuStrip";
-            this.optionsContextMenuStrip.Size = new System.Drawing.Size(184, 48);
+            this.optionsContextMenuStrip.Size = new System.Drawing.Size(183, 48);
             // 
             // setScriptEditorPathToolStripMenuItem
             // 
             this.setScriptEditorPathToolStripMenuItem.Name = "setScriptEditorPathToolStripMenuItem";
-            this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.setScriptEditorPathToolStripMenuItem.Text = "Set script editor path";
             this.setScriptEditorPathToolStripMenuItem.Click += new System.EventHandler(this.setScriptEditorPathToolStripMenuItem_Click);
             // 
             // resetAllToolStripMenuItem
             // 
             this.resetAllToolStripMenuItem.Name = "resetAllToolStripMenuItem";
-            this.resetAllToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.resetAllToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.resetAllToolStripMenuItem.Text = "Reset all";
             this.resetAllToolStripMenuItem.Click += new System.EventHandler(this.resetAllToolStripMenuItem_Click);
             // 
@@ -219,12 +220,24 @@ namespace BHOUserScript
             // 
             this.scriptEditorOpenFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
+            // refreshChk
+            // 
+            this.refreshChk.AutoSize = true;
+            this.refreshChk.Location = new System.Drawing.Point(348, 330);
+            this.refreshChk.Name = "refreshChk";
+            this.refreshChk.Size = new System.Drawing.Size(80, 30);
+            this.refreshChk.TabIndex = 13;
+            this.refreshChk.Text = "Refresh on \r\nsave";
+            this.refreshChk.UseVisualStyleBackColor = true;
+            this.refreshChk.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.okBtn;
-            this.ClientSize = new System.Drawing.Size(435, 329);
+            this.ClientSize = new System.Drawing.Size(435, 363);
+            this.Controls.Add(this.refreshChk);
             this.Controls.Add(this.optionsBtn);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnMoveDown);
@@ -271,5 +284,6 @@ namespace BHOUserScript
         private ToolStripMenuItem setScriptEditorPathToolStripMenuItem;
         private ToolStripMenuItem resetAllToolStripMenuItem;
         private OpenFileDialog scriptEditorOpenFileDialog;
+        private CheckBox refreshChk;
     }
 }

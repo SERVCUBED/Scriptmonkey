@@ -19,5 +19,9 @@ namespace BHOUserScript
         public DateTime LastUpdateCheckDate;
 
         public bool CheckForUpdates = true;
+
+        public bool RefreshOnSave = true;
+
+        public bool RunOnPageRefresh = false;
     }
 }

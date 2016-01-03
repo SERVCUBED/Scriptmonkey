@@ -14,9 +14,11 @@ namespace BHOUserScript
         public Db Prefs;
         public string EditPath;
 
-        public ScriptEditFrm()
+        public ScriptEditFrm(bool editing)
         {
             InitializeComponent();
+            if (editing)
+                clearValsBtn.Visible = true;
         }
 
         public void LoadFromEditedScript()
@@ -224,6 +226,11 @@ namespace BHOUserScript
             if (excludesBox.SelectedIndex > -1)
                 excludesBox.Items.RemoveAt(excludesBox.SelectedIndex);
             CheckExcludeWarningLabel();
+        }
+
+        private void clearValsBtn_Click(object sender, EventArgs e)
+        {
+            EditedScript.SavedValues = new System.Collections.Generic.Dictionary<string, string>();
         }
     }
 }

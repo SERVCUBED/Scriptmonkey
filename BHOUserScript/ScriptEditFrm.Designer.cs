@@ -60,6 +60,7 @@ namespace BHOUserScript
             this.addExcludeBtn = new System.Windows.Forms.Button();
             this.remExcludeBtn = new System.Windows.Forms.Button();
             this.noExcludeWarningLbl = new System.Windows.Forms.Label();
+            this.clearValsBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -244,7 +245,7 @@ namespace BHOUserScript
             this.enabledChk.AutoSize = true;
             this.enabledChk.Checked = true;
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enabledChk.Location = new System.Drawing.Point(89, 350);
+            this.enabledChk.Location = new System.Drawing.Point(72, 350);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(64, 17);
             this.enabledChk.TabIndex = 14;
@@ -319,11 +320,23 @@ namespace BHOUserScript
             this.noExcludeWarningLbl.TabIndex = 18;
             this.noExcludeWarningLbl.Text = "No items!";
             // 
+            // clearValsBtn
+            // 
+            this.clearValsBtn.Location = new System.Drawing.Point(142, 346);
+            this.clearValsBtn.Name = "clearValsBtn";
+            this.clearValsBtn.Size = new System.Drawing.Size(114, 23);
+            this.clearValsBtn.TabIndex = 19;
+            this.clearValsBtn.Text = "Clear Saved Values";
+            this.clearValsBtn.UseVisualStyleBackColor = true;
+            this.clearValsBtn.Visible = false;
+            this.clearValsBtn.Click += new System.EventHandler(this.clearValsBtn_Click);
+            // 
             // ScriptEditFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 376);
+            this.Controls.Add(this.clearValsBtn);
             this.Controls.Add(this.noExcludeWarningLbl);
             this.Controls.Add(this.noURLWarningLbl);
             this.Controls.Add(this.refBtn);
@@ -395,5 +408,6 @@ namespace BHOUserScript
         private Button addExcludeBtn;
         private Button remExcludeBtn;
         private Label noExcludeWarningLbl;
+        private Button clearValsBtn;
     }
 }
