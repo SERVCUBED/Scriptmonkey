@@ -71,7 +71,7 @@ namespace BHOUserScript
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 12);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(330, 264);
+            this.listBox1.Size = new System.Drawing.Size(330, 303);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
@@ -112,7 +112,7 @@ namespace BHOUserScript
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 279);
+            this.label1.Location = new System.Drawing.Point(9, 315);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(296, 39);
             this.label1.TabIndex = 7;

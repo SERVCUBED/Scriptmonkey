@@ -74,6 +74,9 @@ namespace BHOUserScript
         #endregion
 
         #region Is installed?
+        /// <summary>
+        /// Checks for a valid installation. If Scriptmonkey is not installed, it creates the config files and directories.
+        /// </summary>
         public void CheckInstall()
         {
             try
@@ -112,6 +115,11 @@ namespace BHOUserScript
         #endregion
 
         #region Main Function
+        /// <summary>
+        /// This is the main function which is run on page load. It injects userscripts into the page.
+        /// </summary>
+        /// <param name="pDisp">Browser object (for page currently displayed)</param>
+        /// <param name="url">Current URL</param>
         void Run(object pDisp, ref object url) // OnDocumentComplete handler
         {
             currentURL = url;
@@ -233,6 +241,10 @@ namespace BHOUserScript
             }
         }
 
+        /// <summary>
+        /// Exposes the IExtension interface to the browser window.
+        /// </summary>
+        /// <param name="window"></param>
         public void SetupWindow(dynamic window)
         {
             try
@@ -259,11 +271,20 @@ namespace BHOUserScript
             return name.Version;
         }
 
+        /// <summary>
+        /// Gets the current path of the assembly.
+        /// </summary>
+        /// <returns>Assembly Path</returns>
         public static string AssemblyPath()
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
         }
 
+        /// <summary>
+        /// Convert a string array of @match values into Regex.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns>Regex pattern</returns>
         public static string WildcardToRegex(string[] pattern)
         {
             string _out = String.Empty;
@@ -284,14 +305,22 @@ namespace BHOUserScript
             return _out;
         }
 
+        /// <summary>
+        /// Writes an exception to the log file.
+        /// </summary>
+        /// <param name="ex">Exception</param>
+        /// <param name="extraInfo">Any extra info (debug notes, vars)</param>
         public static void Log(Exception ex, string extraInfo = null)
         {
             try
             {
                 using (StreamWriter writer = File.AppendText(Scriptmonkey.InstallPath + "log.txt"))
                 {
-                    writer.WriteLine(ex.Message);
-                    writer.WriteLine(ex.StackTrace);
+                    if (ex != null)
+                    {
+                        writer.WriteLine(ex.Message);
+                        writer.WriteLine(ex.StackTrace);
+                    }
                     if (extraInfo != null) 
                         writer.WriteLine(extraInfo);
                     writer.WriteLine("------------ " + DateTime.Now);
@@ -302,6 +331,9 @@ namespace BHOUserScript
             //MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
         }
 
+        /// <summary>
+        /// Check for updates from a URL, then prompt the user to install them.
+        /// </summary>
         private void CheckUpdate()
         {
             if (_prefs.Settings.CheckForUpdates && _prefs.Settings.LastUpdateCheckDate < DateTime.Now - TimeSpan.FromDays(3))
@@ -330,6 +362,7 @@ namespace BHOUserScript
 
                     if (response.Success && response.LatestVersion > CurrentVersion())
                     {
+                        // Got valid response from server and there is an update. Now to ask user to update.
                         UpdateBHOFrm form = new UpdateBHOFrm();
                         form.currentVersionTxt.Text = CurrentVersion().ToString();
                         form.newVersionTxt.Text = response.LatestVersion.ToString();
@@ -566,6 +599,9 @@ namespace BHOUserScript
         }
         #endregion
 
+        /// <summary>
+        /// Show the options window then save settings.
+        /// </summary>
         private void ShowOptions()
         {
             _prefs.LoadData();
@@ -588,6 +624,12 @@ namespace BHOUserScript
         }
 
         #region Implementation of IExtension
+        /// <summary>
+        /// GM_setValue
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="value">Value</param>
+        /// <param name="scriptIndex">Index of script</param>
         public void setScriptValue(string name, string value, int scriptIndex)
         {
             try
@@ -603,6 +645,13 @@ namespace BHOUserScript
             }
         }
 
+        /// <summary>
+        /// GM_getValue
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="defaultValue">Value to return if not set.</param>
+        /// <param name="scriptIndex">Index of script</param>
+        /// <returns></returns>
         public string getScriptValue(string name, string defaultValue, int scriptIndex)
         {
             try
@@ -616,6 +665,11 @@ namespace BHOUserScript
             return defaultValue;
         }
 
+        /// <summary>
+        /// GM_deleteValue
+        /// </summary>
+        /// <param name="name">Name of value to delete</param>
+        /// <param name="scriptIndex">Index of script</param>
         public void deleteScriptValue(string name, int scriptIndex)
         {
             try
@@ -629,6 +683,11 @@ namespace BHOUserScript
             }
         }
 
+        /// <summary>
+        /// GM_listValues
+        /// </summary>
+        /// <param name="scriptIndex">Index of script</param>
+        /// <returns>A comma-separated list of stored value names</returns>
         public string getScriptValuesList(int scriptIndex)
         {
             try
@@ -651,11 +710,21 @@ namespace BHOUserScript
             return null;
         }
 
+        /// <summary>
+        /// GM_setClipboard
+        /// </summary>
+        /// <param name="data"></param>
         public void setClipboard(object data)
         {
             System.Windows.Forms.Clipboard.SetDataObject(data);
         }
 
+        /// <summary>
+        /// GM_getResourceText
+        /// </summary>
+        /// <param name="resourceName">Name of the resource defined in @resource</param>
+        /// <param name="scriptIndex">Index of script</param>
+        /// <returns>Contents of the resource</returns>
         public string getScriptResourceText(string resourceName, int scriptIndex)
         {
             try
@@ -679,6 +748,12 @@ namespace BHOUserScript
             }
         }
 
+        /// <summary>
+        /// GM_getResourceURL
+        /// </summary>
+        /// <param name="resourceName">Name of the resource defined in @resource</param>
+        /// <param name="scriptIndex">Index of script</param>
+        /// <returns>The URL of the resource</returns>
         public string getScriptResourceUrl(string resourceName, int scriptIndex)
         {
             try 
@@ -691,16 +766,27 @@ namespace BHOUserScript
 	        }
         }
 
+        /// <summary>
+        /// Gets the current version of Scriptmonkey
+        /// </summary>
+        /// <returns>The current version of Scriptmonkey</returns>
         public string getVersion()
         {
             return CurrentVersion().ToString();
         }
 
+        /// <summary>
+        /// Gets the number of scripts installed
+        /// </summary>
+        /// <returns>The number of scripts installed</returns>
         public int getScriptCount()
         {
             return _prefs.AllScripts.Count;
         }
 
+        /// <summary>
+        /// Displays the options window
+        /// </summary>
         public void showOptions() { ShowOptions(); }
         #endregion
     }
