@@ -46,13 +46,13 @@ namespace BHOUserScript
 
         private void okBtn_Click(object sender, EventArgs e)
         {
-            if (nameTxt.Text == "")
+            if (nameTxt.Text == String.Empty)
             {
                 nameTxt.BackColor = Color.PaleVioletRed;
                 return;
             }
 
-            if (fileTxt.Text == "")
+            if (fileTxt.Text == String.Empty)
             {
                 fileTxt.BackColor = Color.PaleVioletRed;
                 return;
@@ -134,7 +134,7 @@ namespace BHOUserScript
         private void addMatchBtn_Click(object sender, EventArgs e)
         {
             string t = Interaction.InputBox("Add URL Match");
-            if (t != "")
+            if (t != String.Empty)
                 listBox1.Items.Add(t);
             CheckURLWarningLabel();
         }
@@ -170,7 +170,7 @@ namespace BHOUserScript
 
         private void editBtn_Click(object sender, EventArgs e)
         {
-            if (fileTxt.Text == "")
+            if (fileTxt.Text == String.Empty)
                 return;
             var p = new Process
             {
@@ -185,7 +185,7 @@ namespace BHOUserScript
 
         private void refBtn_Click(object sender, EventArgs e)
         {
-            if (fileTxt.Text != "")
+            if (fileTxt.Text != String.Empty)
             {
                 // Double check file actually exists
                 if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
@@ -216,7 +216,7 @@ namespace BHOUserScript
         private void addExcludeBtn_Click(object sender, EventArgs e)
         {
             string t = Interaction.InputBox("Add URL Exclude");
-            if (t != "")
+            if (t != String.Empty)
                 excludesBox.Items.Add(t);
             CheckExcludeWarningLabel();
         }

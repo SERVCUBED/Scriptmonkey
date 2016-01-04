@@ -266,7 +266,7 @@ namespace BHOUserScript
 
         public static string WildcardToRegex(string[] pattern)
         {
-            string _out = "";
+            string _out = String.Empty;
             for (int i = 0; i < pattern.Length; i++)
             {
                 // Allow regex in include/match (http://wiki.greasespot.net/Include_and_exclude_rules#Regular_Expressions)
@@ -290,7 +290,11 @@ namespace BHOUserScript
             {
                 using (StreamWriter writer = File.AppendText(Scriptmonkey.InstallPath + "log.txt"))
                 {
-                    writer.WriteLine(ex.Message + extraInfo);
+                    writer.WriteLine(ex.Message);
+                    writer.WriteLine(ex.StackTrace);
+                    if (extraInfo != null) 
+                        writer.WriteLine(extraInfo);
+                    writer.WriteLine("------------ " + DateTime.Now);
                     writer.Close();
                 }
             }
@@ -570,7 +574,7 @@ namespace BHOUserScript
             {
                 _prefs = form.Prefs;
                 _prefs.Save();
-                _prefs.ReloadDataAsync();
+                _prefs.ReloadData();
                 if (_prefs.Settings.RefreshOnSave)
                     try
                     {

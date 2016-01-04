@@ -44,7 +44,7 @@ namespace BHOUserScript
             for (int i = 0; i < Prefs.AllScripts.Count; i++)
             {
                 listBox1.Items.Add(Prefs[i].Name + 
-                    (Prefs[i].Description == "" ? "" : ": " + Prefs[i].Description));
+                    (Prefs[i].Description == String.Empty ? String.Empty : ": " + Prefs[i].Description));
             }
         }
 
@@ -80,7 +80,7 @@ namespace BHOUserScript
             else
             {
                 // If file was selected and then form cancelled delete file
-                if (sw.fileTxt.Text != "" && File.Exists(Scriptmonkey.ScriptPath + sw.fileTxt.Text))
+                if (sw.fileTxt.Text != String.Empty && File.Exists(Scriptmonkey.ScriptPath + sw.fileTxt.Text))
                     File.Delete(Scriptmonkey.ScriptPath + sw.fileTxt.Text);
             }
         }
