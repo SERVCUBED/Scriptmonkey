@@ -62,13 +62,7 @@ namespace BHOUserScript
                 scr.Exclude[i] = matches[i].Groups[2].Value;
             }
 
-            reg = new Regex(Resource);
-            matches = reg.Matches(contents);
-            scr.Resources = new Dictionary<string, string>();
-            foreach (Match match in matches)
-            {
-                scr.Resources.Add(match.Groups[2].Value, match.Groups[3].Value);
-            }
+            scr = ParseResources(scr, contents);
 
             scr.UpdateUrl = GetContents(contents, UpdateUrl);
 
@@ -76,6 +70,18 @@ namespace BHOUserScript
 
             scr.Enabled = true;
             return scr;
+        }
+
+        public static Script ParseResources(Script s, string contents)
+        {
+            var reg = new Regex(Resource);
+            var matches = reg.Matches(contents);
+            s.Resources = new Dictionary<string, string>();
+            foreach (Match match in matches)
+            {
+                s.Resources.Add(match.Groups[2].Value, match.Groups[3].Value);
+            }
+            return s;
         }
 
         private static string GetContents(string c, string regex)

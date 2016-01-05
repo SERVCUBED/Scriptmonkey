@@ -80,6 +80,20 @@ namespace BHOUserScript
                 EditedScript.Exclude[i] = excludesBox.Items[i].ToString();
             }
 
+            using(StreamReader str = new StreamReader(Scriptmonkey.ScriptPath + EditedScript.Path))
+            {
+                try
+                {
+                    string contents = str.ReadToEnd();
+                    EditedScript = ParseScriptMetadata.ParseResources(EditedScript, contents);
+                }
+                catch (Exception ex)
+                {
+                    Scriptmonkey.Log(ex, "Unable to parse resources");
+                }
+                str.Close();
+            }
+
             DialogResult = DialogResult.OK;
         }
 
