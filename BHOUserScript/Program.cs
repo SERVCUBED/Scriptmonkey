@@ -251,8 +251,7 @@ namespace BHOUserScript
             {
                 IExpando exp = (IExpando)window;
                 PropertyInfo info = exp.AddProperty("Scriptmonkey");
-                if (info.CanWrite && info.SetMethod != null)
-                    info.SetValue(exp, this);
+                info.SetValue(exp, this);
             }
             catch (Exception ex)
             {
