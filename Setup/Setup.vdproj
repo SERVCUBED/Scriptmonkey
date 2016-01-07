@@ -76,7 +76,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6732EA986F7A4F368C44CF2288295326"
+        "OwnerKey" = "8:_A485559B4FA0762B4DD334A8B9F6F877"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -88,7 +88,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A485559B4FA0762B4DD334A8B9F6F877"
+        "OwnerKey" = "8:_6732EA986F7A4F368C44CF2288295326"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -333,11 +333,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_A485559B4FA0762B4DD334A8B9F6F877"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -477,15 +472,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Scriptmonkey"
-        "ProductCode" = "8:{C0FCBEB3-9A0F-4D29-879D-ADECB1B972F6}"
-        "PackageCode" = "8:{DE549840-1E9C-40DD-A8F5-7B64331CA5AD}"
+        "ProductCode" = "8:{7318EC23-AAAB-4438-8986-9128AD02AD22}"
+        "PackageCode" = "8:{41C9B7A1-1DEF-4276-AB60-2AD16A643D20}"
         "UpgradeCode" = "8:{D11FCE76-6807-482E-8FB8-E27250E2B5B9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.4.0"
+        "ProductVersion" = "8:1.5.2"
         "Manufacturer" = "8:SERVCUBED"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
