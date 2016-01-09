@@ -105,7 +105,7 @@ namespace BHOUserScript
         private void button1_Click(object sender, EventArgs e)
         {
             AddScriptFrm form = new AddScriptFrm();
-            if (form.ShowDialog() == DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK && form.Url != String.Empty)
             {
                 Enabled = false; // Disable form while working
 
@@ -143,6 +143,7 @@ namespace BHOUserScript
                 }
                 Enabled = true;
             }
+            form.Dispose();
         }
 
         private void addMatchBtn_Click(object sender, EventArgs e)

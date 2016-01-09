@@ -43,15 +43,18 @@ namespace CanIRunIt
                     try
                     {
                         RegistryKey version = installed_versions.OpenSubKey(version_names[i]);
-                        RegistryKey client = version.OpenSubKey(version.GetSubKeyNames()[0]);
-                        string v = client.GetValue("Version").ToString();
-                        if (v != null) // If 'Version' key exists
+                        if (version != null)
                         {
-                            double v_d = Convert.ToDouble(v.Substring(0, 3)); // Only the 1st decimal point needed
-                            if (v_d >= NETversion)
+                            RegistryKey client = version.OpenSubKey(version.GetSubKeyNames()[0]);
+                            string v = client.GetValue("Version").ToString();
+                            if (v != null) // If 'Version' key exists
                             {
-                                _registry = true;
-                                break;
+                                double v_d = Convert.ToDouble(v.Substring(0, 3)); // Only the 1st decimal point needed
+                                if (v_d >= NETversion)
+                                {
+                                    _registry = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -89,7 +92,7 @@ namespace CanIRunIt
             try
             {
                 // Try creating a file in the appdata folder - SpecialFolder.UserProfile not available in .NET 3.0
-                File.Create(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Temp\\.CanIRunItTemp.temp");
+                File.Create(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Temp\\.CanIRunItTemp.temp").Dispose();
 
                 _user = true;
             }

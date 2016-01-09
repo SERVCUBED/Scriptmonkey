@@ -40,17 +40,17 @@ namespace BHOUserScript
 
         public void ReloadData()
         {
+            StreamReader str = new StreamReader(Scriptmonkey.SettingsFile);
             try
             {
-                StreamReader str = new StreamReader(Scriptmonkey.SettingsFile);
                 string data = str.ReadToEnd();
-                str.Close();
                 Settings = JsonConvert.DeserializeObject<SettingsFile>(data);
             }
             catch (Exception ex)
             {
                 Reset(ex);
             }
+            str.Close();
         }
 
         public void Reset(Exception ex)
@@ -58,6 +58,7 @@ namespace BHOUserScript
             Scriptmonkey.Log(ex, "\r\nReset?");
             var form = new ReadSettingsFailureFrm { errorTxt = { Text = ex.Message } };
             var res = form.ShowDialog();
+            form.Dispose();
             if (res == DialogResult.Yes) // Delete everything
             {
                 DirectoryInfo info = new DirectoryInfo(Scriptmonkey.InstallPath);
@@ -87,18 +88,17 @@ namespace BHOUserScript
 
         public void Save()
         {
+            var stw = new StreamWriter(Scriptmonkey.SettingsFile);
             try
             {
                 var data = JsonConvert.SerializeObject(Settings);
-
-                var stw = new StreamWriter(Scriptmonkey.SettingsFile);
                 stw.Write(data);
-                stw.Close();
             }
             catch (Exception ex)
             {
                 Scriptmonkey.Log(ex, "Unable to save");
             }
+            stw.Close();
         }
 
         public void AddScript(Script add)

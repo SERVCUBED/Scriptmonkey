@@ -79,30 +79,29 @@ namespace BHOUserScript
         /// </summary>
         public void CheckInstall()
         {
-            try
+            if(!File.Exists(InstalledFile))
             {
-                if(!File.Exists(InstalledFile))
+                StreamWriter jsonDb = new StreamWriter(SettingsFile);
+                try
                 {
                     MessageBox.Show(Resources.FirstTimeSetup, Resources.Title);
                     Directory.CreateDirectory(InstallPath);
                     Directory.CreateDirectory(ScriptPath);
                     Directory.CreateDirectory(ResourcePath);
-                    File.Create(InstalledFile);
+                    File.Create(InstalledFile).Dispose();
 
-                    StreamWriter jsonDb = new StreamWriter(SettingsFile);
                     SettingsFile s = new SettingsFile();
                     s.BhoCreatedVersion = CurrentVersion();
                     s.LastUpdateCheckDate = DateTime.Now;
 
                     jsonDb.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
-                    jsonDb.Close();
                     MessageBox.Show(Resources.FirstTimeSetupDone, Resources.Title);
                 }
-
-            }
-            catch (Exception ex)
-            {
-                Log(ex, "Installer");
+                catch (Exception ex)
+                {
+                    Log(ex, "Installer");
+                }
+                jsonDb.Close();
             }
 
             _prefs.LoadData();
@@ -136,12 +135,12 @@ namespace BHOUserScript
                 if (pDisp != this._site)
                     return;
 
+                if (_prefs == null)
+                    _prefs = new Db(this);
+
                 refresh = true;
                 if (_prefs.Settings.RunOnPageRefresh)
                     normalLoad = false;
-
-                if (_prefs == null)
-                    _prefs = new Db(this);
 
                 if (_prefs.AllScripts.Count > 10) // Lots of scripts?
                     _prefs.ReloadDataAsync(); // Reload asynchronously to prevent browser becoming unresponsive
@@ -337,13 +336,16 @@ namespace BHOUserScript
         {
             if (_prefs.Settings.CheckForUpdates && _prefs.Settings.LastUpdateCheckDate < DateTime.Now - TimeSpan.FromDays(3))
             {
+                WebResponse wr = null;
+                Stream resStream = null;
                 try
                 {
                     HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri("https://servc.eu/p/scriptmonkey/version.php"));
                     StringBuilder sb = new StringBuilder();
                     byte[] buf = new byte[8192];
-                    Stream resStream = wc.GetResponse().GetResponseStream();
-
+                    wr = wc.GetResponse();
+                    resStream = wr.GetResponseStream();
+                    
                     string tempString = null;
                     int count = 0;
                     do
@@ -395,6 +397,11 @@ namespace BHOUserScript
                     }
                 }
                 catch (Exception) { }
+
+                if (wr != null)
+                    wr.Close();
+                if (resStream != null)
+                    resStream.Close();
             }
 
         }
@@ -620,6 +627,7 @@ namespace BHOUserScript
                         Log(ex, "Try refresh after save");
                     }
             }
+            form.Dispose();
         }
 
         #region Implementation of IExtension
@@ -732,12 +740,29 @@ namespace BHOUserScript
                 if (!File.Exists(filepath))
                 {
                     WebClient webClient = new WebClient();
-                    webClient.DownloadFile(_prefs[scriptIndex].Resources[resourceName], filepath);
-                    webClient.Dispose();
+                    try
+                    {
+                        webClient.DownloadFile(_prefs[scriptIndex].Resources[resourceName], filepath);
+                        webClient.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        webClient.Dispose();
+                        Log(ex, "getScriptResourceText: Error downloading file");
+                        return null;
+                    }
                 }
                 
                 StreamReader str = new StreamReader(filepath);
-                string o = str.ReadToEnd();
+                string o = null;
+                try
+                {
+                    o = str.ReadToEnd();
+                }
+                catch (Exception ex)
+                {
+                    Log(ex, "getScriptResourceText: Error reading from file");
+                }
                 str.Close();
                 return o;
             }

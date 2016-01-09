@@ -66,6 +66,7 @@ namespace BHOUserScript
                     RefreshList();
                     listBox1.SetSelected(index, true);
                 }
+                sw.Dispose();
             }
         }
 
@@ -83,6 +84,7 @@ namespace BHOUserScript
                 if (sw.fileTxt.Text != String.Empty && File.Exists(Scriptmonkey.ScriptPath + sw.fileTxt.Text))
                     File.Delete(Scriptmonkey.ScriptPath + sw.fileTxt.Text);
             }
+            sw.Dispose();
         }
 
         private void removeBtn_Click(object sender, EventArgs e)

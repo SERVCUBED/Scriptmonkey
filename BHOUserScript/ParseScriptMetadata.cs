@@ -22,53 +22,63 @@ namespace BHOUserScript
         public static Script Parse(string path)
         {
             StreamReader str = new StreamReader(Scriptmonkey.ScriptPath + path);
-            string contents = str.ReadToEnd();
-            str.Close();
-
             Script scr = new Script();
-            scr.Name = GetContents(contents, Name);
 
-            scr.Description = GetContents(contents, Description);
-
-            scr.Author = GetContents(contents, Author);
-
-            scr.Version = GetContents(contents, Version);
-
-            Regex reg = new Regex(Match);
-            Regex reg2 = new Regex(Include);
-            MatchCollection matches = reg.Matches(contents);
-            MatchCollection matches2 = reg2.Matches(contents);
-            // Merge into single list
-            List<Match> matches3 = new List<Match>();
-            for (var i = 0; i < matches.Count; i++)
+            try
             {
-                matches3.Add(matches[i]);
+                string contents = str.ReadToEnd();
+
+                scr.Name = GetContents(contents, Name);
+
+                scr.Description = GetContents(contents, Description);
+
+                scr.Author = GetContents(contents, Author);
+
+                scr.Version = GetContents(contents, Version);
+
+                Regex reg = new Regex(Match);
+                Regex reg2 = new Regex(Include);
+                MatchCollection matches = reg.Matches(contents);
+                MatchCollection matches2 = reg2.Matches(contents);
+                // Merge into single list
+                List<Match> matches3 = new List<Match>();
+                for (var i = 0; i < matches.Count; i++)
+                {
+                    matches3.Add(matches[i]);
+                }
+                for (var i = 0; i < matches2.Count; i++)
+                {
+                    matches3.Add(matches2[i]);
+                }
+                scr.Include = new string[matches3.Count];
+                for (int i = 0; i < matches3.Count; i++)
+                {
+                    scr.Include[i] = matches3[i].Groups[2].Value;
+                }
+
+                reg = new Regex(Exclude);
+                matches = reg.Matches(contents);
+                scr.Exclude = new string[matches.Count];
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    scr.Exclude[i] = matches[i].Groups[2].Value;
+                }
+
+                scr = ParseResources(scr, contents);
+
+                scr.UpdateUrl = GetContents(contents, UpdateUrl);
+
+                scr.SavedValues = new Dictionary<string, string>();
+
+                scr.Enabled = true;
+
+                return scr;
             }
-            for (var i = 0; i < matches2.Count; i++)
+            catch (System.Exception ex)
             {
-                matches3.Add(matches2[i]);
+                Scriptmonkey.Log(ex, "Error parsing script metadata");
             }
-            scr.Include = new string[matches3.Count];
-            for (int i = 0; i < matches3.Count; i++)
-            {
-                scr.Include[i] = matches3[i].Groups[2].Value;
-            }
-
-            reg = new Regex(Exclude);
-            matches = reg.Matches(contents);
-            scr.Exclude = new string[matches.Count];
-            for (int i = 0; i < matches.Count; i++)
-            {
-                scr.Exclude[i] = matches[i].Groups[2].Value;
-            }
-
-            scr = ParseResources(scr, contents);
-
-            scr.UpdateUrl = GetContents(contents, UpdateUrl);
-
-            scr.SavedValues = new Dictionary<string, string>();
-
-            scr.Enabled = true;
+            str.Close();
             return scr;
         }
 
