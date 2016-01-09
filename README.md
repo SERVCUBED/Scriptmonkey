@@ -3,6 +3,8 @@ A userscript manager for Internet Explorer.
 
 For more information see the [official Scriptmonkey wiki](https://servc.eu/p/scriptmonkey/wiki/Main_Page)
 
+[![View on Coverity Scan](https://scan.coverity.com/projects/5812/badge.svg)](https://scan.coverity.com/projects/servcubed-scriptmonkey)
+
 ## How to install
 
 It's recommended that you check out the [releases](https://github.com/SERVCUBED/Scriptmonkey/releases) page to discover what's new in the recent versions.
