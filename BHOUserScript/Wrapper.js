@@ -64,5 +64,6 @@ function GM_registerMenuCommand(caption, func, key)
 function GM_xmlhttpRequest(details)
 {
     var response = window.Scriptmonkey.xmlHttpRequest(JSON.stringify(details));
-    details.onload(JSON.parse(response));
+    if (details.onload)
+        details.onload(JSON.parse(response));
 }
