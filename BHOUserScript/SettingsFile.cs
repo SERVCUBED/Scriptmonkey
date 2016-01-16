@@ -25,5 +25,7 @@ namespace BHOUserScript
         public bool RunOnPageRefresh = false;
 
         public bool AutoDownloadScripts = true;
+
+        public bool UsePublicAPI = false;
     }
 }

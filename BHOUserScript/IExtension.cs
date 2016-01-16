@@ -7,21 +7,21 @@ namespace BHOUserScript
      InterfaceType(ComInterfaceType.InterfaceIsDual)]
     public interface IExtension
     {
-        void setScriptValue(string name, string value, int scriptIndex);
+        void setScriptValue(string name, string value, int scriptIndex, string apiKey);
 
-        string getScriptValue(string name, string defaultValue, int scriptIndex);
+        string getScriptValue(string name, string defaultValue, int scriptIndex, string apiKey);
 
-        void deleteScriptValue(string name, int scriptIndex);
+        void deleteScriptValue(string name, int scriptIndex, string apiKey);
 
-        string getScriptValuesList(int scriptIndex);
+        string getScriptValuesList(int scriptIndex, string apiKey);
 
         void setClipboard(object data);
 
-        string getScriptResourceText(string resourceName, int scriptIndex);
+        string getScriptResourceText(string resourceName, int scriptIndex, string apiKey);
 
-        string getScriptResourceUrl(string resourceName, int scriptIndex);
+        string getScriptResourceUrl(string resourceName, int scriptIndex, string apiKey);
 
-        string xmlHttpRequest(string details);
+        string xmlHttpRequest(string details, int scriptIndex, string apiKey);
 
         string getVersion();
 

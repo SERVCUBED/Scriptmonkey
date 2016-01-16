@@ -50,19 +50,10 @@ namespace BHOUserScript
         IWebBrowser2 _browser;
         private object _site;
         private bool _installChecked;
-        // Contents of Wrapper.js, minified and split to allow scriptIndex to be set easily
-        private readonly string wrapperJS_before = "function GM_deleteValue(e){window.Scriptmonkey.deleteScriptValue(e,scriptIndex)}" +
-            "function GM_getValue(e,t){return window.Scriptmonkey.getScriptValue(e,t,scriptIndex)}function GM_listValues(){" +
-            "return window.Scriptmonkey.getScriptValuesList(scriptIndex)}function GM_setValue(e,t){window.Scriptmonkey.setScriptValue(e,t,scriptIndex)}" +
-        "function GM_addStyle(e){css=document.createElement(\"style\"),css.type=\"text/css\",css.innerHTML=e,document.body.appendChild(css)}" +
-        "function GM_openInTab(e){window.open(e)}function GM_log(e){console.log(\"Scriptmonkey: \"+e)}function GM_setClipboard(e){" +
-        "window.Scriptmonkey.setClipboard(e)}function GM_getResourceText(e){window.Scriptmonkey.getScriptResourceText(e,scriptIndex)}" +
-        "function GM_getResourceURL(e){window.Scriptmonkey.getScriptResourceUrl(e,scriptIndex)}scriptIndex=";
-        private readonly string wrapperJS_after = ",unsafeWindow=window;function GM_xmlhttpRequest(t){var n=window.Scriptmonkey.xmlHttpRequest(JSON.stringify(t));t.onload(JSON.parse(n))}" + 
-            "function GM_registerMenuCommand(caption, func, key){}";
         private object currentURL;
         private bool refresh = false;
         private bool normalLoad = true;
+        private string[] apiKeys = null;
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -150,6 +141,22 @@ namespace BHOUserScript
 
                 if (_prefs.Settings.Enabled)
                 {
+                    // Set up API keys with random length for each script
+                    if (apiKeys == null)
+                    {
+                        apiKeys = new string[_prefs.AllScripts.Count];
+                        Random r = new Random();
+                        for (int i = 0; i < apiKeys.Length; i++)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            for (int f = 0; f < r.Next(5,20); f++)
+                            {
+                                sb.Append(Convert.ToChar(r.Next(97,122)));
+                            }
+                            apiKeys[i] = sb.ToString();
+                        }
+                    }
+
                     var document2 = _browser.Document as HTMLDocument;
                     //var document3 = browser.Document as IHTMLDocument3;
 
@@ -200,7 +207,7 @@ namespace BHOUserScript
                                 try
                                 {
                                     string c = str.ReadToEnd();
-                                    window.execScript("(function(){" + wrapperJS_before + i + wrapperJS_after + c + "})();");
+                                    window.execScript("(function(){" + Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + apiKeys[i] + Resources.WrapperJS_After + c + "})();");
                                 }
                                 catch (Exception ex) {
                                     window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
@@ -667,8 +674,11 @@ namespace BHOUserScript
         /// <param name="name">Name</param>
         /// <param name="value">Value</param>
         /// <param name="scriptIndex">Index of script</param>
-        public void setScriptValue(string name, string value, int scriptIndex)
+        public void setScriptValue(string name, string value, int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return;
+
             try
             {
                 if (!_prefs[scriptIndex].SavedValues.ContainsKey(name))
@@ -689,8 +699,11 @@ namespace BHOUserScript
         /// <param name="defaultValue">Value to return if not set.</param>
         /// <param name="scriptIndex">Index of script</param>
         /// <returns></returns>
-        public string getScriptValue(string name, string defaultValue, int scriptIndex)
+        public string getScriptValue(string name, string defaultValue, int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return null;
+
             try
             {
                 return _prefs[scriptIndex].SavedValues[name];
@@ -707,8 +720,11 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="name">Name of value to delete</param>
         /// <param name="scriptIndex">Index of script</param>
-        public void deleteScriptValue(string name, int scriptIndex)
+        public void deleteScriptValue(string name, int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return;
+
             try
             {
                 _prefs[scriptIndex].SavedValues.Remove(name);
@@ -725,8 +741,11 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="scriptIndex">Index of script</param>
         /// <returns>A comma-separated list of stored value names</returns>
-        public string getScriptValuesList(int scriptIndex)
+        public string getScriptValuesList(int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return null;
+
             try
             {
                 if (_prefs[scriptIndex].SavedValues.Count == 0)
@@ -762,8 +781,11 @@ namespace BHOUserScript
         /// <param name="resourceName">Name of the resource defined in @resource</param>
         /// <param name="scriptIndex">Index of script</param>
         /// <returns>Contents of the resource</returns>
-        public string getScriptResourceText(string resourceName, int scriptIndex)
+        public string getScriptResourceText(string resourceName, int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return null;
+
             try
             {
                 string filepath = ResourcePath + _prefs[scriptIndex].Path + '.' + resourceName;
@@ -808,8 +830,11 @@ namespace BHOUserScript
         /// <param name="resourceName">Name of the resource defined in @resource</param>
         /// <param name="scriptIndex">Index of script</param>
         /// <returns>The URL of the resource</returns>
-        public string getScriptResourceUrl(string resourceName, int scriptIndex)
+        public string getScriptResourceUrl(string resourceName, int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return null;
+
             try 
 	        {	        
 		        return _prefs[scriptIndex].Resources[resourceName];
@@ -825,8 +850,11 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="details">JSON serialised XmlHttpRequestDetails</param>
         /// <returns>JSON serialised XmlHttpRequestResponse</returns>
-        public string xmlHttpRequest(string details)
+        public string xmlHttpRequest(string details, int scriptIndex, string apiKey)
         {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return null;
+
             WebClient webClient = new WebClient();
             XmlHttpRequestResponse response = new XmlHttpRequestResponse();
 
@@ -932,6 +960,18 @@ namespace BHOUserScript
         /// Displays the options window
         /// </summary>
         public void showOptions() { ShowOptions(); }
+
+        private bool CheckScriptApiKey(int scriptIndex, string apiKey)
+        {
+            if (_prefs.Settings.UsePublicAPI && apiKey == "public")
+                return true;
+
+            // Check the scriptIndex isn't out of range
+            if (scriptIndex >= apiKeys.Length)
+                return false;
+
+            return apiKeys[scriptIndex] == apiKey;
+        }
         #endregion
     }
 }

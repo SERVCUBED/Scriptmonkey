@@ -1,26 +1,27 @@
 // Script to inject into every page. This contains wrappers for GM_ functions and Scriptmonkey's own library.
 scriptIndex = 0; // This will be set dynamically in code
 unsafeWindow = window;
+apiKey = 'public';
 
 // Wrappers for the GM_ functions
 function GM_deleteValue(name)
 {
-    window.Scriptmonkey.deleteScriptValue(name, scriptIndex);
+    window.Scriptmonkey.deleteScriptValue(name, scriptIndex, apiKey);
 }
 
 function GM_getValue(name, defaultVal)
 {
-    return window.Scriptmonkey.getScriptValue(name, defaultVal, scriptIndex);
+    return window.Scriptmonkey.getScriptValue(name, defaultVal, scriptIndex, apiKey);
 }
 
 function GM_listValues()
 {
-    return window.Scriptmonkey.getScriptValuesList(scriptIndex);
+    return window.Scriptmonkey.getScriptValuesList(scriptIndex, apiKey);
 }
 
 function GM_setValue(name, value)
 {
-    window.Scriptmonkey.setScriptValue(name, value, scriptIndex);
+    window.Scriptmonkey.setScriptValue(name, value, scriptIndex, apiKey);
 }
 
 function GM_addStyle(cssText)
@@ -48,12 +49,12 @@ function GM_setClipboard(data)
 
 function GM_getResourceText(name)
 {
-    window.Scriptmonkey.getScriptResourceText(name, scriptIndex);
+    window.Scriptmonkey.getScriptResourceText(name, scriptIndex, apiKey);
 }
 
 function GM_getResourceURL(name)
 {
-    window.Scriptmonkey.getScriptResourceUrl(name, scriptIndex);
+    window.Scriptmonkey.getScriptResourceUrl(name, scriptIndex, apiKey);
 }
 
 function GM_registerMenuCommand(caption, func, key)
@@ -63,7 +64,7 @@ function GM_registerMenuCommand(caption, func, key)
 
 function GM_xmlhttpRequest(details)
 {
-    var response = window.Scriptmonkey.xmlHttpRequest(JSON.stringify(details));
+    var response = window.Scriptmonkey.xmlHttpRequest(JSON.stringify(details), scriptIndex, apiKey);
     if (details.onload)
         details.onload(JSON.parse(response));
 }
