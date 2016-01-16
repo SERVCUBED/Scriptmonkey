@@ -482,9 +482,11 @@ namespace BHOUserScript
             }
             else
             {
-                // No site. Remove handler
+                // No site. Remove handlers
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete -=
                     new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -=
+                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(this.BeforeNavigate);
                 if (_prefs.Settings.RunOnPageRefresh)
                 {
                     ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 -= NavigateComplete2;
