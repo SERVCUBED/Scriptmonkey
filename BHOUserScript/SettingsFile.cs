@@ -23,5 +23,7 @@ namespace BHOUserScript
         public bool RefreshOnSave = true;
 
         public bool RunOnPageRefresh = false;
+
+        public bool AutoDownloadScripts = true;
     }
 }

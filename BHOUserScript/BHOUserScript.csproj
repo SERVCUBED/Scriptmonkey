@@ -148,6 +148,7 @@
       <DependentUpon>UpdateBHOFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="UpdateResponse.cs" />
+    <Compile Include="XmlHttpRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Wrapper.js" />

@@ -58,7 +58,8 @@ namespace BHOUserScript
         "function GM_openInTab(e){window.open(e)}function GM_log(e){console.log(\"Scriptmonkey: \"+e)}function GM_setClipboard(e){" +
         "window.Scriptmonkey.setClipboard(e)}function GM_getResourceText(e){window.Scriptmonkey.getScriptResourceText(e,scriptIndex)}" +
         "function GM_getResourceURL(e){window.Scriptmonkey.getScriptResourceUrl(e,scriptIndex)}scriptIndex=";
-        private readonly string wrapperJS_after = ",unsafeWindow=window;";
+        private readonly string wrapperJS_after = ",unsafeWindow=window;function GM_xmlhttpRequest(t){var n=window.Scriptmonkey.xmlHttpRequest(JSON.stringify(t));t.onload(JSON.parse(n))}" + 
+            "function GM_registerMenuCommand(caption, func, key){}";
         private object currentURL;
         private bool refresh = false;
         private bool normalLoad = true;
@@ -170,28 +171,6 @@ namespace BHOUserScript
 
                     if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
                         ShowOptions();
-                    // Check if user wants to install script
-                    else if (document2.url.Contains(".user.js"))
-                    {
-                        AddScriptUrlFrm form = new AddScriptUrlFrm();
-                        if (form.ShowDialog() == DialogResult.OK) // Automatically
-                        {
-                            try
-                            {
-                                WebClient webClient = new WebClient();
-                                webClient.DownloadFile(document2.url, ScriptPath
-                                    + document2.url.Substring(document2.url.LastIndexOf('/') + 1));
-                                Script s = ParseScriptMetadata.Parse(document2.url.Substring(document2.url.LastIndexOf('/')));
-                                s.Path = document2.url.Substring(document2.url.LastIndexOf('/') + 1);
-                                _prefs.AddScript(s);
-                            }
-                            catch (Exception ex)
-                            {
-                                Log(ex, Resources.AutomaticAddFailError + ":AutoAdd");
-                            }
-                        }
-                        form.Dispose();
-                    }
 
                     for (int i = 0; i < _prefs.AllScripts.Count; i++)
                     {
@@ -256,6 +235,37 @@ namespace BHOUserScript
             {
                 Log(ex, "SetupWindow");
             }
+        }
+
+        /// <summary>
+        /// Ask user if they want to install a script
+        /// </summary>
+        /// <param name="URL">The URL of the script to download</param>
+        /// <returns>True if script install attempted</returns>
+        private bool AskInstallScript(string URL)
+        {
+            AddScriptUrlFrm form = new AddScriptUrlFrm();
+            if (form.ShowDialog() == DialogResult.OK) // Automatically
+            {
+                try
+                {
+                    string url = Scriptmonkey.GenerateScriptPrefix() + URL.Substring(URL.LastIndexOf('/') + 1);
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile(URL, ScriptPath
+                        + url);
+                    webClient.Dispose();
+                    Script s = ParseScriptMetadata.Parse(url);
+                    s.Path = url;
+                    _prefs.AddScript(s);
+                }
+                catch (Exception ex)
+                {
+                    Log(ex, Resources.AutomaticAddFailError + ":AutoAdd");
+                }
+                return true;
+            }
+            form.Dispose();
+            return false;
         }
 
         /// <summary>
@@ -405,6 +415,17 @@ namespace BHOUserScript
             }
 
         }
+
+        /// <summary>
+        /// Generate a random number to use as a script prefix and avoid duplicate installs
+        /// </summary>
+        /// <returns>A random number from 0 to 100,000</returns>
+        public static string GenerateScriptPrefix()
+        {
+            Random r = new Random();
+            return (char)(r.Next(97, 122)) + Convert.ToString(r.Next(100000));
+        }
+
         #endregion
 
         [Guid("6D5140C1-7436-11CE-8034-00AA006009FA")]
@@ -443,6 +464,9 @@ namespace BHOUserScript
 
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete +=
                     new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 += 
+                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(this.BeforeNavigate);
+
                 if (_prefs.Settings.RunOnPageRefresh)
                 {
                     ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 += NavigateComplete2;
@@ -462,6 +486,12 @@ namespace BHOUserScript
                 _browser = null;
             }
             return 0;
+        }
+
+        private void BeforeNavigate(object pDisp, ref object URL, ref object Flags, ref object TargetFrameName, ref object PostData, ref object Headers, ref bool Cancel)
+        {
+            if (_prefs.Settings.AutoDownloadScripts && URL.ToString().Contains(".user.js"))
+                Cancel = AskInstallScript(URL.ToString());
         }
 
         void NavigateComplete2(object pDisp, ref object URL)
@@ -788,6 +818,96 @@ namespace BHOUserScript
 	        {
                 return null;
 	        }
+        }
+
+        /// <summary>
+        /// GM_xmlhttpRequest
+        /// </summary>
+        /// <param name="details">JSON serialised XmlHttpRequestDetails</param>
+        /// <returns>JSON serialised XmlHttpRequestResponse</returns>
+        public string xmlHttpRequest(string details)
+        {
+            WebClient webClient = new WebClient();
+            XmlHttpRequestResponse response = new XmlHttpRequestResponse();
+
+            try
+            {
+                XmlHttpRequestDetails vars = JsonConvert.DeserializeObject<XmlHttpRequestDetails>(details);
+
+                if (vars.headers != null)
+                {
+                    foreach (KeyValuePair<string, string> header in vars.headers)
+                    {
+                        webClient.Headers.Add(header.Key + ": " + header.Value);
+                    }
+                }
+
+                if (vars.method == "GET")
+                    response.responseText = webClient.DownloadString(vars.url);
+                else if (vars.method == "POST")
+                {
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    response.responseText = webClient.UploadString(vars.url, vars.data);
+                }
+                else // Unsupported method
+                {
+                    response.statusText = "Unsupported method";
+                }
+                
+                response.readyState = 4;
+                GetStatusDetails(webClient, out response.statusText, out response.status);
+
+                response.finalUrl = webClient.ResponseHeaders[HttpResponseHeader.Location];
+                if (response.finalUrl == null)
+                    response.finalUrl = vars.url;
+
+                response.responseHeaders = new string[webClient.ResponseHeaders.Count];
+                var resKeys = webClient.ResponseHeaders.Keys;
+                for (int i = 0; i < webClient.ResponseHeaders.Count; i++)
+                {
+                    response.responseHeaders[i] = resKeys[i] + ":" + webClient.ResponseHeaders[i];
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                if (!(ex is WebException))
+                    Log(ex, "xmlHttpRequest: Error downloading file");
+                response.responseText = ex.Message;
+                GetStatusDetails(webClient, out response.statusText, out response.status);
+            }
+
+            webClient.Dispose();
+            return JsonConvert.SerializeObject(response);
+        }
+
+        /// <summary>
+        /// Gets the status information of a WebClient.
+        /// </summary>
+        /// <param name="client">The WebClient object</param>
+        /// <param name="statusDescription">Status description</param>
+        /// <param name="statusCode">The HTTP status code</param>
+        /// <returns></returns>
+        private static int GetStatusDetails(WebClient client, out string statusDescription, out int statusCode)
+        {
+            FieldInfo responseField = client.GetType().GetField("m_WebResponse", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (responseField != null)
+            {
+                HttpWebResponse response = responseField.GetValue(client) as HttpWebResponse;
+
+                if (response != null)
+                {
+                    statusDescription = response.StatusCode.ToString() + response.StatusDescription;
+                    statusCode = Convert.ToInt32(response.StatusCode);
+                    return (int)response.StatusCode;
+                }
+            }
+
+            statusDescription = null;
+            statusCode = 400;
+            return 0;
         }
 
         /// <summary>

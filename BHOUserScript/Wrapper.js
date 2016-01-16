@@ -48,10 +48,21 @@ function GM_setClipboard(data)
 
 function GM_getResourceText(name)
 {
-	window.Scriptmonkey.getScriptResourceText(name, scriptIndex);
+    window.Scriptmonkey.getScriptResourceText(name, scriptIndex);
 }
 
 function GM_getResourceURL(name)
 {
-	window.Scriptmonkey.getScriptResourceUrl(name, scriptIndex);
+    window.Scriptmonkey.getScriptResourceUrl(name, scriptIndex);
+}
+
+function GM_registerMenuCommand(caption, func, key)
+{
+    //TODO: Implement this.
+}
+
+function GM_xmlhttpRequest(details)
+{
+    var response = window.Scriptmonkey.xmlHttpRequest(JSON.stringify(details));
+    details.onload(JSON.parse(response));
 }

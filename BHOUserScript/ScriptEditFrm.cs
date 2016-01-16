@@ -113,12 +113,14 @@ namespace BHOUserScript
                 if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
                     File.Delete(Scriptmonkey.ScriptPath + fileTxt.Text);
 
+                string prefix = Scriptmonkey.GenerateScriptPrefix();
+
                 if (form.FromFile)
                 {
                     try
                     {
-                        File.Copy(form.Url, Scriptmonkey.ScriptPath + form.openFileDialog1.SafeFileName);
-                        fileTxt.Text = form.openFileDialog1.SafeFileName;
+                        File.Copy(form.Url, Scriptmonkey.ScriptPath + prefix + form.openFileDialog1.SafeFileName);
+                        fileTxt.Text = prefix + form.openFileDialog1.SafeFileName;
                         LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
                     }
                     catch (Exception ex)
@@ -132,8 +134,8 @@ namespace BHOUserScript
                     {
                         var webClient = new WebClient();
                         var f_ = WebUtility.HtmlDecode(form.Url);
-                        webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + f_.Substring(f_.LastIndexOf('/')));
-                        fileTxt.Text = f_.Substring(f_.LastIndexOf('/'));
+                        webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + prefix + f_.Substring(f_.LastIndexOf('/')));
+                        fileTxt.Text = prefix + f_.Substring(f_.LastIndexOf('/'));
                         LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
                     }
                     catch (Exception ex)

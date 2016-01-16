@@ -21,6 +21,8 @@ namespace BHOUserScript
 
         string getScriptResourceUrl(string resourceName, int scriptIndex);
 
+        string xmlHttpRequest(string details);
+
         string getVersion();
 
         int getScriptCount();
