@@ -461,6 +461,9 @@ namespace BHOUserScript
             normalLoad = true;
             refresh = false;
 
+            if (!Application.RenderWithVisualStyles)
+                Application.EnableVisualStyles();
+
             if (site != null)
             {
                 var serviceProv = (IServiceProvider)this._site;

@@ -5,9 +5,9 @@ namespace BHOUserScript
 {
     class XmlHttpRequestDetails
     {
-        public string url;
+        public string url = null;
 
-        public string method;
+        public string method = null;
 
         public string data = null;
 
