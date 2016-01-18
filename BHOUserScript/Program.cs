@@ -12,7 +12,6 @@ using SHDocVw;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices.Expando;
-using System.Security.Permissions;
 using System.Collections.Generic;
 
 /**
@@ -29,7 +28,7 @@ using System.Collections.Generic;
  * 
  * Original Author: Ben Blain (mail[at]servc.eu)
  * 
- * See the todo list on GitHub if you would like to contribute.
+ * See the issues list on GitHub if you would like to contribute.
  *       
  */
 
@@ -85,6 +84,9 @@ namespace BHOUserScript
                     SettingsFile s = new SettingsFile();
                     s.BhoCreatedVersion = CurrentVersion();
                     s.LastUpdateCheckDate = DateTime.Now;
+
+                    if (File.Exists(SettingsFile))
+                        File.Delete(SettingsFile);
 
                     jsonDb.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
                     MessageBox.Show(Resources.FirstTimeSetupDone, Resources.Title);
@@ -708,7 +710,9 @@ namespace BHOUserScript
 
             try
             {
-                return _prefs[scriptIndex].SavedValues[name];
+                string o;
+                if (_prefs[scriptIndex].SavedValues.TryGetValue(name, out o))
+                    return o;
             }
             catch (Exception ex)
             {
@@ -771,10 +775,10 @@ namespace BHOUserScript
         /// <summary>
         /// GM_setClipboard
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">Clipboard data</param>
         public void setClipboard(object data)
         {
-            System.Windows.Forms.Clipboard.SetDataObject(data);
+            Clipboard.SetDataObject(data);
         }
 
         /// <summary>
@@ -963,6 +967,12 @@ namespace BHOUserScript
         /// </summary>
         public void showOptions() { ShowOptions(); }
 
+        /// <summary>
+        /// Checks if the provided access key is valid and supplied scriptIndex is in range.
+        /// </summary>
+        /// <param name="scriptIndex">The 0-based index of the script (Defines which script the API operation applies to)</param>
+        /// <param name="apiKey">The API key of the script.</param>
+        /// <returns>True if the API key is valid and scriptIndex is in range. False to abort API operation.</returns>
         private bool CheckScriptApiKey(int scriptIndex, string apiKey)
         {
             if (_prefs.Settings.UsePublicAPI && apiKey == "public")
