@@ -126,7 +126,7 @@ namespace BHOUserScript
             try
             {
 
-                if (pDisp != this._site)
+                if (pDisp != _site)
                     return;
 
                 if (_prefs == null)
@@ -457,7 +457,7 @@ namespace BHOUserScript
                 CheckUpdate();
             }
 
-            this._site = site;
+            _site = site;
             normalLoad = true;
             refresh = false;
 
@@ -466,7 +466,7 @@ namespace BHOUserScript
 
             if (site != null)
             {
-                var serviceProv = (IServiceProvider)this._site;
+                var serviceProv = (IServiceProvider)_site;
                 var guidIWebBrowserApp = Marshal.GenerateGuidForType(typeof(IWebBrowserApp));
                 var guidIWebBrowser2 = Marshal.GenerateGuidForType(typeof(IWebBrowser2));
                 IntPtr intPtr;
@@ -475,9 +475,9 @@ namespace BHOUserScript
                 _browser = (IWebBrowser2)Marshal.GetObjectForIUnknown(intPtr);
 
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete +=
-                    new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                    new DWebBrowserEvents2_DocumentCompleteEventHandler(Run);
                 ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 += 
-                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(this.BeforeNavigate);
+                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(BeforeNavigate);
 
                 if (_prefs.Settings.RunOnPageRefresh)
                 {
@@ -489,9 +489,9 @@ namespace BHOUserScript
             {
                 // No site. Remove handlers
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete -=
-                    new DWebBrowserEvents2_DocumentCompleteEventHandler(this.Run);
+                    new DWebBrowserEvents2_DocumentCompleteEventHandler(Run);
                 ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -=
-                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(this.BeforeNavigate);
+                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(BeforeNavigate);
                 if (_prefs.Settings.RunOnPageRefresh)
                 {
                     ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 -= NavigateComplete2;
@@ -504,6 +504,9 @@ namespace BHOUserScript
 
         private void BeforeNavigate(object pDisp, ref object URL, ref object Flags, ref object TargetFrameName, ref object PostData, ref object Headers, ref bool Cancel)
         {
+            if (pDisp != _site)
+                return;
+
             if (_prefs.Settings.AutoDownloadScripts && URL.ToString().Contains(".user.js"))
                 Cancel = AskInstallScript(URL.ToString());
         }
@@ -890,7 +893,10 @@ namespace BHOUserScript
                 {
                     response.statusText = "Unsupported method";
                 }
-                
+
+                if (response.responseText == null)
+                    response.responseText = String.Empty;
+
                 response.readyState = 4;
                 GetStatusDetails(webClient, out response.statusText, out response.status);
 

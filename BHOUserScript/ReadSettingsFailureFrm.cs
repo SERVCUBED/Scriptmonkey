@@ -29,7 +29,7 @@ namespace BHOUserScript
         {
             linkLabel1.Visible = false;
             errorTxt.Visible = true;
-            this.Height += errorTxt.Height;
+            Height += errorTxt.Height;
         }
     }
 }

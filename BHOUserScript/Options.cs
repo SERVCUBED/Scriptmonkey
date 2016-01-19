@@ -56,7 +56,7 @@ namespace BHOUserScript
                 {
                     EditedScript = Prefs.AllScripts[listBox1.SelectedIndex],
                     EditPath = _editPath,
-                    Prefs = this.Prefs
+                    Prefs = Prefs
                 };
                 sw.LoadFromEditedScript();
                 if (sw.ShowDialog() == DialogResult.OK)
@@ -72,7 +72,7 @@ namespace BHOUserScript
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            var sw = new ScriptEditFrm(false) {EditPath = _editPath, Prefs = this.Prefs};
+            var sw = new ScriptEditFrm(false) {EditPath = _editPath, Prefs = Prefs };
             if (sw.ShowDialog() == DialogResult.OK)
             {
                 Prefs.AllScripts.Add(sw.EditedScript);
