@@ -12,7 +12,7 @@ namespace BHOUserScript
     /// </summary>
     public class Db
     {
-        readonly Scriptmonkey _main;
+        private readonly Scriptmonkey _main;
 
         public Db(Scriptmonkey scr)
         {
@@ -44,7 +44,7 @@ namespace BHOUserScript
             try
             {
                 //string data = str.ReadToEnd();
-                string data = ReadFile(Scriptmonkey.SettingsFile);
+                var data = ReadFile(Scriptmonkey.SettingsFile);
                 Settings = JsonConvert.DeserializeObject<SettingsFile>(data);
             }
             catch (Exception ex)
@@ -173,7 +173,7 @@ namespace BHOUserScript
             }
         }
 
-        private string ReadFile(string url)
+        private static string ReadFile(string url)
         {
             using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
             {

@@ -49,10 +49,10 @@ namespace BHOUserScript
         IWebBrowser2 _browser;
         private object _site;
         private bool _installChecked;
-        private object currentURL;
-        private bool refresh = false;
-        private bool normalLoad = true;
-        private string[] apiKeys = null;
+        private object _currentUrl;
+        private bool _refresh = false;
+        private bool _normalLoad = true;
+        private string[] _apiKeys = null;
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -81,9 +81,11 @@ namespace BHOUserScript
                     Directory.CreateDirectory(ResourcePath);
                     File.Create(InstalledFile).Dispose();
 
-                    SettingsFile s = new SettingsFile();
-                    s.BhoCreatedVersion = CurrentVersion();
-                    s.LastUpdateCheckDate = DateTime.Now;
+                    SettingsFile s = new SettingsFile
+                    {
+                        BhoCreatedVersion = CurrentVersion(),
+                        LastUpdateCheckDate = DateTime.Now
+                    };
 
                     if (File.Exists(SettingsFile))
                         File.Delete(SettingsFile);
@@ -115,7 +117,7 @@ namespace BHOUserScript
         /// <param name="url">Current URL</param>
         void Run(object pDisp, ref object url) // OnDocumentComplete handler
         {
-            currentURL = url;
+            _currentUrl = url;
 
             if ((_browser.Document as IHTMLDocument2) == null) // Prevents run from Windows Explorer
                 return;
@@ -132,9 +134,9 @@ namespace BHOUserScript
                 if (_prefs == null)
                     _prefs = new Db(this);
 
-                refresh = true;
+                _refresh = true;
                 if (_prefs.Settings.RunOnPageRefresh)
-                    normalLoad = false;
+                    _normalLoad = false;
 
                 if (_prefs.AllScripts.Count > 10) // Lots of scripts?
                     _prefs.ReloadDataAsync(); // Reload asynchronously to prevent browser becoming unresponsive
@@ -144,23 +146,25 @@ namespace BHOUserScript
                 if (_prefs.Settings.Enabled)
                 {
                     // Set up API keys with random length for each script
-                    if (apiKeys == null)
+                    if (_apiKeys == null)
                     {
-                        apiKeys = new string[_prefs.AllScripts.Count];
+                        _apiKeys = new string[_prefs.AllScripts.Count];
                         Random r = new Random();
-                        for (int i = 0; i < apiKeys.Length; i++)
+                        for (int i = 0; i < _apiKeys.Length; i++)
                         {
                             StringBuilder sb = new StringBuilder();
                             for (int f = 0; f < r.Next(5,20); f++)
                             {
                                 sb.Append(Convert.ToChar(r.Next(97,122)));
                             }
-                            apiKeys[i] = sb.ToString();
+                            _apiKeys[i] = sb.ToString();
                         }
                     }
 
                     var document2 = _browser.Document as HTMLDocument;
                     //var document3 = browser.Document as IHTMLDocument3;
+
+                    if (document2 == null) return;
 
                     var window = document2.parentWindow;
 
@@ -170,12 +174,13 @@ namespace BHOUserScript
                         try
                         {
                             // Tell webpage Scriptmonkey is installed
-                            var v = Scriptmonkey.CurrentVersion();
-                            window.execScript(String.Format("ld_Scriptmonkey_Installed({0},{1},{2},{3});", v.Major, v.Minor, v.Revision, _prefs.AllScripts.Count));
+                            var v = CurrentVersion();
+                            window.execScript(
+                                $"ld_Scriptmonkey_Installed({v.Major},{v.Minor},{v.Revision},{_prefs.AllScripts.Count});");
                         }
                         catch (Exception ex)
                         {
-                            Log(ex, "\r\nUnable to inject JavaScript into webpage");
+                            Log(ex, "Unable to inject JavaScript into webpage");
                         }
 
                     if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
@@ -183,47 +188,34 @@ namespace BHOUserScript
 
                     for (int i = 0; i < _prefs.AllScripts.Count; i++)
                     {
-                        if (_prefs[i].Enabled)
+                        if (!_prefs[i].Enabled) continue;
+
+                        var shouldRun = true;
+                        if (_prefs[i].Include.Length > 0)
+                            shouldRun = Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Include));
+
+                        if (shouldRun && _prefs[i].Exclude.Length > 0)
+                            shouldRun = !Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Exclude));
+
+                        if (!shouldRun) continue;
+
+                        var str = new StreamReader(ScriptPath + _prefs[i].Path);
+                        try
                         {
-                            bool shouldRun = true;
-                            if (_prefs[i].Include.Length > 0)
-                            {
-                                shouldRun = false; // Default to false
-                                if (Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Include)))
-                                {
-                                    shouldRun = true;
-                                }
-                            }
-
-                            if (_prefs[i].Exclude.Length > 0)
-                            {
-                                if (Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Exclude)))
-                                {
-                                    shouldRun = false;
-                                }
-                            }
-
-                            if (shouldRun)
-                            {
-                                StreamReader str = new StreamReader(ScriptPath + _prefs[i].Path);
-                                try
-                                {
-                                    string c = str.ReadToEnd();
-                                    window.execScript("(function(){" + Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + apiKeys[i] + Resources.WrapperJS_After + c + "})();");
-                                }
-                                catch (Exception ex) {
-                                    window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
-                                    Log(ex, "\r\nAt script: " + _prefs[i].Name);
-                                }
-                                str.Close();
-                            }
+                            var c = str.ReadToEnd();
+                            window.execScript("(function(){" + Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] + Resources.WrapperJS_After + c + "})();");
                         }
+                        catch (Exception ex) {
+                            window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
+                            Log(ex, "At script: " + _prefs[i].Name);
+                        }
+                        str.Close();
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log(ex, "\r\nAt: main");
+                Log(ex, "At: main");
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
@@ -232,12 +224,12 @@ namespace BHOUserScript
         /// Exposes the IExtension interface to the browser window.
         /// </summary>
         /// <param name="window"></param>
-        public void SetupWindow(dynamic window)
+        private void SetupWindow(dynamic window)
         {
             try
             {
-                IExpando exp = (IExpando)window;
-                PropertyInfo info = exp.AddProperty("Scriptmonkey");
+                var exp = (IExpando)window;
+                var info = exp.AddProperty("Scriptmonkey");
                 info.SetValue(exp, this);
             }
             catch (Exception ex)
@@ -258,12 +250,12 @@ namespace BHOUserScript
             {
                 try
                 {
-                    string url = Scriptmonkey.GenerateScriptPrefix() + URL.Substring(URL.LastIndexOf('/') + 1);
+                    string url = GenerateScriptPrefix() + URL.Substring(URL.LastIndexOf('/') + 1);
                     WebClient webClient = new WebClient();
                     webClient.DownloadFile(URL, ScriptPath
                         + url);
                     webClient.Dispose();
-                    Script s = ParseScriptMetadata.Parse(url);
+                    var s = ParseScriptMetadata.Parse(url);
                     s.Path = url;
                     _prefs.AddScript(s);
                 }
@@ -292,19 +284,16 @@ namespace BHOUserScript
         /// Gets the current path of the assembly.
         /// </summary>
         /// <returns>Assembly Path</returns>
-        public static string AssemblyPath()
-        {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
-        }
+        private static string AssemblyPath() => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
 
         /// <summary>
         /// Convert a string array of @match values into Regex.
         /// </summary>
         /// <param name="pattern"></param>
         /// <returns>Regex pattern</returns>
-        public static string WildcardToRegex(string[] pattern)
+        private static string WildcardToRegex(string[] pattern)
         {
-            string _out = String.Empty;
+            var _out = String.Empty;
             for (int i = 0; i < pattern.Length; i++)
             {
                 // Allow regex in include/match (http://wiki.greasespot.net/Include_and_exclude_rules#Regular_Expressions)
@@ -364,16 +353,14 @@ namespace BHOUserScript
                     byte[] buf = new byte[8192];
                     wr = wc.GetResponse();
                     resStream = wr.GetResponseStream();
-                    
-                    string tempString = null;
-                    int count = 0;
+
+                    var count = 0;
                     do
                     {
                         count = resStream.Read(buf, 0, buf.Length);
                         if (count != 0)
                         {
-                            tempString = Encoding.ASCII.GetString(buf, 0, count);
-                            sb.Append(tempString);
+                            sb.Append(Encoding.ASCII.GetString(buf, 0, count));
                         }
                     }
                     while (count > 0);
@@ -383,10 +370,12 @@ namespace BHOUserScript
                     if (response.Success && response.LatestVersion > CurrentVersion())
                     {
                         // Got valid response from server and there is an update. Now to ask user to update.
-                        UpdateBHOFrm form = new UpdateBHOFrm();
-                        form.currentVersionTxt.Text = CurrentVersion().ToString();
-                        form.newVersionTxt.Text = response.LatestVersion.ToString();
-                        form.textBox1.Text = response.Changes;
+                        var form = new UpdateBHOFrm
+                        {
+                            currentVersionTxt = {Text = CurrentVersion().ToString()},
+                            newVersionTxt = {Text = response.LatestVersion.ToString()},
+                            textBox1 = {Text = response.Changes}
+                        };
                         form.ShowDialog();
 
                         if (form.Response != UpdateBHOFrm.UpdateBHOFrmResponse.NextTime)
@@ -417,10 +406,8 @@ namespace BHOUserScript
                 }
                 catch (Exception) { }
 
-                if (wr != null)
-                    wr.Close();
-                if (resStream != null)
-                    resStream.Close();
+                wr?.Close();
+                resStream?.Close();
             }
 
         }
@@ -458,8 +445,8 @@ namespace BHOUserScript
             }
 
             _site = site;
-            normalLoad = true;
-            refresh = false;
+            _normalLoad = true;
+            _refresh = false;
 
             if (!Application.RenderWithVisualStyles)
                 Application.EnableVisualStyles();
@@ -474,10 +461,8 @@ namespace BHOUserScript
 
                 _browser = (IWebBrowser2)Marshal.GetObjectForIUnknown(intPtr);
 
-                ((DWebBrowserEvents2_Event)_browser).DocumentComplete +=
-                    new DWebBrowserEvents2_DocumentCompleteEventHandler(Run);
-                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 += 
-                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(BeforeNavigate);
+                ((DWebBrowserEvents2_Event)_browser).DocumentComplete += Run;
+                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 += BeforeNavigate;
 
                 if (_prefs.Settings.RunOnPageRefresh)
                 {
@@ -488,10 +473,8 @@ namespace BHOUserScript
             else
             {
                 // No site. Remove handlers
-                ((DWebBrowserEvents2_Event)_browser).DocumentComplete -=
-                    new DWebBrowserEvents2_DocumentCompleteEventHandler(Run);
-                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -=
-                    new DWebBrowserEvents2_BeforeNavigate2EventHandler(BeforeNavigate);
+                ((DWebBrowserEvents2_Event)_browser).DocumentComplete -= Run;
+                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -= BeforeNavigate;
                 if (_prefs.Settings.RunOnPageRefresh)
                 {
                     ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 -= NavigateComplete2;
@@ -515,49 +498,47 @@ namespace BHOUserScript
         {
             if (pDisp != null)
                 _browser = (IWebBrowser2)pDisp;
-            currentURL = URL;
+            _currentUrl = URL;
         }
 
         private void RefreshHandler(IHTMLEventObj e)
         {
             // Refresh event caught in here.
-            if (refresh)
+            if (_refresh)
             {
                 try
                 {
-                    Run(_browser, ref currentURL);
+                    Run(_browser, ref _currentUrl);
                 }
                 catch (Exception) { }
             }
-            refresh = true;
+            _refresh = true;
 
         }
 
         private void DownloadComplete()
         {
             HTMLDocument doc = _browser.Document as HTMLDocument;
-            if (doc != null && !normalLoad)
-            {
-                IHTMLWindow2 tmpWindow = doc.parentWindow;
-                if (tmpWindow != null)
-                {
-                    HTMLWindowEvents2_Event events = (tmpWindow as HTMLWindowEvents2_Event);
-                    try
-                    {
-                        if (events != null)
-                        {
-                            events.onload -= new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
-                        }
-                    }
-                    catch (Exception) { }
+            if (doc == null || _normalLoad) return;
 
-                    try
-                    {
-                        events.onload += new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
-                    }
-                    catch (Exception) { }
+            IHTMLWindow2 tmpWindow = doc.parentWindow;
+            if (tmpWindow == null) return;
+
+            HTMLWindowEvents2_Event events = (tmpWindow as HTMLWindowEvents2_Event);
+            try
+            {
+                if (events != null)
+                {
+                    events.onload -= new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
                 }
             }
+            catch (Exception) { }
+
+            try
+            {
+                events.onload += new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
+            }
+            catch (Exception) { }
         }
 
         int IObjectWithSite.GetSite(ref Guid guid, out IntPtr ppvSite)
@@ -593,8 +574,9 @@ namespace BHOUserScript
         #endregion
 
         #region Registering with regasm
-        public static string RegBho = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
-        public static string RegCmd = "Software\\Microsoft\\Internet Explorer\\Extensions";
+
+        private static string RegBho = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
+        private static string RegCmd = "Software\\Microsoft\\Internet Explorer\\Extensions";
 
         [ComRegisterFunction]
         public static void RegisterBho(Type type)
@@ -603,12 +585,9 @@ namespace BHOUserScript
 
             // BHO
             {
-                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegBho, true);
-                if (registryKey == null)
-                    registryKey = Registry.LocalMachine.CreateSubKey(RegBho);
-                RegistryKey key = registryKey.OpenSubKey(guid);
-                if (key == null)
-                    key = registryKey.CreateSubKey(guid);
+                var registryKey = Registry.LocalMachine.OpenSubKey(RegBho, true) ??
+                                  Registry.LocalMachine.CreateSubKey(RegBho);
+                var key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
                 key.SetValue("NoExplorer", 1);
                 registryKey.Close();
                 key.Close();
@@ -618,18 +597,20 @@ namespace BHOUserScript
             {
                 RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegCmd, true) ??
                                           Registry.LocalMachine.CreateSubKey(RegCmd);
-                RegistryKey key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
-                key.SetValue("ButtonText", "Manage Userscripts");
-                key.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
-                key.SetValue("ClsidExtension", guid);
-                key.SetValue("Icon", AssemblyPath() + ",1");
-                key.SetValue("HotIcon", AssemblyPath() + ",1");
-                key.SetValue("Default Visible", "Yes");
-                key.SetValue("MenuText", "&Manage Userscripts");
-                key.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");
-                //key.SetValue("KeyPath", "no");
-                registryKey.Close();
-                key.Close();
+                if (registryKey != null) {
+                    var key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
+                    key.SetValue("ButtonText", "Manage Userscripts");
+                    key.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
+                    key.SetValue("ClsidExtension", guid);
+                    key.SetValue("Icon", AssemblyPath() + ",1");
+                    key.SetValue("HotIcon", AssemblyPath() + ",1");
+                    key.SetValue("Default Visible", "Yes");
+                    key.SetValue("MenuText", "&Manage Userscripts");
+                    key.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");
+                    //key.SetValue("KeyPath", "no");
+                    registryKey.Close();
+                    key.Close();
+                }
             }
         }
 
@@ -640,14 +621,12 @@ namespace BHOUserScript
             // BHO
             {
                 RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegBho, true);
-                if (registryKey != null)
-                    registryKey.DeleteSubKey(guid, false);
+                registryKey?.DeleteSubKey(guid, false);
             }
             // Command
             {
                 RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegCmd, true);
-                if (registryKey != null)
-                    registryKey.DeleteSubKey(guid, false);
+                registryKey?.DeleteSubKey(guid, false);
             }
         }
         #endregion
@@ -684,6 +663,7 @@ namespace BHOUserScript
         /// <param name="name">Name</param>
         /// <param name="value">Value</param>
         /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         public void setScriptValue(string name, string value, int scriptIndex, string apiKey)
         {
             if (!CheckScriptApiKey(scriptIndex, apiKey))
@@ -708,6 +688,7 @@ namespace BHOUserScript
         /// <param name="name">Name</param>
         /// <param name="defaultValue">Value to return if not set.</param>
         /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         /// <returns></returns>
         public string getScriptValue(string name, string defaultValue, int scriptIndex, string apiKey)
         {
@@ -732,6 +713,7 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="name">Name of value to delete</param>
         /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         public void deleteScriptValue(string name, int scriptIndex, string apiKey)
         {
             if (!CheckScriptApiKey(scriptIndex, apiKey))
@@ -752,6 +734,7 @@ namespace BHOUserScript
         /// GM_listValues
         /// </summary>
         /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         /// <returns>A comma-separated list of stored value names</returns>
         public string getScriptValuesList(int scriptIndex, string apiKey)
         {
@@ -792,6 +775,7 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="resourceName">Name of the resource defined in @resource</param>
         /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         /// <returns>Contents of the resource</returns>
         public string getScriptResourceText(string resourceName, int scriptIndex, string apiKey)
         {
@@ -841,6 +825,7 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="resourceName">Name of the resource defined in @resource</param>
         /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         /// <returns>The URL of the resource</returns>
         public string getScriptResourceUrl(string resourceName, int scriptIndex, string apiKey)
         {
@@ -861,6 +846,8 @@ namespace BHOUserScript
         /// GM_xmlhttpRequest
         /// </summary>
         /// <param name="details">JSON serialised XmlHttpRequestDetails</param>
+        /// <param name="scriptIndex">Index of script</param>
+        /// <param name="apiKey">The API key for the specified script.</param>
         /// <returns>JSON serialised XmlHttpRequestResponse</returns>
         public string xmlHttpRequest(string details, int scriptIndex, string apiKey)
         {
@@ -934,18 +921,15 @@ namespace BHOUserScript
         /// <returns></returns>
         private static int GetStatusDetails(WebClient client, out string statusDescription, out int statusCode)
         {
-            FieldInfo responseField = client.GetType().GetField("m_WebResponse", BindingFlags.Instance | BindingFlags.NonPublic);
+            var responseField = client.GetType().GetField("m_WebResponse", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            if (responseField != null)
+            var response = responseField?.GetValue(client) as HttpWebResponse;
+
+            if (response != null)
             {
-                HttpWebResponse response = responseField.GetValue(client) as HttpWebResponse;
-
-                if (response != null)
-                {
-                    statusDescription = response.StatusCode.ToString() + response.StatusDescription;
-                    statusCode = Convert.ToInt32(response.StatusCode);
-                    return (int)response.StatusCode;
-                }
+                statusDescription = response.StatusCode + response.StatusDescription;
+                statusCode = Convert.ToInt32(response.StatusCode);
+                return (int)response.StatusCode;
             }
 
             statusDescription = null;
@@ -988,10 +972,10 @@ namespace BHOUserScript
                 return true;
 
             // Check the scriptIndex isn't out of range
-            if (scriptIndex >= apiKeys.Length)
+            if (scriptIndex >= _apiKeys.Length)
                 return false;
 
-            return apiKeys[scriptIndex] == apiKey;
+            return _apiKeys[scriptIndex] == apiKey;
         }
         #endregion
     }
