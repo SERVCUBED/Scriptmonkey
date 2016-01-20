@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace BHOUserScript
 {
-    class XmlHttpRequestDetails
+    internal class XmlHttpRequestDetails
     {
         [JsonProperty(PropertyName = "url")]
         public string Url = null;
@@ -25,7 +25,7 @@ namespace BHOUserScript
         public string Password = null;
     }
 
-    class XmlHttpRequestResponse
+    internal class XmlHttpRequestResponse
     {
         [JsonProperty(PropertyName = "readyState")]
         public int ReadyState = 0;

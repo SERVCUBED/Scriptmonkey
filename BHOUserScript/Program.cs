@@ -869,7 +869,7 @@ namespace BHOUserScript
                     }
                 }
 
-                if (vars.Method == "GET")
+                if (vars.Method == "GET" || vars.Method == "HEAD")
                     response.ResponseText = webClient.DownloadString(vars.Url);
                 else if (vars.Method == "POST")
                 {
