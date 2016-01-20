@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -89,17 +91,18 @@ namespace BHOUserScript
 
         public void Save()
         {
-            var stw = new StreamWriter(Scriptmonkey.SettingsFile);
+            //var stw = new StreamWriter(Scriptmonkey.SettingsFile);
             try
             {
                 var data = JsonConvert.SerializeObject(Settings);
-                stw.Write(data);
+                //stw.Write(data);
+                WriteFile(Scriptmonkey.SettingsFile, data);
             }
             catch (Exception ex)
             {
                 Scriptmonkey.Log(ex, "Unable to save");
             }
-            stw.Close();
+            //stw.Close();
         }
 
         public void AddScript(Script add)
@@ -182,9 +185,19 @@ namespace BHOUserScript
 
                 var numBytes = str.Read(fileBytes, 0, maxFileSize);
 
-                var utf7 = new System.Text.UTF7Encoding();
+                var utf8 = new UTF8Encoding();
 
-                return utf7.GetString(fileBytes, 0, numBytes);
+                return utf8.GetString(fileBytes, 0, numBytes);
+            }
+        }
+
+        private static void WriteFile(string url, string contents)
+        {
+            using (var str = new FileStream(url, FileMode.Open, FileAccess.Write, FileShare.Write))
+            {
+                var fileBytes = Encoding.ASCII.GetBytes(contents);
+                
+                str.Write(fileBytes, 0, fileBytes.Length);
             }
         }
     }
