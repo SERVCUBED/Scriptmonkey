@@ -40,17 +40,18 @@ namespace BHOUserScript
 
         public void ReloadData()
         {
-            StreamReader str = new StreamReader(Scriptmonkey.SettingsFile);
+            //StreamReader str = new StreamReader(Scriptmonkey.SettingsFile);
             try
             {
-                string data = str.ReadToEnd();
+                //string data = str.ReadToEnd();
+                string data = ReadFile(Scriptmonkey.SettingsFile);
                 Settings = JsonConvert.DeserializeObject<SettingsFile>(data);
             }
             catch (Exception ex)
             {
                 Reset(ex);
             }
-            str.Close();
+            //str.Close();
         }
 
         public void Reset(Exception ex)
@@ -169,6 +170,21 @@ namespace BHOUserScript
                 // Finished upgrading settings file. Now to update stored version
                 Settings.BhoCreatedVersion = v;
                 Save();
+            }
+        }
+
+        private string ReadFile(string url)
+        {
+            using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                const int maxFileSize = 20 * 1024 * 1024;
+                var fileBytes = new byte[maxFileSize];
+
+                var numBytes = str.Read(fileBytes, 0, maxFileSize);
+
+                var utf7 = new System.Text.UTF7Encoding();
+
+                return utf7.GetString(fileBytes, 0, numBytes);
             }
         }
     }
