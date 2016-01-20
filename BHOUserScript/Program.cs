@@ -861,41 +861,41 @@ namespace BHOUserScript
             {
                 XmlHttpRequestDetails vars = JsonConvert.DeserializeObject<XmlHttpRequestDetails>(details);
 
-                if (vars.headers != null)
+                if (vars.Headers != null)
                 {
-                    foreach (KeyValuePair<string, string> header in vars.headers)
+                    foreach (KeyValuePair<string, string> header in vars.Headers)
                     {
                         webClient.Headers.Add(header.Key + ": " + header.Value);
                     }
                 }
 
-                if (vars.method == "GET")
-                    response.responseText = webClient.DownloadString(vars.url);
-                else if (vars.method == "POST")
+                if (vars.Method == "GET")
+                    response.ResponseText = webClient.DownloadString(vars.Url);
+                else if (vars.Method == "POST")
                 {
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    response.responseText = webClient.UploadString(vars.url, vars.data);
+                    response.ResponseText = webClient.UploadString(vars.Url, vars.Data);
                 }
                 else // Unsupported method
                 {
-                    response.statusText = "Unsupported method";
+                    response.StatusText = "Unsupported method";
                 }
 
-                if (response.responseText == null)
-                    response.responseText = String.Empty;
+                if (response.ResponseText == null)
+                    response.ResponseText = String.Empty;
 
-                response.readyState = 4;
-                GetStatusDetails(webClient, out response.statusText, out response.status);
+                response.ReadyState = 4;
+                GetStatusDetails(webClient, out response.StatusText, out response.Status);
 
-                response.finalUrl = webClient.ResponseHeaders[HttpResponseHeader.Location];
-                if (response.finalUrl == null)
-                    response.finalUrl = vars.url;
+                response.FinalUrl = webClient.ResponseHeaders[HttpResponseHeader.Location];
+                if (response.FinalUrl == null)
+                    response.FinalUrl = vars.Url;
 
-                response.responseHeaders = new string[webClient.ResponseHeaders.Count];
+                response.ResponseHeaders = new string[webClient.ResponseHeaders.Count];
                 var resKeys = webClient.ResponseHeaders.Keys;
                 for (int i = 0; i < webClient.ResponseHeaders.Count; i++)
                 {
-                    response.responseHeaders[i] = resKeys[i] + ":" + webClient.ResponseHeaders[i];
+                    response.ResponseHeaders[i] = resKeys[i] + ":" + webClient.ResponseHeaders[i];
                 }
 
             }
@@ -904,8 +904,8 @@ namespace BHOUserScript
 
                 if (!(ex is WebException))
                     Log(ex, "xmlHttpRequest: Error downloading file");
-                response.responseText = ex.Message;
-                GetStatusDetails(webClient, out response.statusText, out response.status);
+                response.ResponseText = ex.Message;
+                GetStatusDetails(webClient, out response.StatusText, out response.Status);
             }
 
             webClient.Dispose();

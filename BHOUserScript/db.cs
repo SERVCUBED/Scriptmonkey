@@ -175,14 +175,15 @@ namespace BHOUserScript
             }
         }
 
+        private const int MaxFileSize = 20 * 1024 * 1024;
+
         private static string ReadFile(string url)
         {
             using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                const int maxFileSize = 20 * 1024 * 1024;
-                var fileBytes = new byte[maxFileSize];
+                var fileBytes = new byte[MaxFileSize];
 
-                var numBytes = str.Read(fileBytes, 0, maxFileSize);
+                var numBytes = str.Read(fileBytes, 0, MaxFileSize);
 
                 var utf8 = new UTF8Encoding();
 
@@ -192,10 +193,10 @@ namespace BHOUserScript
 
         private static void WriteFile(string url, string contents)
         {
-            using (var str = new FileStream(url, FileMode.Open, FileAccess.Write, FileShare.Write))
+            using (var str = new FileStream(url, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
                 var fileBytes = Encoding.ASCII.GetBytes(contents);
-                
+
                 str.Write(fileBytes, 0, fileBytes.Length);
             }
         }

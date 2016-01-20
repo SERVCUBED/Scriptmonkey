@@ -1,35 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BHOUserScript
 {
     class XmlHttpRequestDetails
     {
-        public string url = null;
+        [JsonProperty(PropertyName = "url")]
+        public string Url = null;
 
-        public string method = null;
+        [JsonProperty(PropertyName = "method")]
+        public string Method = null;
 
-        public string data = null;
+        [JsonProperty(PropertyName = "data")]
+        public string Data = null;
 
-        public Dictionary<string, string> headers = null;
+        [JsonProperty(PropertyName = "headers")]
+        public Dictionary<string, string> Headers = null;
 
-        public string username = null;
+        [JsonProperty(PropertyName = "username")]
+        public string Username = null;
 
-        public string password = null;
+        [JsonProperty(PropertyName = "password")]
+        public string Password = null;
     }
 
     class XmlHttpRequestResponse
     {
-        public int readyState = 0;
+        [JsonProperty(PropertyName = "readyState")]
+        public int ReadyState = 0;
 
-        public string[] responseHeaders;
+        [JsonProperty(PropertyName = "responseHeaders")]
+        public string[] ResponseHeaders;
 
-        public string responseText = String.Empty;
+        [JsonProperty(PropertyName = "responseText")]
+        public string ResponseText = String.Empty;
 
-        public int status = 200;
+        [JsonProperty(PropertyName = "status")]
+        public int Status = 200;
 
-        public string statusText = String.Empty;
+        [JsonProperty(PropertyName = "statusText")]
+        public string StatusText = String.Empty;
 
-        public string finalUrl = String.Empty;
+        [JsonProperty(PropertyName = "finalUrl")]
+        public string FinalUrl = String.Empty;
     }
 }
