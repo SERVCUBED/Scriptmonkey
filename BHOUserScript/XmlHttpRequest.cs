@@ -31,7 +31,7 @@ namespace BHOUserScript
         public int ReadyState = 0;
 
         [JsonProperty(PropertyName = "responseHeaders")]
-        public string[] ResponseHeaders;
+        public string ResponseHeaders;
 
         [JsonProperty(PropertyName = "responseText")]
         public string ResponseText = String.Empty;

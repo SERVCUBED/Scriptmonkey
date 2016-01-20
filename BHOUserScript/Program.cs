@@ -887,15 +887,13 @@ namespace BHOUserScript
                 response.ReadyState = 4;
                 GetStatusDetails(webClient, out response.StatusText, out response.Status);
 
-                response.FinalUrl = webClient.ResponseHeaders[HttpResponseHeader.Location];
-                if (response.FinalUrl == null)
-                    response.FinalUrl = vars.Url;
+                response.FinalUrl = webClient.ResponseHeaders[HttpResponseHeader.Location] ?? vars.Url;
 
-                response.ResponseHeaders = new string[webClient.ResponseHeaders.Count];
+                response.ResponseHeaders = String.Empty;
                 var resKeys = webClient.ResponseHeaders.Keys;
                 for (int i = 0; i < webClient.ResponseHeaders.Count; i++)
                 {
-                    response.ResponseHeaders[i] = resKeys[i] + ":" + webClient.ResponseHeaders[i];
+                    response.ResponseHeaders += resKeys[i] + ": " + webClient.ResponseHeaders[i] + "\r\n";
                 }
 
             }
@@ -927,7 +925,7 @@ namespace BHOUserScript
 
             if (response != null)
             {
-                statusDescription = response.StatusCode + response.StatusDescription;
+                statusDescription = response.StatusDescription;
                 statusCode = Convert.ToInt32(response.StatusCode);
                 return (int)response.StatusCode;
             }
