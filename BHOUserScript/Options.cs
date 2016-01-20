@@ -10,7 +10,7 @@ namespace BHOUserScript
     /// </summary>
     public partial class Options : Form
     {
-        public Db Prefs;
+        public readonly Db Prefs;
         private readonly string _editPath;
 
         public Options(Db prefs)
@@ -19,7 +19,8 @@ namespace BHOUserScript
             InitializeComponent();
             _editPath = Prefs.Settings.EditorPath;
             enabledChk.Checked = Prefs.Settings.Enabled;
-            Text += " v" + Scriptmonkey.CurrentVersion().ToString();
+            Debug.Assert(Text != null, "Text != null");
+            Text += " v" + Scriptmonkey.CurrentVersion();
             refreshChk.Checked = Prefs.Settings.RefreshOnSave;
         }
         
