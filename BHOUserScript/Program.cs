@@ -14,6 +14,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices.Expando;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 /**
  *       ____        _     __                 __           
@@ -217,12 +219,15 @@ namespace BHOUserScript
                                     content += "this.SM_" + internalName + " = " + command.Function +
                                                ";";
                                     menuContent += "<a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a>";
-                                    useMenuCommands = true;
                                 }
+                                useMenuCommands = true;
                             }
                             content += "}var Scriptmonkey_S" + i + " = new Scriptmonkey_S" + i + "_proto();";
                             
-                            window.execScript(content);
+                            //RunScript(content, window, _prefs[i].Name);
+                            var t = new Thread(() => RunScript(content, window, _prefs[i].Name));
+                            t.SetApartmentState(ApartmentState.STA);
+                            t.Start();
                         }
                         catch (Exception ex) {
                             window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
@@ -257,6 +262,26 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 Log(ex, "SetupWindow");
+            }
+        }
+        
+        /// <summary>
+        /// Executes JavaScript on the window
+        /// </summary>
+        /// <param name="content">The JavaScript to execute.</param>
+        /// <param name="window">The window.</param>
+        /// <param name="name">Name of the script.</param>
+        private void RunScript(string content, IHTMLWindow2 window, string name)
+        {
+            try
+            {
+                window.execScript(content);
+            }
+            catch (Exception ex)
+            {
+                window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
+                                    ex.Message.Replace("\"", "\\\"") + "\");");
+                Log(ex, "At script: " + name);
             }
         }
 
