@@ -13,6 +13,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices.Expando;
 using System.Collections.Generic;
+using System.Linq;
 
 /**
  *       ____        _     __                 __           
@@ -185,6 +186,9 @@ namespace BHOUserScript
 
                     if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
                         ShowOptions();
+                    
+                    var menuContent = "<div style=\"" + _prefs.Settings.MenuCommandCSS + "\">";
+                    bool useMenuCommands = false;
 
                     for (int i = 0; i < _prefs.AllScripts.Count; i++)
                     {
@@ -203,7 +207,22 @@ namespace BHOUserScript
                         try
                         {
                             var c = str.ReadToEnd();
-                            window.execScript("(function(){" + Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] + Resources.WrapperJS_After + c + "})();");
+                            var content = "function Scriptmonkey_S" + i + "_proto() {";
+                            content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
+                                          Resources.WrapperJS_After + c;
+                            if (_prefs[i].MenuCommands?.Count > 0)
+                            {
+                                foreach (NameFunctionPair command in _prefs[i].MenuCommands) {
+                                    var internalName = GenerateRandomString();
+                                    content += "this.SM_" + internalName + " = " + command.Function +
+                                               ";";
+                                    menuContent += "<a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a>";
+                                    useMenuCommands = true;
+                                }
+                            }
+                            content += "}var Scriptmonkey_S" + i + " = new Scriptmonkey_S" + i + "_proto();";
+                            
+                            window.execScript(content);
                         }
                         catch (Exception ex) {
                             window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
@@ -211,6 +230,9 @@ namespace BHOUserScript
                         }
                         str.Close();
                     }
+                    menuContent += "</div>";
+                    if (useMenuCommands)
+                        document2.body.insertAdjacentHTML("afterbegin", menuContent);
                 }
             }
             catch (Exception ex)
@@ -250,7 +272,7 @@ namespace BHOUserScript
             {
                 try
                 {
-                    string url = GenerateScriptPrefix() + URL.Substring(URL.LastIndexOf('/') + 1);
+                    string url = GenerateRandomString() + URL.Substring(URL.LastIndexOf('/') + 1);
                     WebClient webClient = new WebClient();
                     webClient.DownloadFile(URL, ScriptPath
                         + url);
@@ -416,7 +438,7 @@ namespace BHOUserScript
         /// Generate a random number to use as a script prefix and avoid duplicate installs
         /// </summary>
         /// <returns>A random number from 0 to 100,000</returns>
-        public static string GenerateScriptPrefix()
+        public static string GenerateRandomString()
         {
             Random r = new Random();
             return (char)(r.Next(97, 122)) + Convert.ToString(r.Next(100000));
@@ -933,6 +955,25 @@ namespace BHOUserScript
             statusDescription = null;
             statusCode = 400;
             return 0;
+        }
+
+        public void setMenuCommand(string function, string caption, int scriptIndex, string apiKey)
+        {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return;
+
+
+            if (_prefs[scriptIndex].MenuCommands == null)
+                _prefs[scriptIndex].MenuCommands = new List<NameFunctionPair>();
+
+            if (_prefs[scriptIndex].MenuCommands.Any(command => command.Function == function || command.Name == caption)) {
+                return;
+            }
+
+            var p = new NameFunctionPair {Function = function, Name = caption};
+            
+            _prefs[scriptIndex].MenuCommands.Add(p);
+            _prefs.Save();
         }
 
         /// <summary>

@@ -39,5 +39,7 @@ namespace BHOUserScript
         public Dictionary<string, string> SavedValues { get; set; }
 
         public Dictionary<string, string> Resources { get; set; }
+
+        public List<NameFunctionPair> MenuCommands { get; set; }
     }
 }

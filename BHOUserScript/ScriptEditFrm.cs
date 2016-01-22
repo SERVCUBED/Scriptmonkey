@@ -113,7 +113,7 @@ namespace BHOUserScript
                 if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
                     File.Delete(Scriptmonkey.ScriptPath + fileTxt.Text);
 
-                string prefix = Scriptmonkey.GenerateScriptPrefix();
+                string prefix = Scriptmonkey.GenerateRandomString();
 
                 if (form.FromFile)
                 {
@@ -248,6 +248,7 @@ namespace BHOUserScript
         private void clearValsBtn_Click(object sender, EventArgs e)
         {
             EditedScript.SavedValues = new System.Collections.Generic.Dictionary<string, string>();
+            EditedScript.MenuCommands = null;
         }
     }
 }

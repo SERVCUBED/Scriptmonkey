@@ -12,6 +12,9 @@ namespace BHOUserScript
 
         public string EditorPath = "notepad.exe";
 
+        public string MenuCommandCSS =
+            "position: fixed; bottom: 0; right: 0; font-size: 12px; width: 100px; padding: 5px; border-radius: 3px; background: #333; z-index: 2000000000;";
+
         public List<Script> Scripts = new List<Script>();
 
         public Version BhoCreatedVersion;

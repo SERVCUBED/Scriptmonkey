@@ -23,6 +23,8 @@ namespace BHOUserScript
 
         string xmlHttpRequest(string details, int scriptIndex, string apiKey);
 
+        void setMenuCommand(string function, string caption, int scriptIndex, string apiKey);
+
         string getVersion();
 
         int getScriptCount();

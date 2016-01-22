@@ -111,6 +111,7 @@
       <DependentUpon>GetUserscriptsFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="IExtension.cs" />
+    <Compile Include="NameFunctionPair.cs" />
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
     </Compile>
