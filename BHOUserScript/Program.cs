@@ -169,6 +169,9 @@ namespace BHOUserScript
 
                     if (document2 == null) return;
 
+                    if (document2.url.StartsWith("res://") || document2.baseUrl.StartsWith("res://"))
+                        return;
+
                     var window = document2.parentWindow;
 
                     SetupWindow(window);
