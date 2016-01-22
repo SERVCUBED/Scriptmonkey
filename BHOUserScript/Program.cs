@@ -223,9 +223,10 @@ namespace BHOUserScript
                                 useMenuCommands = true;
                             }
                             content += "}var Scriptmonkey_S" + i + " = new Scriptmonkey_S" + i + "_proto();";
-                            
+
                             //RunScript(content, window, _prefs[i].Name);
-                            var t = new Thread(() => RunScript(content, window, _prefs[i].Name));
+                            var f = i;
+                            var t = new Thread(() => RunScript(content, window, _prefs[f].Name));
                             t.SetApartmentState(ApartmentState.STA);
                             t.Start();
                         }
