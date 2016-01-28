@@ -30,5 +30,7 @@ namespace BHOUserScript
         public bool AutoDownloadScripts = true;
 
         public bool UsePublicAPI = false;
+
+        public bool CacheScripts = true;
     }
 }

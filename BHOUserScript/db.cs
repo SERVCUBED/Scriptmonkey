@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -88,14 +89,17 @@ namespace BHOUserScript
             }
         }
 
-        public void Save()
+        public void Save(bool immediate = false)
         {
             //var stw = new StreamWriter(Scriptmonkey.SettingsFile);
             try
             {
                 var data = JsonConvert.SerializeObject(Settings);
                 //stw.Write(data);
-                WriteFile(Scriptmonkey.SettingsFile, data);
+                if (immediate)
+                    WriteFile(Scriptmonkey.SettingsFile, data);
+                else
+                    WriteFileAsync(Scriptmonkey.SettingsFile, data);
             }
             catch (Exception ex)
             {
@@ -107,7 +111,7 @@ namespace BHOUserScript
         public void AddScript(Script add)
         {
             Settings.Scripts.Add(add);
-            Save();
+            Save(true);
         }
 
         // Use this instead of AllScripts[index] when getting individual script for error handling reasons
@@ -121,7 +125,7 @@ namespace BHOUserScript
             }
             set { 
                 Settings.Scripts[index] = value;
-                Save();
+                Save(true);
             }
         }
 
@@ -189,6 +193,13 @@ namespace BHOUserScript
 
                 return utf8.GetString(fileBytes, 0, numBytes);
             }
+        }
+
+        private static void WriteFileAsync(string url, string contents)
+        {
+            var t = new System.Threading.Thread(() => WriteFile(url, contents));
+            t.SetApartmentState(ApartmentState.MTA);
+            t.Start();
         }
 
         private static void WriteFile(string url, string contents)

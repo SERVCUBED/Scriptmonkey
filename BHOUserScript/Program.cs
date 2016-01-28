@@ -56,6 +56,7 @@ namespace BHOUserScript
         private bool _refresh = false;
         private bool _normalLoad = true;
         private string[] _apiKeys = null;
+        private Dictionary<string, string> _scriptCache = new Dictionary<string, string>();
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -208,23 +209,35 @@ namespace BHOUserScript
 
                         if (!shouldRun) continue;
 
-                        var str = new StreamReader(ScriptPath + _prefs[i].Path);
                         try
                         {
-                            var c = str.ReadToEnd();
+                            string scriptContent;
+                            if (_prefs.Settings.CacheScripts && _scriptCache.ContainsKey(_prefs[i].Path))
+                                scriptContent = _scriptCache[_prefs[i].Path];
+                            else
+                            {
+                                var str = new StreamReader(ScriptPath + _prefs[i].Path);
+                                scriptContent = str.ReadToEnd();
+                                str.Close();
+
+                                if (_prefs.Settings.CacheScripts)
+                                    _scriptCache.Add(_prefs[i].Path, scriptContent);
+                            }
+
                             var content = "function Scriptmonkey_S" + i + "_proto() {";
                             content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
-                                          Resources.WrapperJS_After + c;
+                                          Resources.WrapperJS_After + scriptContent;
+
                             if (_prefs[i].MenuCommands?.Count > 0)
                             {
                                 foreach (NameFunctionPair command in _prefs[i].MenuCommands) {
                                     var internalName = GenerateRandomString();
-                                    content += "this.SM_" + internalName + " = " + command.Function +
-                                               ";";
+                                    content += "this.SM_" + internalName + " = " + command.Function + ";";
                                     menuContent += "<a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a>";
                                 }
                                 useMenuCommands = true;
                             }
+
                             content += "}var Scriptmonkey_S" + i + " = new Scriptmonkey_S" + i + "_proto();";
 
                             //RunScript(content, window, _prefs[i].Name);
@@ -237,11 +250,10 @@ namespace BHOUserScript
                             window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
                             Log(ex, "At script: " + _prefs[i].Name);
                         }
-                        str.Close();
                     }
                     menuContent += "</div>";
                     if (useMenuCommands)
-                        document2.body.insertAdjacentHTML("afterbegin", menuContent);
+                        new Thread(() => { document2.body.insertAdjacentHTML("afterbegin", menuContent); }).Start();
                 }
             }
             catch (Exception ex)
@@ -432,8 +444,7 @@ namespace BHOUserScript
                         if (form.Response != UpdateBHOFrm.UpdateBHOFrmResponse.NextTime)
                         {
                             _prefs.Settings.LastUpdateCheckDate = DateTime.Now;
-                            _prefs.Save();
-                            _prefs.ReloadData();
+                            _prefs.Save(true);
                         }
                         if (form.Response == UpdateBHOFrm.UpdateBHOFrmResponse.Now)
                         {
@@ -451,8 +462,7 @@ namespace BHOUserScript
                     else
                     {
                         _prefs.Settings.LastUpdateCheckDate = DateTime.Now;
-                        _prefs.Save();
-                        _prefs.ReloadData();
+                        _prefs.Save(true);
                     }
                 }
                 catch (Exception) { }
@@ -492,7 +502,8 @@ namespace BHOUserScript
             if (!_installChecked)
             {
                 CheckInstall();
-                CheckUpdate();
+                var u = new Thread(CheckUpdate);
+                u.Start();
             }
 
             _site = site;
@@ -692,9 +703,9 @@ namespace BHOUserScript
             if (form.ShowDialog() != DialogResult.Cancel)
             {
                 _prefs = form.Prefs;
-                _prefs.Save();
-                _prefs.ReloadData();
                 if (_prefs.Settings.RefreshOnSave)
+                {
+                    _prefs.Save(true);
                     try
                     {
                         // Refresh the page (run on refresh is disabled by default so navigate to the current location)
@@ -703,6 +714,9 @@ namespace BHOUserScript
                     catch (Exception ex) {
                         Log(ex, "Try refresh after save");
                     }
+                }
+                else
+                    _prefs.Save();
             }
             form.Dispose();
         }
