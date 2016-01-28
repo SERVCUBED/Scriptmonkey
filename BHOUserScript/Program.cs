@@ -703,20 +703,24 @@ namespace BHOUserScript
             if (form.ShowDialog() != DialogResult.Cancel)
             {
                 _prefs = form.Prefs;
+                _prefs.Save(true);
                 if (_prefs.Settings.RefreshOnSave)
                 {
-                    _prefs.Save(true);
                     try
                     {
                         // Refresh the page (run on refresh is disabled by default so navigate to the current location)
-                        ((HTMLDocument)(_browser.Document)).parentWindow.execScript("window.location.href = window.location.href;");
+                        ((HTMLDocument)_browser.Document).parentWindow.execScript(
+                            "window.location.href = window.location.href;");
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         Log(ex, "Try refresh after save");
                     }
                 }
                 else
-                    _prefs.Save();
+                {
+                    _prefs.ReloadData();
+                }
             }
             form.Dispose();
         }
