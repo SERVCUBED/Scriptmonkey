@@ -56,6 +56,7 @@ namespace BHOUserScript
         private bool _normalLoad = true;
         private string[] _apiKeys = null;
         private Dictionary<string, string> _scriptCache = new Dictionary<string, string>();
+        private int _refreshCounter = 0;
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -141,69 +142,74 @@ namespace BHOUserScript
                 if (_prefs.Settings.RunOnPageRefresh)
                     _normalLoad = false;
 
-                if (_prefs.AllScripts.Count > 10) // Lots of scripts?
-                    _prefs.ReloadDataAsync(); // Reload asynchronously to prevent browser becoming unresponsive
-                else
-                    _prefs.ReloadData();
-
-                if (_prefs.Settings.Enabled)
+                if (_refreshCounter >= _prefs.Settings.ReloadAfterPages)
                 {
-                    // Set up API keys with random length for each script
-                    if (_apiKeys == null)
-                    {
-                        _apiKeys = new string[_prefs.AllScripts.Count];
-                        Random r = new Random();
-                        for (int i = 0; i < _apiKeys.Length; i++)
-                        {
-                            StringBuilder sb = new StringBuilder();
-                            for (int f = 0; f < r.Next(5,20); f++)
-                            {
-                                sb.Append(Convert.ToChar(r.Next(97,122)));
-                            }
-                            _apiKeys[i] = sb.ToString();
-                        }
-                    }
-
-                    var document2 = _browser.Document as HTMLDocument;
-                    //var document3 = browser.Document as IHTMLDocument3;
-
-                    if (document2 == null) return;
-
-                    if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://"))
-                        return;
-
-                    var window = document2.parentWindow;
-
-                    SetupWindow(window);
-
-                    if (document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
-                        try
-                        {
-                            // Tell webpage Scriptmonkey is installed
-                            var v = CurrentVersion();
-                            window.execScript(
-                                $"ld_Scriptmonkey_Installed({v.Major},{v.Minor},{v.Revision},{_prefs.AllScripts.Count});");
-                        }
-                        catch (Exception ex)
-                        {
-                            Log(ex, "Unable to inject JavaScript into webpage");
-                        }
-
-                    if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
-                        ShowOptions();
-                    
-                    var menuContent = "<div style=\"" + _prefs.Settings.MenuCommandCSS + "\">";
-                    bool useMenuCommands = false;
-
-                    for (int i = 0; i < _prefs.AllScripts.Count; i++)
-                    {
-                        TryCheckRunScript(i, url.ToString(), window, ref useMenuCommands, ref menuContent);
-                    }
-
-                    menuContent += "</div>";
-                    if (useMenuCommands)
-                        new Thread(() => { document2.body.insertAdjacentHTML("afterbegin", menuContent); }).Start();
+                    if (_prefs.AllScripts.Count > 10) // Lots of scripts?
+                        _prefs.ReloadDataAsync(); // Reload asynchronously to prevent browser becoming unresponsive
+                    else
+                        _prefs.ReloadData();
+                    _refreshCounter = 0;
                 }
+                else
+                    _refreshCounter++;
+
+                if (!_prefs.Settings.Enabled) return;
+
+                // Set up API keys with random length for each script
+                if (_apiKeys == null)
+                {
+                    _apiKeys = new string[_prefs.AllScripts.Count];
+                    Random r = new Random();
+                    for (int i = 0; i < _apiKeys.Length; i++)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        for (int f = 0; f < r.Next(5,20); f++)
+                        {
+                            sb.Append(Convert.ToChar(r.Next(97,122)));
+                        }
+                        _apiKeys[i] = sb.ToString();
+                    }
+                }
+
+                var document2 = _browser.Document as HTMLDocument;
+                //var document3 = browser.Document as IHTMLDocument3;
+
+                if (document2 == null) return;
+
+                if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://"))
+                    return;
+
+                var window = document2.parentWindow;
+
+                SetupWindow(window);
+
+                if (document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
+                    try
+                    {
+                        // Tell webpage Scriptmonkey is installed
+                        var v = CurrentVersion();
+                        window.execScript(
+                            $"ld_Scriptmonkey_Installed({v.Major},{v.Minor},{v.Revision},{_prefs.AllScripts.Count});");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log(ex, "Unable to inject JavaScript into webpage");
+                    }
+
+                if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
+                    ShowOptions();
+                    
+                var menuContent = "<div style=\"" + _prefs.Settings.MenuCommandCSS + "\">";
+                bool useMenuCommands = false;
+
+                for (int i = 0; i < _prefs.AllScripts.Count; i++)
+                {
+                    TryCheckRunScript(i, url.ToString(), window, ref useMenuCommands, ref menuContent);
+                }
+
+                menuContent += "</div>";
+                if (useMenuCommands)
+                    new Thread(() => { document2.body.insertAdjacentHTML("afterbegin", menuContent); }).Start();
             }
             catch (Exception ex)
             {
@@ -716,6 +722,8 @@ namespace BHOUserScript
             {
                 _prefs = form.Prefs;
                 _prefs.Save(true);
+                _prefs.ReloadData();
+                _refreshCounter = 0;
                 if (_prefs.Settings.RefreshOnSave)
                 {
                     try
@@ -728,10 +736,6 @@ namespace BHOUserScript
                     {
                         Log(ex, "Try refresh after save");
                     }
-                }
-                else
-                {
-                    _prefs.ReloadData();
                 }
             }
             form.Dispose();

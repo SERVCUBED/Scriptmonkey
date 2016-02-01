@@ -32,5 +32,7 @@ namespace BHOUserScript
         public bool UsePublicAPI = false;
 
         public bool CacheScripts = true;
+
+        public int ReloadAfterPages = 5;
     }
 }
