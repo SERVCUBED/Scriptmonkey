@@ -174,18 +174,29 @@ namespace BHOUserScript
             }
         }
 
-        private const int MaxFileSize = 20 * 1024 * 1024;
+        private int _maxFileSize = 20 * 1024 * 1024;
 
-        private static string ReadFile(string url)
+        private string ReadFile(string url)
         {
             using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var fileBytes = new byte[MaxFileSize];
-
-                var numBytes = str.Read(fileBytes, 0, MaxFileSize);
 
                 var utf8 = new UTF8Encoding();
 
+                byte[] fileBytes;
+                int numBytes;
+
+                // If the number of bytes to read equals the maximum file length, try to read more data from the file
+                do
+                {
+                    fileBytes = new byte[_maxFileSize];
+                    numBytes = str.Read(fileBytes, 0, _maxFileSize);
+                    
+                    if (numBytes >= _maxFileSize)
+                        _maxFileSize *= 2;
+
+                } while (numBytes == _maxFileSize);
+                
                 return utf8.GetString(fileBytes, 0, numBytes);
             }
         }
