@@ -32,12 +32,7 @@ namespace BHOUserScript
 
         public void ReloadDataAsync()
         {
-            var s = ReloadDataAsyncTask();
-        }
-
-        private Task ReloadDataAsyncTask()
-        {
-            return Task.Run(() => ReloadData());
+            Task.Run(() => ReloadData());
         }
 
         public void ReloadData()
@@ -58,7 +53,7 @@ namespace BHOUserScript
 
         public void Reset(Exception ex)
         {
-            Scriptmonkey.Log(ex, "\r\nReset?");
+            Scriptmonkey.Log(ex, "Reset?");
             var form = new ReadSettingsFailureFrm { errorTxt = { Text = ex.Message } };
             var res = form.ShowDialog();
             form.Dispose();
@@ -121,7 +116,7 @@ namespace BHOUserScript
             {
                 if (Settings.Scripts.Count - 1 >= index) // Must -1 as index is base 0
                     return Settings.Scripts[index];
-                return null;
+                throw new IndexOutOfRangeException("Script index out of range");
             }
             set { 
                 Settings.Scripts[index] = value;
@@ -197,7 +192,7 @@ namespace BHOUserScript
 
         private static void WriteFileAsync(string url, string contents)
         {
-            var t = new System.Threading.Thread(() => WriteFile(url, contents));
+            var t = new Thread(() => WriteFile(url, contents));
             t.SetApartmentState(ApartmentState.MTA);
             t.Start();
         }

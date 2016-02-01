@@ -169,7 +169,7 @@ namespace BHOUserScript
 
                     if (document2 == null) return;
 
-                    if (document2.url.StartsWith("res://"))
+                    if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://"))
                         return;
 
                     var window = document2.parentWindow;
@@ -197,59 +197,9 @@ namespace BHOUserScript
 
                     for (int i = 0; i < _prefs.AllScripts.Count; i++)
                     {
-                        if (!_prefs[i].Enabled) continue;
-
-                        var shouldRun = true;
-                        if (_prefs[i].Include.Length > 0)
-                            shouldRun = Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Include));
-
-                        if (shouldRun && _prefs[i].Exclude.Length > 0)
-                            shouldRun = !Regex.IsMatch(url.ToString(), WildcardToRegex(_prefs[i].Exclude));
-
-                        if (!shouldRun) continue;
-
-                        try
-                        {
-                            string scriptContent;
-                            if (_prefs.Settings.CacheScripts && _scriptCache.ContainsKey(_prefs[i].Path))
-                                scriptContent = _scriptCache[_prefs[i].Path];
-                            else
-                            {
-                                var str = new StreamReader(ScriptPath + _prefs[i].Path);
-                                scriptContent = str.ReadToEnd();
-                                str.Close();
-
-                                if (_prefs.Settings.CacheScripts)
-                                    _scriptCache.Add(_prefs[i].Path, scriptContent);
-                            }
-
-                            var content = "function Scriptmonkey_S" + i + "_proto() {";
-                            content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
-                                          Resources.WrapperJS_After + scriptContent;
-
-                            if (_prefs[i].MenuCommands?.Count > 0)
-                            {
-                                foreach (NameFunctionPair command in _prefs[i].MenuCommands) {
-                                    var internalName = GenerateRandomString();
-                                    content += "this.SM_" + internalName + " = " + command.Function + ";";
-                                    menuContent += "<a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a>";
-                                }
-                                useMenuCommands = true;
-                            }
-
-                            content += "}var Scriptmonkey_S" + i + " = new Scriptmonkey_S" + i + "_proto();";
-
-                            //RunScript(content, window, _prefs[i].Name);
-                            var f = i;
-                            var t = new Thread(() => RunScript(content, window, _prefs[f].Name));
-                            t.SetApartmentState(ApartmentState.STA);
-                            t.Start();
-                        }
-                        catch (Exception ex) {
-                            window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
-                            Log(ex, "At script: " + _prefs[i].Name);
-                        }
+                        TryCheckRunScript(i, url.ToString(), window, ref useMenuCommands, ref menuContent);
                     }
+
                     menuContent += "</div>";
                     if (useMenuCommands)
                         new Thread(() => { document2.body.insertAdjacentHTML("afterbegin", menuContent); }).Start();
@@ -259,6 +209,69 @@ namespace BHOUserScript
             {
                 Log(ex, "At: main");
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
+            }
+        }
+
+        /// <summary>
+        /// Try to check if the script can be run in the current browser window and run it
+        /// </summary>
+        /// <param name="i">The index of the script in the settings file</param>
+        /// <param name="url">The current URL</param>
+        /// <param name="window">The current IHTMLWindow2</param>
+        /// <param name="useMenuCommands">Should the menu commands HTML be injected into the page?</param>
+        /// <param name="menuContent">The content for the menu commands HTML</param>
+        private void TryCheckRunScript(int i, string url, IHTMLWindow2 window, ref bool useMenuCommands, ref string menuContent)
+        {
+            if (!_prefs[i].Enabled) return;
+
+            if (_prefs[i].Include.Length > 0 && !Regex.IsMatch(url, WildcardToRegex(_prefs[i].Include)))
+                return;
+
+            if (_prefs[i].Exclude.Length > 0 && Regex.IsMatch(url, WildcardToRegex(_prefs[i].Exclude)))
+                return;
+
+            try
+            {
+                string scriptContent;
+                if (_prefs.Settings.CacheScripts && _scriptCache.ContainsKey(_prefs[i].Path))
+                    scriptContent = _scriptCache[_prefs[i].Path];
+                else
+                {
+                    var str = new StreamReader(ScriptPath + _prefs[i].Path);
+                    scriptContent = str.ReadToEnd();
+                    str.Close();
+
+                    if (_prefs.Settings.CacheScripts)
+                        _scriptCache.Add(_prefs[i].Path, scriptContent);
+                }
+
+                var content = "function Scriptmonkey_S" + i + "_proto() {";
+                content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
+                              Resources.WrapperJS_After + scriptContent;
+
+                if (_prefs[i].MenuCommands?.Count > 0)
+                {
+                    foreach (NameFunctionPair command in _prefs[i].MenuCommands)
+                    {
+                        var internalName = GenerateRandomString();
+                        content += "this.SM_" + internalName + " = " + command.Function + ";";
+                        menuContent += "<a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a>";
+                    }
+                    useMenuCommands = true;
+                }
+
+                content += "}var Scriptmonkey_S" + i + " = new Scriptmonkey_S" + i + "_proto();";
+
+                //RunScript(content, window, _prefs[i].Name);
+                var f = i;
+                var t = new Thread(() => RunScript(content, window, _prefs[f].Name));
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start();
+            }
+            catch (Exception ex)
+            {
+                window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
+                Log(ex, "At script: " + _prefs[i].Name);
             }
         }
 
@@ -382,7 +395,7 @@ namespace BHOUserScript
         {
             try
             {
-                using (StreamWriter writer = File.AppendText(Scriptmonkey.InstallPath + "log.txt"))
+                using (StreamWriter writer = File.AppendText(InstallPath + "log.txt"))
                 {
                     if (ex != null)
                     {
