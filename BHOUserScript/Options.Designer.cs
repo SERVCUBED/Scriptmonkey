@@ -51,6 +51,7 @@ namespace BHOUserScript
             this.resetAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptEditorOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.refreshChk = new System.Windows.Forms.CheckBox();
+            this.advancedOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -198,9 +199,10 @@ namespace BHOUserScript
             // 
             this.optionsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setScriptEditorPathToolStripMenuItem,
-            this.resetAllToolStripMenuItem});
+            this.resetAllToolStripMenuItem,
+            this.advancedOptionsToolStripMenuItem});
             this.optionsContextMenuStrip.Name = "optionsContextMenuStrip";
-            this.optionsContextMenuStrip.Size = new System.Drawing.Size(183, 48);
+            this.optionsContextMenuStrip.Size = new System.Drawing.Size(183, 92);
             // 
             // setScriptEditorPathToolStripMenuItem
             // 
@@ -230,6 +232,13 @@ namespace BHOUserScript
             this.refreshChk.Text = "Refresh on \r\nsave";
             this.refreshChk.UseVisualStyleBackColor = true;
             this.refreshChk.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // advancedOptionsToolStripMenuItem
+            // 
+            this.advancedOptionsToolStripMenuItem.Name = "advancedOptionsToolStripMenuItem";
+            this.advancedOptionsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.advancedOptionsToolStripMenuItem.Text = "Advanced Options";
+            this.advancedOptionsToolStripMenuItem.Click += new System.EventHandler(this.advancedOptionsToolStripMenuItem_Click);
             // 
             // Options
             // 
@@ -285,5 +294,6 @@ namespace BHOUserScript
         private ToolStripMenuItem resetAllToolStripMenuItem;
         private OpenFileDialog scriptEditorOpenFileDialog;
         private CheckBox refreshChk;
+        private ToolStripMenuItem advancedOptionsToolStripMenuItem;
     }
 }

@@ -208,5 +208,12 @@ namespace BHOUserScript
         {
             Prefs.Settings.RefreshOnSave = refreshChk.Checked;
         }
+
+        private void advancedOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AdvancedOptionsFrm frm = new AdvancedOptionsFrm(Prefs.Settings);
+            if (frm.ShowDialog() == DialogResult.OK)
+                Prefs.Settings = frm.Settings;
+        }
     }
 }

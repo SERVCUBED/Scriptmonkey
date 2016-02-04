@@ -97,6 +97,12 @@
     <Compile Include="AddScriptURLFrm.Designer.cs">
       <DependentUpon>AddScriptURLFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AdvancedOptionsFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdvancedOptionsFrm.Designer.cs">
+      <DependentUpon>AdvancedOptionsFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AlreadyExistsFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddScriptURLFrm.resx">
       <DependentUpon>AddScriptURLFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdvancedOptionsFrm.resx">
+      <DependentUpon>AdvancedOptionsFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AlreadyExistsFrm.resx">
       <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
