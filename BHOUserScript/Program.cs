@@ -313,8 +313,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
-                                    ex.Message.Replace("\"", "\\\"") + "\");");
+                //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
+                //                    ex.Message.Replace("\"", "\\\"") + "\");");
                 Log(ex, "At script: " + name);
             }
         }
