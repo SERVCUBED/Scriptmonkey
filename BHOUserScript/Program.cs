@@ -261,7 +261,7 @@ namespace BHOUserScript
                     {
                         var internalName = GenerateRandomString();
                         content += "this.SM_" + internalName + " = " + command.Function + ";";
-                        menuContent += "<a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a>";
+                        menuContent += "<p><a style=\"cursor: pointer; color: #4495d4;\" onclick=\"Scriptmonkey_S" + i + ".SM_" + internalName + "();\">" + command.Name + "</a></p>";
                     }
                     useMenuCommands = true;
                 }
