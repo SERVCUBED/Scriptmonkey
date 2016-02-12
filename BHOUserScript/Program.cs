@@ -236,9 +236,10 @@ namespace BHOUserScript
             if (_prefs[i].Exclude.Length > 0 && Regex.IsMatch(url, WildcardToRegex(_prefs[i].Exclude)))
                 return;
 
+                string scriptContent = String.Empty;
+
             try
             {
-                string scriptContent;
                 if (_prefs.Settings.CacheScripts && _scriptCache.ContainsKey(_prefs[i].Path))
                     scriptContent = _scriptCache[_prefs[i].Path];
                 else
@@ -277,7 +278,10 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
-                Log(ex, "At script: " + _prefs[i].Name);
+                if (_prefs.Settings.LogScriptContentsOnRunError)
+                    Log(ex, "At script: " + _prefs[i].Name + ':' + Environment.NewLine + scriptContent);
+                else
+                    Log(ex, "At script: " + _prefs[i].Name);
             }
         }
 

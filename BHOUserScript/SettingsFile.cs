@@ -33,6 +33,8 @@ namespace BHOUserScript
 
         public bool CacheScripts = true;
 
+        public bool LogScriptContentsOnRunError = false;
+
         public int ReloadAfterPages = 5;
     }
 }
