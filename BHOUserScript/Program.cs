@@ -756,6 +756,9 @@ namespace BHOUserScript
 
             try
             {
+                if (_prefs[scriptIndex].SavedValues == null)
+                    _prefs[scriptIndex].SavedValues = new Dictionary<string, string>();
+
                 if (!_prefs[scriptIndex].SavedValues.ContainsKey(name))
                     _prefs[scriptIndex].SavedValues.Add(name, value);
                 else
@@ -782,8 +785,8 @@ namespace BHOUserScript
 
             try
             {
-                string o;
-                if (_prefs[scriptIndex].SavedValues.TryGetValue(name, out o))
+                string o = defaultValue;
+                if (_prefs[scriptIndex].SavedValues?.TryGetValue(name, out o) == true)
                     return o;
             }
             catch (Exception ex)
