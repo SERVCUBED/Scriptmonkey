@@ -80,9 +80,16 @@ namespace BHOUserScript
                 try
                 {
                     MessageBox.Show(Resources.FirstTimeSetup, Resources.Title);
-                    Directory.CreateDirectory(InstallPath);
-                    Directory.CreateDirectory(ScriptPath);
-                    Directory.CreateDirectory(ResourcePath);
+
+                    if (!Directory.Exists(InstallPath))
+                        Directory.CreateDirectory(InstallPath);
+
+                    if (!Directory.Exists(ScriptPath))
+                        Directory.CreateDirectory(ScriptPath);
+
+                    if (!Directory.Exists(ResourcePath))
+                        Directory.CreateDirectory(ResourcePath);
+
                     File.Create(InstalledFile).Dispose();
 
                     SettingsFile s = new SettingsFile
