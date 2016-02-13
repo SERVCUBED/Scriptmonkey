@@ -319,7 +319,10 @@ namespace BHOUserScript
             {
                 //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
                 //                    ex.Message.Replace("\"", "\\\"") + "\");");
-                Log(ex, "At script: " + name);
+                if (_prefs.Settings.LogScriptContentsOnRunError)
+                    Log(ex, "At script: " + name + ':' + Environment.NewLine + content);
+                else
+                    Log(ex, "At script: " + name);
             }
         }
 
