@@ -15,6 +15,7 @@ using System.Runtime.InteropServices.Expando;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using BHOUserScript.Properties;
 
 /**
  *       ____        _     __                 __           
@@ -356,7 +357,7 @@ namespace BHOUserScript
                 }
                 catch (Exception ex)
                 {
-                    Log(ex, Resources.AutomaticAddFailError + ":AutoAdd");
+                    Log(ex, Resources.AutomaticAddFailError);
                 }
                 return true;
             }
