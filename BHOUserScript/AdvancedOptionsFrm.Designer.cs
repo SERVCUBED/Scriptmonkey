@@ -38,13 +38,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.reloadNum = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.refreshPageChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(219, 156);
+            this.saveBtn.Location = new System.Drawing.Point(219, 170);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -105,7 +106,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 133);
+            this.label1.Location = new System.Drawing.Point(10, 153);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 6;
@@ -113,7 +114,7 @@
             // 
             // reloadNum
             // 
-            this.reloadNum.Location = new System.Drawing.Point(122, 131);
+            this.reloadNum.Location = new System.Drawing.Point(120, 151);
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
             this.reloadNum.TabIndex = 7;
@@ -121,17 +122,28 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(185, 133);
+            this.label2.Location = new System.Drawing.Point(183, 153);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "pages";
             // 
+            // refreshPageChk
+            // 
+            this.refreshPageChk.AutoSize = true;
+            this.refreshPageChk.Location = new System.Drawing.Point(13, 133);
+            this.refreshPageChk.Name = "refreshPageChk";
+            this.refreshPageChk.Size = new System.Drawing.Size(130, 17);
+            this.refreshPageChk.TabIndex = 9;
+            this.refreshPageChk.Text = "Refresh page on save";
+            this.refreshPageChk.UseVisualStyleBackColor = true;
+            // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 186);
+            this.ClientSize = new System.Drawing.Size(306, 205);
+            this.Controls.Add(this.refreshPageChk);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.reloadNum);
             this.Controls.Add(this.label1);
@@ -167,5 +179,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown reloadNum;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox refreshPageChk;
     }
 }

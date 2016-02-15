@@ -26,6 +26,7 @@ namespace BHOUserScript
             autoChk.Checked = Settings.AutoDownloadScripts;
             publicApiChk.Checked = Settings.UsePublicAPI;
             cacheChk.Checked = Settings.CacheScripts;
+            refreshPageChk.Checked = Settings.RefreshOnSave;
             reloadNum.Value = Settings.ReloadAfterPages;
         }
 
@@ -36,6 +37,7 @@ namespace BHOUserScript
             Settings.AutoDownloadScripts = autoChk.Checked;
             Settings.UsePublicAPI = publicApiChk.Checked;
             Settings.CacheScripts = cacheChk.Checked;
+            Settings.RefreshOnSave = refreshPageChk.Checked;
             Settings.ReloadAfterPages = (int)reloadNum.Value;
             DialogResult = DialogResult.OK;
         }

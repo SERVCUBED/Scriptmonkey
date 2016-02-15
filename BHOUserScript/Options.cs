@@ -21,7 +21,6 @@ namespace BHOUserScript
             enabledChk.Checked = Prefs.Settings.Enabled;
             Debug.Assert(Text != null, "Text != null");
             Text += " v" + Scriptmonkey.CurrentVersion();
-            refreshChk.Checked = Prefs.Settings.RefreshOnSave;
         }
         
         private void okBtn_Click(object sender, EventArgs e)
@@ -128,20 +127,6 @@ namespace BHOUserScript
             editBtn.PerformClick();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var p = new Process
-            {
-                StartInfo =
-                {
-                    FileName = "explorer.exe",
-                    Arguments = Scriptmonkey.InstallPath
-                }
-            };
-            p.Start();
-            DialogResult = DialogResult.OK;
-        }
-
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex > -1 && listBox1.SelectedIndex > 0)
@@ -204,16 +189,25 @@ namespace BHOUserScript
             RefreshList();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            Prefs.Settings.RefreshOnSave = refreshChk.Checked;
-        }
-
         private void advancedOptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AdvancedOptionsFrm frm = new AdvancedOptionsFrm(Prefs.Settings);
             if (frm.ShowDialog() == DialogResult.OK)
                 Prefs.Settings = frm.Settings;
+        }
+
+        private void openInstallDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var p = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "explorer.exe",
+                    Arguments = Scriptmonkey.InstallPath
+                }
+            };
+            p.Start();
+            DialogResult = DialogResult.OK;
         }
     }
 }
