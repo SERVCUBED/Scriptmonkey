@@ -176,8 +176,20 @@ namespace BHOUserScript
 
         private int _maxFileSize = 20 * 1024 * 1024;
 
-        private string ReadFile(string url)
+        /// <summary>
+        /// Read a file without locking it
+        /// </summary>
+        /// <param name="url">The URL of the file to read.</param>
+        /// <param name="onError">Optional. The string to return if the file cannot be found.</param>
+        /// <returns></returns>
+        private string ReadFile(string url, string onError = null)
         {
+            if (!File.Exists(url))
+            {
+                Scriptmonkey.Log(null, $"Attempted to read \"{url}\". File does not exist.");
+                return onError;
+            }
+
             using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
 
