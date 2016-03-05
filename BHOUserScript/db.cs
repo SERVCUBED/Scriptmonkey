@@ -208,7 +208,7 @@ namespace BHOUserScript
             t.Start();
         }
 
-        private static void WriteFile(string url, string contents)
+        public static void WriteFile(string url, string contents)
         {
             using (var str = new FileStream(url, FileMode.Create, FileAccess.Write, FileShare.Write))
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -17,17 +18,22 @@ namespace BHOUserScript
         static readonly string Include = @"// +@include( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Exclude = @"// +@exclude( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string UpdateUrl = @"// +@updateURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
+        static readonly string DownloadUrl = @"// +@downloadURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Resource = @"// +@resource( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        
+
         public static Script Parse(string path)
         {
             StreamReader str = new StreamReader(Scriptmonkey.ScriptPath + path);
-            Script scr = new Script();
+            string contents = str.ReadToEnd();
+            str.Close();
+            return ParseFromContents(contents);
+        }
 
+        public static Script ParseFromContents(string contents)
+        {
+            Script scr = new Script();
             try
             {
-                string contents = str.ReadToEnd();
-
                 scr.Name = GetContents(contents, Name);
 
                 scr.Description = GetContents(contents, Description);
@@ -66,7 +72,9 @@ namespace BHOUserScript
 
                 scr = ParseResources(scr, contents);
 
-                scr.UpdateUrl = GetContents(contents, UpdateUrl);
+                scr.UpdateUrl = GetContents(contents, DownloadUrl);
+
+                if (scr.UpdateUrl == String.Empty) scr.UpdateUrl = GetContents(contents, UpdateUrl);
 
                 scr.SavedValues = new Dictionary<string, string>();
 
@@ -78,7 +86,6 @@ namespace BHOUserScript
             {
                 Scriptmonkey.Log(ex, "Error parsing script metadata");
             }
-            str.Close();
             return scr;
         }
 

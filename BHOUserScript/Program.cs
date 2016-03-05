@@ -507,6 +507,115 @@ namespace BHOUserScript
         }
 
         /// <summary>
+        /// If the time since install of each script is greater than 7 days and an update URL is set, check for updates
+        /// </summary>
+        private void CheckScriptUpdate()
+        {
+            DateTime now = DateTime.UtcNow;
+            var updated = false;
+            WebClient wc = new WebClient();
+            var toUpdate = new List<Script>();
+            var toUpdateTo = new List<ScriptWithContent>();
+            foreach (Script s in _prefs.AllScripts)
+            {
+                if (!String.IsNullOrWhiteSpace(s.UpdateUrl) && s.InstallDate < now - TimeSpan.FromDays(7))
+                {
+                    try
+                    {
+                        var content = wc.DownloadString(s.UpdateUrl);
+                        var newScript = ParseScriptMetadata.ParseFromContents(content);
+                        if (newScript.Version != s.Version)
+                        {
+                            var scriptContents = new ScriptWithContent(newScript) {Content = content};
+                            toUpdate.Add(s);
+                            toUpdateTo.Add(scriptContents);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log(ex, "Script update check failed for: " + s.Name);
+                    }
+                    s.InstallDate = now;
+                    updated = true;
+                }
+            }
+
+            if (updated)
+            {
+                _prefs.Save();
+            }
+
+            if (toUpdate.Count > 0)
+                AskUpdateScriptsAsync(toUpdate, toUpdateTo);
+        }
+
+        /// <summary>
+        /// Ask the user wheather to update the scripts
+        /// </summary>
+        /// <param name="toUpdate">List of the currently installed scripts</param>
+        /// <param name="toUpdateTo">List of the new script objects with content. Must have the same length as toUpdate</param>
+        private void AskUpdateScriptsAsync(List<Script> toUpdate, List<ScriptWithContent> toUpdateTo)
+        {
+            Thread t = new Thread(() =>
+            {
+                var frm = new AskUpdateScriptFrm();
+                for (var i = 0; i < toUpdate.Count; i++)
+                {
+                    frm.listBox1.Items.Add($"{toUpdate[i].Name} - {toUpdate[i].Version} to {toUpdateTo[i].ScriptData.Version}");
+                }
+                if (frm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                if (toUpdate.Count > 0)
+                {
+                    for (int i = 0; i < toUpdate.Count; i++)
+                    {
+                        // Delete existing backups
+                        if (File.Exists(ScriptPath + toUpdate[i].Path + @".backup"))
+                            File.Delete(ScriptPath + toUpdate[i].Path + @".backup");
+
+                        // Move current file to backup
+                        File.Move(ScriptPath + toUpdate[i].Path, ScriptPath + toUpdate[i].Path + @".backup");
+
+                        try
+                        {
+                            // Save updated script
+                            Db.WriteFile(ScriptPath + toUpdate[i].Path, toUpdateTo[i].Content);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log(ex, "Unable to update script: " + toUpdate[i].Name);
+
+                            // Something went wrong. Restore from backup
+                            if (File.Exists(ScriptPath + toUpdate[i].Path))
+                                File.Delete(ScriptPath + toUpdate[i].Path);
+
+                            File.Copy(ScriptPath + toUpdate[i].Path + @".backup", ScriptPath + toUpdate[i].Path);
+                        }
+
+                        // Remove from cache
+                        if (_scriptCache.ContainsKey(toUpdate[i].Path))
+                            _scriptCache.Remove(toUpdate[i].Path);
+
+                        // Update stored script with metadata of script updated to
+                        for (int j = 0; j < _prefs.AllScripts.Count; j++)
+                        {
+                            if (_prefs[j].Path == toUpdate[i].Path)
+                            {
+                                toUpdateTo[i].ScriptData.Path = toUpdate[i].Path;
+                                _prefs[j] = toUpdateTo[i].ScriptData;
+                            }
+                        }
+                    }
+                    _prefs.Save(true);
+                    _prefs.ReloadData();
+                }
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        /// <summary>
         /// Generate a random number to use as a script prefix and avoid duplicate installs
         /// </summary>
         /// <returns>A random number from 0 to 100,000</returns>
@@ -535,8 +644,14 @@ namespace BHOUserScript
             if (!_installChecked)
             {
                 CheckInstall();
+
                 var u = new Thread(CheckUpdate);
+                u.SetApartmentState(ApartmentState.STA);
                 u.Start();
+
+                var s = new Thread(CheckScriptUpdate);
+                s.SetApartmentState(ApartmentState.STA);
+                s.Start();
             }
 
             _site = site;

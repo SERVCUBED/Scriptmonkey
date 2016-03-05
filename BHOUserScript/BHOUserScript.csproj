@@ -109,6 +109,12 @@
     <Compile Include="AlreadyExistsFrm.Designer.cs">
       <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AskUpdateScriptFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AskUpdateScriptFrm.Designer.cs">
+      <DependentUpon>AskUpdateScriptFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="db.cs" />
     <Compile Include="GetUserscriptsFrm.cs">
       <SubType>Form</SubType>
@@ -146,6 +152,7 @@
     <Compile Include="ScriptEditFrm.Designer.cs">
       <DependentUpon>ScriptEditFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScriptWithContent.cs" />
     <Compile Include="SettingsFile.cs" />
     <Compile Include="UpdateBHOFrm.cs">
       <SubType>Form</SubType>
@@ -193,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AlreadyExistsFrm.resx">
       <DependentUpon>AlreadyExistsFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AskUpdateScriptFrm.resx">
+      <DependentUpon>AskUpdateScriptFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GetUserscriptsFrm.resx">
       <DependentUpon>GetUserscriptsFrm.cs</DependentUpon>
