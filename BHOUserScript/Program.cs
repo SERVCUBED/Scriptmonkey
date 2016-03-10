@@ -604,6 +604,7 @@ namespace BHOUserScript
                             {
                                 toUpdateTo[i].ScriptData.Path = toUpdate[i].Path;
                                 _prefs[j] = toUpdateTo[i].ScriptData;
+                                break;
                             }
                         }
                     }
