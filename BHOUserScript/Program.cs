@@ -450,13 +450,15 @@ namespace BHOUserScript
                     wr = wc.GetResponse();
                     resStream = wr.GetResponseStream();
 
-                    var count = 0;
+                    int? count = 0;
                     do
                     {
-                        count = resStream.Read(buf, 0, buf.Length);
+                        count = resStream?.Read(buf, 0, buf.Length);
+                        if (count == null)
+                            break;
                         if (count != 0)
                         {
-                            sb.Append(Encoding.ASCII.GetString(buf, 0, count));
+                            sb.Append(Encoding.ASCII.GetString(buf, 0, (int)count));
                         }
                     }
                     while (count > 0);
