@@ -77,7 +77,6 @@ namespace BHOUserScript
         {
             if(!File.Exists(InstalledFile))
             {
-                StreamWriter jsonDb = new StreamWriter(SettingsFile);
                 try
                 {
                     MessageBox.Show(Resources.FirstTimeSetup, Resources.Title);
@@ -102,14 +101,13 @@ namespace BHOUserScript
                     if (File.Exists(SettingsFile))
                         File.Delete(SettingsFile);
 
-                    jsonDb.Write(JsonConvert.SerializeObject(s)); // Write blank json settings file
+                    Db.WriteFile(SettingsFile, JsonConvert.SerializeObject(s));
                     MessageBox.Show(Resources.FirstTimeSetupDone, Resources.Title);
                 }
                 catch (Exception ex)
                 {
                     Log(ex, "Installer");
                 }
-                jsonDb.Close();
             }
 
             _prefs.LoadData();
@@ -791,6 +789,8 @@ namespace BHOUserScript
         private static string RegBho = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
         private static string RegCmd = "Software\\Microsoft\\Internet Explorer\\Extensions";
 
+        private static string EpmKey = "Software\\Microsoft\\Internet Explorer\\Low Rights\\ElevationPolicy";
+
         [ComRegisterFunction]
         public static void RegisterBho(Type type)
         {
@@ -824,6 +824,26 @@ namespace BHOUserScript
                     registryKey.Close();
                     key.Close();
                 }
+
+                // Enhanced Protected Mode
+                {
+                    RegistryKey regKey = Registry.LocalMachine.OpenSubKey(EpmKey, true) ??
+                                              Registry.LocalMachine.CreateSubKey(EpmKey);
+                    if (regKey != null)
+                    {
+                        var key = regKey.OpenSubKey(guid) ?? regKey.CreateSubKey(guid);
+
+                        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        if (path == null)
+                            path = String.Empty;
+
+                        key.SetValue("AppName", "Scriptmonkey.dll");
+                        key.SetValue("AppPath", path);
+                        key.SetValue("Policy", 3);
+                        regKey.Close();
+                        key.Close();
+                    }
+                }
             }
         }
 
@@ -839,6 +859,11 @@ namespace BHOUserScript
             // Command
             {
                 RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(RegCmd, true);
+                registryKey?.DeleteSubKey(guid, false);
+            }
+            // Enhanced Protected Mode
+            {
+                RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(EpmKey, true);
                 registryKey?.DeleteSubKey(guid, false);
             }
         }
