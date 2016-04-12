@@ -250,9 +250,10 @@ namespace BHOUserScript
                     scriptContent = _scriptCache[_prefs[i].Path];
                 else
                 {
-                    var str = new StreamReader(ScriptPath + _prefs[i].Path);
-                    scriptContent = str.ReadToEnd();
-                    str.Close();
+                    //var str = new StreamReader(ScriptPath + _prefs[i].Path);
+                    //scriptContent = str.ReadToEnd();
+                    //str.Close();
+                    scriptContent = _prefs.ReadFile(ScriptPath + _prefs[i].Path);
 
                     if (_prefs.Settings.CacheScripts)
                         _scriptCache.Add(_prefs[i].Path, scriptContent);
@@ -344,13 +345,13 @@ namespace BHOUserScript
             {
                 try
                 {
-                    string url = GenerateRandomString() + URL.Substring(URL.LastIndexOf('/') + 1);
+                    string relativeScriptPath = GenerateRandomString() + URL.Substring(URL.LastIndexOf('/') + 1);
                     WebClient webClient = new WebClient();
                     webClient.DownloadFile(URL, ScriptPath
-                        + url);
+                        + relativeScriptPath);
                     webClient.Dispose();
-                    var s = ParseScriptMetadata.Parse(url);
-                    s.Path = url;
+                    var s = ParseScriptMetadata.Parse(relativeScriptPath);
+                    s.Path = relativeScriptPath;
                     _prefs.AddScript(s);
                 }
                 catch (Exception ex)
@@ -440,30 +441,9 @@ namespace BHOUserScript
         {
             if (_prefs.Settings.CheckForUpdates && _prefs.Settings.LastUpdateCheckDate < DateTime.Now - TimeSpan.FromDays(3))
             {
-                WebResponse wr = null;
-                Stream resStream = null;
                 try
                 {
-                    HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri("https://servc.eu/p/scriptmonkey/version.php"));
-                    StringBuilder sb = new StringBuilder();
-                    byte[] buf = new byte[8192];
-                    wr = wc.GetResponse();
-                    resStream = wr.GetResponseStream();
-
-                    int? count = 0;
-                    do
-                    {
-                        count = resStream?.Read(buf, 0, buf.Length);
-                        if (count == null)
-                            break;
-                        if (count != 0)
-                        {
-                            sb.Append(Encoding.ASCII.GetString(buf, 0, (int)count));
-                        }
-                    }
-                    while (count > 0);
-
-                    UpdateResponse response = JsonConvert.DeserializeObject<UpdateResponse>(sb.ToString());
+                    UpdateResponse response = JsonConvert.DeserializeObject<UpdateResponse>(SendWebRequest("https://servc.eu/p/scriptmonkey/version.php", true));
 
                     if (response.Success && response.LatestVersion > CurrentVersion())
                     {
@@ -501,9 +481,6 @@ namespace BHOUserScript
                     }
                 }
                 catch (Exception) { }
-
-                wr?.Close();
-                resStream?.Close();
             }
 
         }
@@ -515,7 +492,6 @@ namespace BHOUserScript
         {
             DateTime now = DateTime.UtcNow;
             var updated = false;
-            WebClient wc = new WebClient();
             var toUpdate = new List<Script>();
             var toUpdateTo = new List<ScriptWithContent>();
             foreach (Script s in _prefs.AllScripts)
@@ -524,7 +500,7 @@ namespace BHOUserScript
                 {
                     try
                     {
-                        var content = wc.DownloadString(s.UpdateUrl);
+                        var content = SendWebRequest(s.UpdateUrl);
                         var newScript = ParseScriptMetadata.ParseFromContents(content);
                         if (newScript.Version != s.Version)
                         {
@@ -616,6 +592,47 @@ namespace BHOUserScript
             });
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
+        }
+
+        /// <summary>
+        /// Send a WebRequest (with a timeout of 1000ms). Returns an empty string on timeout.
+        /// </summary>
+        /// <param name="url">The requested resource</param>
+        /// <param name="quick">True to set a timeout of 500ms</param>
+        /// <returns>The requested resource</returns>
+        private static string SendWebRequest(string url, bool quick = false)
+        {
+            HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            if (quick)
+                wc.Timeout = 1000;
+            byte[] buf = new byte[8192];
+            StringBuilder sb = new StringBuilder();
+            try
+            {
+                WebResponse wr = wc.GetResponse();
+                Stream resStream = wr.GetResponseStream();
+
+                int? count = 0;
+                do
+                {
+                    count = resStream?.Read(buf, 0, buf.Length);
+                    if (count == null)
+                        break;
+                    if (count != 0)
+                    {
+                        sb.Append(Encoding.ASCII.GetString(buf, 0, (int) count));
+                    }
+                } while (count > 0);
+
+                wr.Close();
+                resStream?.Close();
+            }
+            catch (Exception ex)
+            {
+                Log(ex, "URL: " + url);
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>

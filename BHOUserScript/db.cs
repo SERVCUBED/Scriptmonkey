@@ -182,7 +182,7 @@ namespace BHOUserScript
         /// <param name="url">The URL of the file to read.</param>
         /// <param name="onError">Optional. The string to return if the file cannot be found.</param>
         /// <returns></returns>
-        private string ReadFile(string url, string onError = null)
+        public string ReadFile(string url, string onError = null)
         {
             if (!File.Exists(url))
             {
