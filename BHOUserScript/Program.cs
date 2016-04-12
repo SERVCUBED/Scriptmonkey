@@ -429,7 +429,7 @@ namespace BHOUserScript
             }
             catch (Exception) { }
 #if DEBUG
-            MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
+            MessageBox.Show(ex?.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex?.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex?.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
 #endif
         }
 
