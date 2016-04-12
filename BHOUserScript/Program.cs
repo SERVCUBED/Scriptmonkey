@@ -162,7 +162,7 @@ namespace BHOUserScript
                 if (!_prefs.Settings.Enabled) return;
 
                 // Set up API keys with random length for each script
-                if (_apiKeys == null)
+                if (_apiKeys == null || _apiKeys.Length != _prefs.AllScripts.Count)
                 {
                     _apiKeys = new string[_prefs.AllScripts.Count];
                     Random r = new Random();
