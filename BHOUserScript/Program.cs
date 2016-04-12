@@ -205,7 +205,7 @@ namespace BHOUserScript
                 if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
                     ShowOptions();
                     
-                var menuContent = "<div style=\"" + _prefs.Settings.MenuCommandCSS + "\">";
+                var menuContent = "<div style=\"" + _prefs.Settings.MenuCommandCSS.Replace('"','\'') + "\">"; // Replace double quotes with single to prevent escaping out of style
                 bool useMenuCommands = false;
 
                 for (int i = 0; i < _prefs.AllScripts.Count; i++)
