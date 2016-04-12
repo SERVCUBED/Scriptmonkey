@@ -284,7 +284,7 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
-                if (_prefs.Settings.LogScriptContentsOnRunError)
+                if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
                     Log(ex, "At script: " + _prefs[i].Name + ':' + Environment.NewLine + scriptContent);
                 else
                     Log(ex, "At script: " + _prefs[i].Name);
