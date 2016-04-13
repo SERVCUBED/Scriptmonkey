@@ -91,7 +91,6 @@ namespace BHOUserScript
                 {
                     Scriptmonkey.Log(ex, "Unable to parse resources");
                 }
-                str.Close();
             }
 
             DialogResult = DialogResult.OK;

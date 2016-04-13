@@ -425,7 +425,6 @@ namespace BHOUserScript
                     if (extraInfo != null) 
                         writer.WriteLine(extraInfo);
                     writer.WriteLine("------------ " + DateTime.Now);
-                    writer.Close();
                 }
             }
             catch (Exception) { }
@@ -703,14 +702,17 @@ namespace BHOUserScript
             else
             {
                 // No site. Remove handlers
-                ((DWebBrowserEvents2_Event)_browser).DocumentComplete -= Run;
-                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -= BeforeNavigate;
-                if (_prefs.Settings.RunOnPageRefresh)
+                if (_browser != null)
                 {
-                    ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 -= NavigateComplete2;
-                    ((DWebBrowserEvents2_Event)_browser).DownloadComplete -= DownloadComplete;
+                    ((DWebBrowserEvents2_Event) _browser).DocumentComplete -= Run;
+                    ((DWebBrowserEvents2_Event) _browser).BeforeNavigate2 -= BeforeNavigate;
+                    if (_prefs.Settings.RunOnPageRefresh)
+                    {
+                        ((DWebBrowserEvents2_Event) _browser).NavigateComplete2 -= NavigateComplete2;
+                        ((DWebBrowserEvents2_Event) _browser).DownloadComplete -= DownloadComplete;
+                    }
+                    _browser = null;
                 }
-                _browser = null;
             }
             return 0;
         }

@@ -114,9 +114,7 @@ namespace BHOUserScript
         {
             get
             {
-                if (Settings.Scripts.Count - 1 >= index) // Must -1 as index is base 0
-                    return Settings.Scripts[index];
-                throw new IndexOutOfRangeException("Script index out of range");
+                return Settings.Scripts[index];
             }
             set { 
                 Settings.Scripts[index] = value;
