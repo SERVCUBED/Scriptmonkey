@@ -326,7 +326,7 @@ namespace BHOUserScript
             {
                 //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
                 //                    ex.Message.Replace("\"", "\\\"") + "\");");
-                if (_prefs.Settings.LogScriptContentsOnRunError)
+                if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
                     Log(ex, "At script: " + name + ':' + Environment.NewLine + content);
                 else
                     Log(ex, "At script: " + name);
