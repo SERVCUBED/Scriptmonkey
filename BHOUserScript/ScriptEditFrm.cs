@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using System.Net;
+using BHOUserScript.Properties;
 
 namespace BHOUserScript
 {
@@ -248,6 +249,20 @@ namespace BHOUserScript
         {
             EditedScript.SavedValues = new System.Collections.Generic.Dictionary<string, string>();
             EditedScript.MenuCommands = null;
+        }
+
+        private void editIncludeBtn_Click(object sender, EventArgs e) => editValue(listBox1);
+
+        private void editExcludeBtn_Click(object sender, EventArgs e) => editValue(excludesBox);
+
+        private void editValue(ListBox box)
+        {
+            if (box.SelectedIndex >= 0)
+            {
+                string s = Interaction.InputBox("Edit value:", Resources.Title, listBox1.SelectedItem.ToString());
+                if (!String.IsNullOrEmpty(s))
+                    box.Items[listBox1.SelectedIndex] = s;
+            }
         }
     }
 }

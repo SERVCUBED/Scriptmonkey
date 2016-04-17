@@ -61,6 +61,8 @@ namespace BHOUserScript
             this.remExcludeBtn = new System.Windows.Forms.Button();
             this.noExcludeWarningLbl = new System.Windows.Forms.Label();
             this.clearValsBtn = new System.Windows.Forms.Button();
+            this.editIncludeBtn = new System.Windows.Forms.Button();
+            this.editExcludeBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -157,6 +159,7 @@ namespace BHOUserScript
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(410, 82);
             this.listBox1.TabIndex = 6;
+            this.listBox1.DoubleClick += new System.EventHandler(this.editIncludeBtn_Click);
             // 
             // label5
             // 
@@ -247,7 +250,7 @@ namespace BHOUserScript
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabledChk.Location = new System.Drawing.Point(72, 350);
             this.enabledChk.Name = "enabledChk";
-            this.enabledChk.Size = new System.Drawing.Size(64, 17);
+            this.enabledChk.Size = new System.Drawing.Size(65, 17);
             this.enabledChk.TabIndex = 14;
             this.enabledChk.Text = "Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
@@ -280,6 +283,7 @@ namespace BHOUserScript
             this.excludesBox.Name = "excludesBox";
             this.excludesBox.Size = new System.Drawing.Size(410, 82);
             this.excludesBox.TabIndex = 9;
+            this.excludesBox.DoubleClick += new System.EventHandler(this.editExcludeBtn_Click);
             // 
             // label8
             // 
@@ -331,11 +335,33 @@ namespace BHOUserScript
             this.clearValsBtn.Visible = false;
             this.clearValsBtn.Click += new System.EventHandler(this.clearValsBtn_Click);
             // 
+            // editIncludeBtn
+            // 
+            this.editIncludeBtn.Location = new System.Drawing.Point(16, 166);
+            this.editIncludeBtn.Name = "editIncludeBtn";
+            this.editIncludeBtn.Size = new System.Drawing.Size(56, 23);
+            this.editIncludeBtn.TabIndex = 20;
+            this.editIncludeBtn.Text = "Edit";
+            this.editIncludeBtn.UseVisualStyleBackColor = true;
+            this.editIncludeBtn.Click += new System.EventHandler(this.editIncludeBtn_Click);
+            // 
+            // editExcludeBtn
+            // 
+            this.editExcludeBtn.Location = new System.Drawing.Point(16, 263);
+            this.editExcludeBtn.Name = "editExcludeBtn";
+            this.editExcludeBtn.Size = new System.Drawing.Size(56, 23);
+            this.editExcludeBtn.TabIndex = 20;
+            this.editExcludeBtn.Text = "Edit";
+            this.editExcludeBtn.UseVisualStyleBackColor = true;
+            this.editExcludeBtn.Click += new System.EventHandler(this.editExcludeBtn_Click);
+            // 
             // ScriptEditFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 376);
+            this.Controls.Add(this.editExcludeBtn);
+            this.Controls.Add(this.editIncludeBtn);
             this.Controls.Add(this.clearValsBtn);
             this.Controls.Add(this.noExcludeWarningLbl);
             this.Controls.Add(this.noURLWarningLbl);
@@ -409,5 +435,7 @@ namespace BHOUserScript
         private Button remExcludeBtn;
         private Label noExcludeWarningLbl;
         private Button clearValsBtn;
+        private Button editIncludeBtn;
+        private Button editExcludeBtn;
     }
 }
