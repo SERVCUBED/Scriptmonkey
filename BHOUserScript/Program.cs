@@ -187,7 +187,8 @@ namespace BHOUserScript
 
                 var window = document2.parentWindow;
 
-                SetupWindow(window);
+                if (_prefs.Settings.InjectAPI)
+                    SetupWindow(window);
 
                 if (document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
                     try
@@ -260,8 +261,11 @@ namespace BHOUserScript
                 }
 
                 var content = "function Scriptmonkey_S" + i + "_proto() {";
-                content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
-                              Resources.WrapperJS_After + scriptContent;
+                if (_prefs.Settings.InjectAPI)
+                    content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
+                               Resources.WrapperJS_After + scriptContent;
+                else
+                    content += scriptContent;
 
                 if (_prefs[i].MenuCommands?.Count > 0)
                 {

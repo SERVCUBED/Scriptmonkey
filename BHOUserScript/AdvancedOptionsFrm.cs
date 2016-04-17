@@ -27,7 +27,10 @@ namespace BHOUserScript
             publicApiChk.Checked = Settings.UsePublicAPI;
             cacheChk.Checked = Settings.CacheScripts;
             refreshPageChk.Checked = Settings.RefreshOnSave;
+            injectApiChk.Checked = Settings.InjectAPI;
             reloadNum.Value = Settings.ReloadAfterPages;
+
+            publicApiChk.Enabled = injectApiChk.Checked;
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
@@ -38,8 +41,14 @@ namespace BHOUserScript
             Settings.UsePublicAPI = publicApiChk.Checked;
             Settings.CacheScripts = cacheChk.Checked;
             Settings.RefreshOnSave = refreshPageChk.Checked;
+            Settings.InjectAPI = injectApiChk.Checked;
             Settings.ReloadAfterPages = (int)reloadNum.Value;
             DialogResult = DialogResult.OK;
+        }
+
+        private void injectApiChk_CheckedChanged(object sender, EventArgs e)
+        {
+            publicApiChk.Enabled = injectApiChk.Checked;
         }
     }
 }

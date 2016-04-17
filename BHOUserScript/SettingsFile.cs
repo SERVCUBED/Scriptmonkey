@@ -31,6 +31,8 @@ namespace BHOUserScript
 
         public bool UsePublicAPI = false;
 
+        public bool InjectAPI = true;
+
         public bool CacheScripts = true;
 
         public bool LogScriptContentsOnRunError = false;

@@ -39,13 +39,14 @@
             this.reloadNum = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.refreshPageChk = new System.Windows.Forms.CheckBox();
+            this.injectApiChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(219, 170);
+            this.saveBtn.Location = new System.Drawing.Point(220, 201);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -58,7 +59,7 @@
             this.updateChk.AutoSize = true;
             this.updateChk.Location = new System.Drawing.Point(13, 13);
             this.updateChk.Name = "updateChk";
-            this.updateChk.Size = new System.Drawing.Size(112, 17);
+            this.updateChk.Size = new System.Drawing.Size(113, 17);
             this.updateChk.TabIndex = 1;
             this.updateChk.Text = "Check for updates";
             this.updateChk.UseVisualStyleBackColor = true;
@@ -68,7 +69,7 @@
             this.refreshChk.AutoSize = true;
             this.refreshChk.Location = new System.Drawing.Point(13, 37);
             this.refreshChk.Name = "refreshChk";
-            this.refreshChk.Size = new System.Drawing.Size(281, 17);
+            this.refreshChk.Size = new System.Drawing.Size(282, 17);
             this.refreshChk.TabIndex = 2;
             this.refreshChk.Text = "Run on page refresh (experimental, not recommended)";
             this.refreshChk.UseVisualStyleBackColor = true;
@@ -78,7 +79,7 @@
             this.autoChk.AutoSize = true;
             this.autoChk.Location = new System.Drawing.Point(13, 61);
             this.autoChk.Name = "autoChk";
-            this.autoChk.Size = new System.Drawing.Size(152, 17);
+            this.autoChk.Size = new System.Drawing.Size(153, 17);
             this.autoChk.TabIndex = 3;
             this.autoChk.Text = "Detect scripts on webpage";
             this.autoChk.UseVisualStyleBackColor = true;
@@ -86,9 +87,9 @@
             // publicApiChk
             // 
             this.publicApiChk.AutoSize = true;
-            this.publicApiChk.Location = new System.Drawing.Point(13, 85);
+            this.publicApiChk.Location = new System.Drawing.Point(32, 109);
             this.publicApiChk.Name = "publicApiChk";
-            this.publicApiChk.Size = new System.Drawing.Size(178, 17);
+            this.publicApiChk.Size = new System.Drawing.Size(179, 17);
             this.publicApiChk.TabIndex = 4;
             this.publicApiChk.Text = "Use public API (developers only)";
             this.publicApiChk.UseVisualStyleBackColor = true;
@@ -96,9 +97,9 @@
             // cacheChk
             // 
             this.cacheChk.AutoSize = true;
-            this.cacheChk.Location = new System.Drawing.Point(13, 109);
+            this.cacheChk.Location = new System.Drawing.Point(12, 133);
             this.cacheChk.Name = "cacheChk";
-            this.cacheChk.Size = new System.Drawing.Size(89, 17);
+            this.cacheChk.Size = new System.Drawing.Size(90, 17);
             this.cacheChk.TabIndex = 5;
             this.cacheChk.Text = "Cache scripts";
             this.cacheChk.UseVisualStyleBackColor = true;
@@ -106,7 +107,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 153);
+            this.label1.Location = new System.Drawing.Point(11, 184);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 6;
@@ -114,7 +115,7 @@
             // 
             // reloadNum
             // 
-            this.reloadNum.Location = new System.Drawing.Point(120, 151);
+            this.reloadNum.Location = new System.Drawing.Point(121, 182);
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
             this.reloadNum.TabIndex = 7;
@@ -122,7 +123,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(183, 153);
+            this.label2.Location = new System.Drawing.Point(184, 184);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 8;
@@ -131,18 +132,30 @@
             // refreshPageChk
             // 
             this.refreshPageChk.AutoSize = true;
-            this.refreshPageChk.Location = new System.Drawing.Point(13, 133);
+            this.refreshPageChk.Location = new System.Drawing.Point(12, 157);
             this.refreshPageChk.Name = "refreshPageChk";
-            this.refreshPageChk.Size = new System.Drawing.Size(130, 17);
+            this.refreshPageChk.Size = new System.Drawing.Size(131, 17);
             this.refreshPageChk.TabIndex = 9;
             this.refreshPageChk.Text = "Refresh page on save";
             this.refreshPageChk.UseVisualStyleBackColor = true;
+            // 
+            // injectApiChk
+            // 
+            this.injectApiChk.AutoSize = true;
+            this.injectApiChk.Location = new System.Drawing.Point(13, 86);
+            this.injectApiChk.Name = "injectApiChk";
+            this.injectApiChk.Size = new System.Drawing.Size(139, 17);
+            this.injectApiChk.TabIndex = 10;
+            this.injectApiChk.Text = "Inject API into webpage";
+            this.injectApiChk.UseVisualStyleBackColor = true;
+            this.injectApiChk.CheckedChanged += new System.EventHandler(this.injectApiChk_CheckedChanged);
             // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 205);
+            this.ClientSize = new System.Drawing.Size(306, 233);
+            this.Controls.Add(this.injectApiChk);
             this.Controls.Add(this.refreshPageChk);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.reloadNum);
@@ -180,5 +193,6 @@
         private System.Windows.Forms.NumericUpDown reloadNum;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox refreshPageChk;
+        private System.Windows.Forms.CheckBox injectApiChk;
     }
 }
