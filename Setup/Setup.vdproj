@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_158AF619F1BD4D51BE9EC9EA702ED943"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6732EA986F7A4F368C44CF2288295326"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -33,14 +39,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_89C63613C79C4E188F26EF593DCC350E"
+        "MsmKey" = "8:_96F54FEB6B014FA3BC591596CE8641A0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_96F54FEB6B014FA3BC591596CE8641A0"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_9E3FDF0CD14BBC2A3D5DE4598696BE55"
+        "OwnerKey" = "8:_011A050A27BC4358817750DB47E1257F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9E3FDF0CD14BBC2A3D5DE4598696BE55"
+        "OwnerKey" = "8:_6732EA986F7A4F368C44CF2288295326"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -51,14 +63,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A485559B4FA0762B4DD334A8B9F6F877"
-        "OwnerKey" = "8:_011A050A27BC4358817750DB47E1257F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A485559B4FA0762B4DD334A8B9F6F877"
-        "OwnerKey" = "8:_6732EA986F7A4F368C44CF2288295326"
+        "MsmKey" = "8:_D35D862563C0432E8A4328411B3075C7"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -88,7 +94,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A485559B4FA0762B4DD334A8B9F6F877"
+        "OwnerKey" = "8:_9E3FDF0CD14BBC2A3D5DE4598696BE55"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -195,31 +201,31 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_257654359ADA4008A18B69F5F26CF169"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_56DB04D5206B428B9697F53832522942"
             {
-            "Name" = "8:Unregister"
+            "Name" = "8:Register.NETv4.0.30319.vbs"
             "Condition" = "8:"
-            "Object" = "8:_89C63613C79C4E188F26EF593DCC350E"
-            "FileType" = "3:2"
-            "InstallAction" = "3:4"
-            "Arguments" = "8:/c \"[TARGETDIR]Unregister.NETv4.0.30319.bat\""
+            "Object" = "8:_D35D862563C0432E8A4328411B3075C7"
+            "FileType" = "3:4"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_1ADC33C9_72CD_45DC_90E5_E61552E4AFBF"
+            "Identifier" = "8:_68B70489_5F0F_430F_8DC2_B67AC3D18039"
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_575B3C20FFDA47C8BF23BDED276DB565"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_596467004F454320981A107B2C09F8F3"
             {
-            "Name" = "8:Register"
+            "Name" = "8:Unregister.NETv4.0.30319.vbs"
             "Condition" = "8:"
-            "Object" = "8:_89C63613C79C4E188F26EF593DCC350E"
-            "FileType" = "3:2"
-            "InstallAction" = "3:2"
-            "Arguments" = "8:/c \"[TARGETDIR]Register.NETv4.0.30319.bat\""
+            "Object" = "8:_158AF619F1BD4D51BE9EC9EA702ED943"
+            "FileType" = "3:4"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_A5AAF2ED_A39E_4C5A_AA7D_8197B8CE136D"
+            "Identifier" = "8:_C6D7A97F_1315_4AC2_9D37_4E2A4D97FF86"
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
@@ -246,6 +252,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_158AF619F1BD4D51BE9EC9EA702ED943"
+            {
+            "SourcePath" = "8:..\\BHOUserScript\\Unregister.NETv4.0.30319.vbs"
+            "TargetName" = "8:Unregister.NETv4.0.30319.vbs"
+            "Tag" = "8:"
+            "Folder" = "8:_19467F3179D14C339937A2D2923DFFE2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7142BB1C427C40CAA0E1EEB15ADC3E4E"
             {
             "SourcePath" = "8:..\\BHOUserScript\\Unregister.NETv4.0.30319.bat"
@@ -263,26 +289,6 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_89C63613C79C4E188F26EF593DCC350E"
-            {
-            "SourcePath" = "8:C:\\Windows\\System32\\cmd.exe"
-            "TargetName" = "8:cmd.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_446CABA3E86E4FB8B0D37801C26C4CD0"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -306,6 +312,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9E3FDF0CD14BBC2A3D5DE4598696BE55"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9E3FDF0CD14BBC2A3D5DE4598696BE55"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_19467F3179D14C339937A2D2923DFFE2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F2A75AE035C48EDA9D603B9849F990A"
             {
             "SourcePath" = "8:..\\BHOUserScript\\LICENSE"
@@ -326,16 +363,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A485559B4FA0762B4DD334A8B9F6F877"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D35D862563C0432E8A4328411B3075C7"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\BHOUserScript\\Register.NETv4.0.30319.vbs"
+            "TargetName" = "8:Register.NETv4.0.30319.vbs"
             "Tag" = "8:"
             "Folder" = "8:_19467F3179D14C339937A2D2923DFFE2"
             "Condition" = "8:"
@@ -349,7 +380,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D371DB51B4F241A7A27883A7BDBD9A6F"
@@ -473,7 +504,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Scriptmonkey"
         "ProductCode" = "8:{B7D440F7-71FD-49F8-BEE8-0DD5E05F621C}"
-        "PackageCode" = "8:{DAA86B57-2804-4416-B3DF-D2C5E9596F99}"
+        "PackageCode" = "8:{16DBB372-92DF-4C65-9D15-2DE741E83293}"
         "UpgradeCode" = "8:{D11FCE76-6807-482E-8FB8-E27250E2B5B9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

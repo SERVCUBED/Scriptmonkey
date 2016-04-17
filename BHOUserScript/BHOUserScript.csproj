@@ -164,6 +164,7 @@
     <Compile Include="XmlHttpRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Unregister.NETv4.0.30319.vbs" />
     <None Include="Wrapper.js" />
     <None Include="App.config" />
     <None Include="icons\Icon.psd" />
@@ -173,6 +174,7 @@
     <Content Include="Register.NETv4.0.30319.bat" />
     <None Include="Resources\search.png" />
     <None Include="Resources\search.bmp" />
+    <Content Include="Register.NETv4.0.30319.vbs" />
     <Content Include="Unregister.NETv4.0.30319.bat" />
     <None Include="Key.snk" />
     <None Include="packages.config" />
