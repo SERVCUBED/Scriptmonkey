@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
+using System.EnterpriseServices.Internal;
 
-namespace CanIRunIt
+namespace InstallationManager
 {
     static class Program
     {
@@ -26,7 +28,7 @@ namespace CanIRunIt
             ConsoleColor defaultBack = Console.BackgroundColor;
             Console.BackgroundColor = ConsoleColor.Black;
 
-            Console.Title = "Can I Run Scriptmonkey?";
+            Console.Title = "Scriptmonkey Installation Manager";
 
             Console.WriteLine("Can I Run Scriptmonkey?\r\n");
 
@@ -107,6 +109,7 @@ namespace CanIRunIt
             {
                 Console.ForegroundColor = ConsoleColor.Green; // Different colours to make text easier for the user to read. 
                 Console.WriteLine("\r\n>> Yes! You can run Scriptmonkey!");
+                AskInstall();
             }
             else
             {
@@ -124,12 +127,121 @@ namespace CanIRunIt
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\r\nAll done! Press any key to exit.");
+            Console.WriteLine("\r\n>> All done! Press any key to exit.");
             Console.ReadKey();
 
             // Go back go original colour configuration
             Console.ForegroundColor = defaultFore;
             Console.BackgroundColor = defaultBack;
+        }
+
+        static void AskInstall()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\r\nInstall Scriptmonkey? Press the key:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("'1' Install Scriptmonkey\r\n'2' Remove Scriptmonkey\r\n'3' Exit");
+            var key = Console.ReadKey().Key;
+            Console.ForegroundColor = ConsoleColor.Gray;
+            if (key == ConsoleKey.D1 || key == ConsoleKey.NumPad1)
+                Install();
+            else if (key == ConsoleKey.D2 || key == ConsoleKey.NumPad2)
+                Remove();
+            else if (key == ConsoleKey.D3 || key == ConsoleKey.NumPad3)
+                return;
+            else
+            {
+                // Try again
+                Console.WriteLine("\r\nUnknown key, try again.");
+                AskInstall();
+            }
+        }
+
+        // File paths
+        static string driveLetter = Path.GetPathRoot(Environment.SystemDirectory);
+        static string regAsm32Path = driveLetter + "Windows\\Microsoft.NET\\Framework\\v4.0.30319\\RegAsm.exe";
+        static string regAsm64Path = driveLetter + "Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\RegAsm.exe";
+        static string mainDllPath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Scriptmonkey.dll";
+        static string jsonDllPath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Newtonsoft.Json.dll";
+
+        static void Install() {
+            // Make sure file exists
+            Console.WriteLine("\r\n> Checking files...");
+            if (!File.Exists(mainDllPath) || !File.Exists(jsonDllPath))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n>> Unable to find all the required files. Please extract all files from the archive then try again.");
+                return;
+            }
+            Console.WriteLine("File check success!");
+
+            // Is 64 bit .NET installed?
+            bool is64BitInstalled = File.Exists(regAsm64Path);
+            if (is64BitInstalled) Console.WriteLine("64-Bit check success");
+
+            // Publish to GAC
+            var pub = new Publish();
+            pub.GacInstall(mainDllPath);
+            pub.GacInstall(jsonDllPath);
+
+            // Register with RegAsm
+            RunProcess(regAsm32Path, mainDllPath);
+            if (is64BitInstalled)
+                RunProcess(regAsm64Path, mainDllPath);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\r\n>> Successfully installed Scriptmonkey!");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Make sure you enable the addon when you start Internet Explorer (bar at the bottom).");
+        }
+
+        static void Remove()
+        {
+            // Make sure file exists
+            Console.WriteLine("\r\n> Checking files...");
+            if (!File.Exists(mainDllPath) || !File.Exists(jsonDllPath))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\r\n>> Unable to find all the required files. Please extract all files from the archive then try again.");
+                return;
+            }
+            Console.WriteLine("File check success!");
+
+            // Is 64 bit .NET installed?
+            bool is64BitInstalled = File.Exists(regAsm64Path);
+            if (is64BitInstalled) Console.WriteLine("64-Bit check success");
+
+            // Unregister with RegAsm
+            RunProcess(regAsm32Path, "/unregister " + mainDllPath);
+            if (is64BitInstalled)
+                RunProcess(regAsm64Path, "/unregister " + mainDllPath);
+
+            // Remove from GAC
+            var pub = new Publish();
+            pub.GacRemove(mainDllPath);
+            pub.GacRemove(jsonDllPath);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\r\n>> Successfully removed Scriptmonkey!");
+        }
+
+        static void RunProcess(string path, string args)
+        {
+            var p = new Process();
+            p.StartInfo.FileName = path;
+            p.StartInfo.Arguments = args;
+            try
+            {
+                p.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Unable to start " + path);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }
