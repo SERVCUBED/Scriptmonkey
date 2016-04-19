@@ -349,7 +349,7 @@ namespace BHOUserScript
             {
                 try
                 {
-                    string relativeScriptPath = GenerateRandomString() + URL.Substring(URL.LastIndexOf('/') + 1);
+                    string relativeScriptPath = GenerateRandomString() + ".user.js";
                     WebClient webClient = new WebClient();
                     webClient.DownloadFile(URL, ScriptPath
                         + relativeScriptPath);
