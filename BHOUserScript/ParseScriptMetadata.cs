@@ -82,9 +82,10 @@ namespace BHOUserScript
 
                 return scr;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                Scriptmonkey.Log(ex, "Error parsing script metadata");
+                if (Scriptmonkey.LogAndCheckDebugger(ex, "Error parsing script metadata"))
+                    throw;
             }
             return scr;
         }

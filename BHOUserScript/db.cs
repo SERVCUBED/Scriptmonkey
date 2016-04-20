@@ -53,7 +53,7 @@ namespace BHOUserScript
 
         public void Reset(Exception ex)
         {
-            Scriptmonkey.Log(ex, "Reset?");
+            Scriptmonkey.LogAndCheckDebugger(ex, "Reset?");
             var form = new ReadSettingsFailureFrm { errorTxt = { Text = ex.Message } };
             var res = form.ShowDialog();
             form.Dispose();
@@ -98,7 +98,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Scriptmonkey.Log(ex, "Unable to save");
+                if (Scriptmonkey.LogAndCheckDebugger(ex, "Unable to save"))
+                    throw;
             }
             //stw.Close();
         }
@@ -184,7 +185,7 @@ namespace BHOUserScript
         {
             if (!File.Exists(url))
             {
-                Scriptmonkey.Log(null, $"Attempted to read \"{url}\". File does not exist.");
+                Scriptmonkey.LogAndCheckDebugger(null, $"Attempted to read \"{url}\". File does not exist.");
                 return onError;
             }
 

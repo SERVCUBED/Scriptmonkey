@@ -106,7 +106,8 @@ namespace BHOUserScript
                 }
                 catch (Exception ex)
                 {
-                    Log(ex, "Installer");
+                    if (LogAndCheckDebugger(ex, "Installer"))
+                        throw;
                 }
             }
 
@@ -200,7 +201,8 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        Log(ex, "Unable to inject JavaScript into webpage");
+                        if (LogAndCheckDebugger(ex, "Unable to inject JavaScript into webpage"))
+                            throw;
                     }
 
                 if (document2.url == "https://servc.eu/p/scriptmonkey/options.html")
@@ -220,7 +222,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex, "At: main");
+                if (LogAndCheckDebugger(ex, "At: main"))
+                    throw;
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
@@ -289,10 +292,15 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + _prefs[i].Name + ". Error: " + ex.Message.Replace("\"", "\\\"") + "\");");
+                bool shouldThrow;
                 if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
-                    Log(ex, "At script: " + _prefs[i].Name + ':' + Environment.NewLine + scriptContent);
+                    shouldThrow = LogAndCheckDebugger(ex, "At script: " + _prefs[i].Name + ':' + Environment.NewLine + scriptContent);
                 else
-                    Log(ex, "At script: " + _prefs[i].Name);
+                    shouldThrow = LogAndCheckDebugger(ex, "At script: " + _prefs[i].Name);
+
+                if (shouldThrow)
+                    throw;
+
             }
         }
 
@@ -310,7 +318,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex, "SetupWindow");
+                if (LogAndCheckDebugger(ex, "SetupWindow"))
+                    throw;
             }
         }
         
@@ -330,10 +339,14 @@ namespace BHOUserScript
             {
                 //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
                 //                    ex.Message.Replace("\"", "\\\"") + "\");");
+                bool shouldThrow;
                 if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
-                    Log(ex, "At script: " + name + ':' + Environment.NewLine + content);
+                    shouldThrow = LogAndCheckDebugger(ex, "At script: " + name + ':' + Environment.NewLine + content);
                 else
-                    Log(ex, "At script: " + name);
+                    shouldThrow = LogAndCheckDebugger(ex, "At script: " + name);
+
+                if (shouldThrow)
+                    throw;
             }
         }
 
@@ -360,7 +373,8 @@ namespace BHOUserScript
                 }
                 catch (Exception ex)
                 {
-                    Log(ex, Resources.AutomaticAddFailError);
+                    if (LogAndCheckDebugger(ex, Resources.AutomaticAddFailError))
+                        throw;
                 }
                 return true;
             }
@@ -411,11 +425,12 @@ namespace BHOUserScript
         }
 
         /// <summary>
-        /// Writes an exception to the log file.
+        /// Writes an exception to the log file. Returns true if compiled in debug configuration and an exception should be thrown.
         /// </summary>
         /// <param name="ex">Exception</param>
         /// <param name="extraInfo">Any extra info (debug notes, vars)</param>
-        public static void Log(Exception ex, string extraInfo = null)
+        /// <returns>If the exception should be thrown</returns>
+        public static bool LogAndCheckDebugger(Exception ex, string extraInfo = null)
         {
             try
             {
@@ -433,8 +448,19 @@ namespace BHOUserScript
             }
             catch (Exception) { }
 #if DEBUG
-            MessageBox.Show(ex?.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex?.StackTrace + Environment.NewLine + "Souce: " + Environment.NewLine + ex?.Source + ": Main" + ((extraInfo != null)? Environment.NewLine + extraInfo : ""), Resources.Title);
+            var shouldDebug = MessageBox.Show(ex?.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex?.StackTrace +
+                                Environment.NewLine + "Souce: " + Environment.NewLine + ex?.Source + ": Main" +
+                                ((extraInfo != null) ? Environment.NewLine + extraInfo : ""),
+                                Resources.Title + ": Debug?", MessageBoxButtons.YesNo);
+            
+            if (shouldDebug == DialogResult.Yes && ex != null)
+            {
+                if (!Debugger.IsAttached)
+                    Debugger.Launch();
+                return true;
+            }
 #endif
+            return false;
         }
 
         /// <summary>
@@ -514,7 +540,8 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        Log(ex, "Script update check failed for: " + s.Name);
+                        if (LogAndCheckDebugger(ex, "Script update check failed for: " + s.Name))
+                            throw;
                     }
                     s.InstallDate = now;
                     updated = true;
@@ -565,7 +592,8 @@ namespace BHOUserScript
                         }
                         catch (Exception ex)
                         {
-                            Log(ex, "Unable to update script: " + toUpdate[i].Name);
+                            if (LogAndCheckDebugger(ex, "Unable to update script: " + toUpdate[i].Name))
+                                throw;
 
                             // Something went wrong. Restore from backup
                             if (File.Exists(ScriptPath + toUpdate[i].Path))
@@ -632,7 +660,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex, "URL: " + url);
+                LogAndCheckDebugger(ex, "URL: " + url);
             }
 
             return sb.ToString();
@@ -917,7 +945,8 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        Log(ex, "Try refresh after save");
+                        if (LogAndCheckDebugger(ex, "Try refresh after save"))
+                            throw;
                     }
                 }
             }
@@ -949,7 +978,8 @@ namespace BHOUserScript
                 _prefs.Save();
             }
             catch (Exception ex) {
-                Log(ex, "\r\nAt: setScriptValue");
+                if (LogAndCheckDebugger(ex, "\r\nAt: setScriptValue"))
+                    throw;
             }
         }
 
@@ -974,7 +1004,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex, "\r\nAt: getScriptValue");
+                if (LogAndCheckDebugger(ex, "\r\nAt: getScriptValue"))
+                    throw;
             }
             return defaultValue;
         }
@@ -997,7 +1028,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex, "\r\nAt: deleteScriptValue");
+                if (LogAndCheckDebugger(ex, "\r\nAt: deleteScriptValue"))
+                    throw;
             }
         }
 
@@ -1027,7 +1059,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                Log(ex, "\r\nAt: getScriptValuesList");
+                if (LogAndCheckDebugger(ex, "\r\nAt: getScriptValuesList"))
+                    throw;
             }
             return null;
         }
@@ -1067,7 +1100,8 @@ namespace BHOUserScript
                     catch (Exception ex)
                     {
                         webClient.Dispose();
-                        Log(ex, "getScriptResourceText: Error downloading file");
+                        if (LogAndCheckDebugger(ex, "getScriptResourceText: Error downloading file"))
+                            throw;
                         return null;
                     }
                 }
@@ -1080,7 +1114,8 @@ namespace BHOUserScript
                 }
                 catch (Exception ex)
                 {
-                    Log(ex, "getScriptResourceText: Error reading from file");
+                    if (LogAndCheckDebugger(ex, "getScriptResourceText: Error reading from file"))
+                        throw;
                 }
                 str.Close();
                 return o;
@@ -1171,8 +1206,8 @@ namespace BHOUserScript
             catch (Exception ex)
             {
 
-                if (!(ex is WebException))
-                    Log(ex, "xmlHttpRequest: Error downloading file");
+                if (!(ex is WebException) && LogAndCheckDebugger(ex, "xmlHttpRequest: Error downloading file"))
+                    throw;
                 response.ResponseText = ex.Message;
                 GetStatusDetails(webClient, out response.StatusText, out response.Status);
             }

@@ -90,7 +90,8 @@ namespace BHOUserScript
                 }
                 catch (Exception ex)
                 {
-                    Scriptmonkey.Log(ex, "Unable to parse resources");
+                    if (Scriptmonkey.LogAndCheckDebugger(ex, "Unable to parse resources"))
+                        throw;
                 }
             }
 
@@ -125,7 +126,8 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        Scriptmonkey.Log(ex);
+                        if (Scriptmonkey.LogAndCheckDebugger(ex))
+                            throw;
                     }
                 }
                 else
@@ -140,7 +142,8 @@ namespace BHOUserScript
                     }
                     catch (Exception ex)
                     {
-                        Scriptmonkey.Log(ex);
+                        if (Scriptmonkey.LogAndCheckDebugger(ex))
+                            throw;
                     }
                 }
                 Enabled = true;
