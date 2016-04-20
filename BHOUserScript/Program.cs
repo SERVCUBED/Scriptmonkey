@@ -53,11 +53,11 @@ namespace BHOUserScript
         private object _site;
         private bool _installChecked;
         private object _currentUrl;
-        private bool _refresh = false;
+        private bool _refresh;
         private bool _normalLoad = true;
-        private string[] _apiKeys = null;
+        private string[] _apiKeys;
         private Dictionary<string, string> _scriptCache = new Dictionary<string, string>();
-        private int _refreshCounter = 0;
+        private int _refreshCounter;
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -353,9 +353,9 @@ namespace BHOUserScript
         /// <summary>
         /// Ask user if they want to install a script
         /// </summary>
-        /// <param name="URL">The URL of the script to download</param>
+        /// <param name="url">The URL of the script to download</param>
         /// <returns>True if script install attempted</returns>
-        private bool AskInstallScript(string URL)
+        private bool AskInstallScript(string url)
         {
             AddScriptUrlFrm form = new AddScriptUrlFrm();
             if (form.ShowDialog() == DialogResult.OK) // Automatically
@@ -364,7 +364,7 @@ namespace BHOUserScript
                 {
                     string relativeScriptPath = GenerateRandomString() + ".user.js";
                     WebClient webClient = new WebClient();
-                    webClient.DownloadFile(URL, ScriptPath
+                    webClient.DownloadFile(url, ScriptPath
                         + relativeScriptPath);
                     webClient.Dispose();
                     var s = ParseScriptMetadata.Parse(relativeScriptPath);
@@ -448,10 +448,10 @@ namespace BHOUserScript
             }
             catch (Exception) { }
 #if DEBUG
-            var shouldDebug = MessageBox.Show(ex?.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex?.StackTrace +
-                                Environment.NewLine + "Souce: " + Environment.NewLine + ex?.Source + ": Main" +
+            var shouldDebug = MessageBox.Show(ex?.Message + Environment.NewLine + @"Stack: " + Environment.NewLine + ex?.StackTrace +
+                                Environment.NewLine + @"Souce: " + Environment.NewLine + ex?.Source + @": Main" +
                                 ((extraInfo != null) ? Environment.NewLine + extraInfo : ""),
-                                Resources.Title + ": Debug?", MessageBoxButtons.YesNo);
+                                Resources.Title + @": Debug?", MessageBoxButtons.YesNo);
             
             if (shouldDebug == DialogResult.Yes && ex != null)
             {
@@ -643,7 +643,7 @@ namespace BHOUserScript
                 WebResponse wr = wc.GetResponse();
                 Stream resStream = wr.GetResponseStream();
 
-                int? count = 0;
+                int? count;
                 do
                 {
                     count = resStream?.Read(buf, 0, buf.Length);
@@ -749,20 +749,20 @@ namespace BHOUserScript
             return 0;
         }
 
-        private void BeforeNavigate(object pDisp, ref object URL, ref object Flags, ref object TargetFrameName, ref object PostData, ref object Headers, ref bool Cancel)
+        private void BeforeNavigate(object pDisp, ref object url, ref object flags, ref object targetFrameName, ref object postData, ref object headers, ref bool cancel)
         {
             if (pDisp != _site)
                 return;
 
-            if (_prefs.Settings.AutoDownloadScripts && URL.ToString().Contains(".user.js"))
-                Cancel = AskInstallScript(URL.ToString());
+            if (_prefs.Settings.AutoDownloadScripts && url.ToString().Contains(".user.js"))
+                cancel = AskInstallScript(url.ToString());
         }
 
-        void NavigateComplete2(object pDisp, ref object URL)
+        void NavigateComplete2(object pDisp, ref object url)
         {
             if (pDisp != null)
                 _browser = (IWebBrowser2)pDisp;
-            _currentUrl = URL;
+            _currentUrl = url;
         }
 
         private void RefreshHandler(IHTMLEventObj e)
@@ -793,14 +793,14 @@ namespace BHOUserScript
             {
                 if (events != null)
                 {
-                    events.onload -= new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
+                    events.onload -= RefreshHandler;
                 }
             }
             catch (Exception) { }
 
             try
             {
-                events.onload += new HTMLWindowEvents2_onloadEventHandler(RefreshHandler);
+                events.onload += RefreshHandler;
             }
             catch (Exception) { }
         }
@@ -830,7 +830,7 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + Environment.NewLine + "Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + ": IOleCommandTarget.Exec", Resources.Title);
+                MessageBox.Show(ex.Message + Environment.NewLine + @"Stack: " + Environment.NewLine + ex.StackTrace + Environment.NewLine + @": IOleCommandTarget.Exec", Resources.Title);
             }
 
             return 0;
@@ -853,10 +853,10 @@ namespace BHOUserScript
             {
                 var registryKey = Registry.LocalMachine.OpenSubKey(RegBho, true) ??
                                   Registry.LocalMachine.CreateSubKey(RegBho);
-                var key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
-                key.SetValue("NoExplorer", 1);
-                registryKey.Close();
-                key.Close();
+                var key = registryKey?.OpenSubKey(guid) ?? registryKey?.CreateSubKey(guid);
+                key?.SetValue("NoExplorer", 1);
+                registryKey?.Close();
+                key?.Close();
             }
 
             // Command
@@ -865,17 +865,17 @@ namespace BHOUserScript
                                           Registry.LocalMachine.CreateSubKey(RegCmd);
                 if (registryKey != null) {
                     var key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
-                    key.SetValue("ButtonText", "Manage Userscripts");
-                    key.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
-                    key.SetValue("ClsidExtension", guid);
-                    key.SetValue("Icon", AssemblyPath() + ",1");
-                    key.SetValue("HotIcon", AssemblyPath() + ",1");
-                    key.SetValue("Default Visible", "Yes");
-                    key.SetValue("MenuText", "&Manage Userscripts");
-                    key.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");
+                    key?.SetValue("ButtonText", "Manage Userscripts");
+                    key?.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
+                    key?.SetValue("ClsidExtension", guid);
+                    key?.SetValue("Icon", AssemblyPath() + ",1");
+                    key?.SetValue("HotIcon", AssemblyPath() + ",1");
+                    key?.SetValue("Default Visible", "Yes");
+                    key?.SetValue("MenuText", "&Manage Userscripts");
+                    key?.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");
                     //key.SetValue("KeyPath", "no");
                     registryKey.Close();
-                    key.Close();
+                    key?.Close();
                 }
 
                 // Enhanced Protected Mode
@@ -890,11 +890,11 @@ namespace BHOUserScript
                         if (path == null)
                             path = String.Empty;
 
-                        key.SetValue("AppName", "Scriptmonkey.dll");
-                        key.SetValue("AppPath", path);
-                        key.SetValue("Policy", 3);
+                        key?.SetValue("AppName", "Scriptmonkey.dll");
+                        key?.SetValue("AppPath", path);
+                        key?.SetValue("Policy", 3);
                         regKey.Close();
-                        key.Close();
+                        key?.Close();
                     }
                 }
             }
@@ -1223,7 +1223,7 @@ namespace BHOUserScript
         /// <param name="statusDescription">Status description</param>
         /// <param name="statusCode">The HTTP status code</param>
         /// <returns></returns>
-        private static int GetStatusDetails(WebClient client, out string statusDescription, out int statusCode)
+        private static void GetStatusDetails(WebClient client, out string statusDescription, out int statusCode)
         {
             var responseField = client.GetType().GetField("m_WebResponse", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -1233,12 +1233,11 @@ namespace BHOUserScript
             {
                 statusDescription = response.StatusDescription;
                 statusCode = Convert.ToInt32(response.StatusCode);
-                return (int)response.StatusCode;
+                return;
             }
 
             statusDescription = null;
             statusCode = 400;
-            return 0;
         }
 
         public void setMenuCommand(string function, string caption, int scriptIndex, string apiKey)
