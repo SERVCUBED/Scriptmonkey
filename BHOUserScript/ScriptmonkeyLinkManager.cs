@@ -64,6 +64,9 @@ namespace BHOUserScript
 
         private void RegisterNew()
         {
+            if (!String.IsNullOrEmpty(_key))
+                return;
+
             string data =
                     Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/register", true);
             if (data == "errinvalidgenkey")
