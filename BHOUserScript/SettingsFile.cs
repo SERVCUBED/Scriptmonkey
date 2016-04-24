@@ -38,5 +38,7 @@ namespace BHOUserScript
         public bool LogScriptContentsOnRunError = false;
 
         public int ReloadAfterPages = 5;
+
+        public bool UseScriptmonkeyLink = true;
     }
 }

@@ -58,6 +58,7 @@ namespace BHOUserScript
         private string[] _apiKeys;
         private Dictionary<string, string> _scriptCache = new Dictionary<string, string>();
         private int _refreshCounter;
+        private ScriptmonkeyLinkManager _link;
 
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
@@ -144,6 +145,9 @@ namespace BHOUserScript
 
                 if (_prefs == null)
                     _prefs = new Db(this);
+
+                if (_prefs.Settings.UseScriptmonkeyLink)
+                    _link.TickAsync();
 
                 _refresh = true;
                 if (_prefs.Settings.RunOnPageRefresh)
@@ -629,9 +633,9 @@ namespace BHOUserScript
         /// Send a WebRequest (with a timeout of 1000ms). Returns an empty string on timeout.
         /// </summary>
         /// <param name="url">The requested resource</param>
-        /// <param name="quick">True to set a timeout of 500ms</param>
+        /// <param name="quick">True to set a timeout of 1000ms</param>
         /// <returns>The requested resource</returns>
-        private static string SendWebRequest(string url, bool quick = false)
+        public static string SendWebRequest(string url, bool quick = false)
         {
             HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
             if (quick)
@@ -660,7 +664,8 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                LogAndCheckDebugger(ex, "URL: " + url);
+                if (!(ex is WebException) && LogAndCheckDebugger(ex, "URL: " + url))
+                    throw;
             }
 
             return sb.ToString();
@@ -674,6 +679,23 @@ namespace BHOUserScript
         {
             Random r = new Random();
             return (char)(r.Next(97, 122)) + Convert.ToString(r.Next(100000));
+        }
+
+        /// <summary>
+        /// Event handler for Scriptmonkey Link
+        /// </summary>
+        /// <param name="action">The action to perform</param>
+        private void OnReceiveLinkEvent(string action)
+        {
+            if (action == "refresh")
+                _prefs.ReloadData();
+            else if (action == "disableLink")
+            {
+                _link.Dispose();
+                _link = null;
+            }
+            else if (action == "testLink")
+                LogAndCheckDebugger(null, "Scriptmonkey Link alert");
         }
 
         #endregion
@@ -690,6 +712,12 @@ namespace BHOUserScript
         {
             if (_prefs == null)
                 _prefs = new Db(this);
+
+            if (_link == null)
+            {
+                _link = new ScriptmonkeyLinkManager();
+                _link.OnReceiveEvent += OnReceiveLinkEvent;
+            }
 
             // Only need to check for install once per run.
             if (!_installChecked)
@@ -949,6 +977,7 @@ namespace BHOUserScript
                             throw;
                     }
                 }
+                _link?.SendAction("refresh");
             }
             form.Dispose();
         }

@@ -9,6 +9,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallationManager", "CanIRunIt\InstallationManager.csproj", "{27966A4F-4DE4-4873-A01E-7EE7C7ADA95A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scriptmonkey Link", "Scriptmonkey Link\Scriptmonkey Link.csproj", "{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CanIRunIt_Only|Any CPU = CanIRunIt_Only|Any CPU
@@ -31,6 +33,12 @@ Global
 		{27966A4F-4DE4-4873-A01E-7EE7C7ADA95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27966A4F-4DE4-4873-A01E-7EE7C7ADA95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27966A4F-4DE4-4873-A01E-7EE7C7ADA95A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}.CanIRunIt_Only|Any CPU.ActiveCfg = Release|Any CPU
+		{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}.CanIRunIt_Only|Any CPU.Build.0 = Release|Any CPU
+		{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDABFF7F-D5D9-4799-AA5C-AA6EA403968B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

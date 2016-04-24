@@ -152,6 +152,7 @@
     <Compile Include="ScriptEditFrm.Designer.cs">
       <DependentUpon>ScriptEditFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScriptmonkeyLinkManager.cs" />
     <Compile Include="ScriptWithContent.cs" />
     <Compile Include="SettingsFile.cs" />
     <Compile Include="UpdateBHOFrm.cs">
