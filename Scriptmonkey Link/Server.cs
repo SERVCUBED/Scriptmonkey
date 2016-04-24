@@ -11,6 +11,18 @@ using System.Windows.Forms;
 
 namespace Scriptmonkey_Link
 {
+    /// <summary>
+    /// A server for Scriptmonkey Link.
+    /// 
+    /// API is as follows:
+    ///    REQUEST:                RETURNS:                            INFO:
+    ///     /ping                   pong/[Version Information]          Used to check if the server is up
+    ///     /about                  [Friendly Version Information]      Displays friendly version information
+    ///     /register               [key]                               Registers the client and returns the key to access the action queue
+    ///     /unregister/[key]                                           Deletes the key and action queue from the server
+    ///     /req/[key]              [Action]                            Returns the next action in the queue for the specified key
+    ///     /action/[key]/[Action]  success                             Adds the action to the queue of all the keys except the one specified
+    /// </summary>
     class Server : IDisposable
     {
         readonly HttpListener _listener = new HttpListener();
@@ -108,7 +120,7 @@ namespace Scriptmonkey_Link
                     var key = context.Request.Url.AbsolutePath.Substring(5);
                     if (_instances.ContainsKey(key))
                     {
-                        if (_instances[key].Queue.Count >= 0)
+                        if (_instances[key].Queue.Count > 0)
                         {
                             content = _instances[key].Queue[0];
                             _instances[key].Queue.RemoveAt(0);
