@@ -699,6 +699,8 @@ namespace BHOUserScript
             }
             else if (action == "testLink")
                 LogAndCheckDebugger(null, "Scriptmonkey Link alert: " + (_currentUrl ?? ""));
+            else if (action == "verify")
+                _link.Verify(_currentUrl.ToString());
         }
 
         #endregion

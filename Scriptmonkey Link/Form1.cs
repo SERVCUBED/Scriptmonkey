@@ -16,6 +16,7 @@ namespace Scriptmonkey_Link
         public Form1()
         {
             InitializeComponent();
+            s.OnReceived += OnServerReceived;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -36,7 +37,18 @@ namespace Scriptmonkey_Link
         private void broadcastBtn_Click(object sender, EventArgs e)
         {
             s.Broadcast(txtBroadcast.Text);
+            txtLog.Text = "Broadcast: " + txtBroadcast.Text + Environment.NewLine + txtLog.Text;
             txtBroadcast.Text = String.Empty;
+        }
+
+        private void OnServerReceived(string key, string data)
+        {
+            if (txtLog.InvokeRequired)
+            {
+                Invoke((MethodInvoker)(() => OnServerReceived(key, data)));
+                return;
+            }
+            txtLog.Text = DateTime.Now.TimeOfDay.ToString() + " " + key + "=>" + data + Environment.NewLine +  txtLog.Text;
         }
     }
 }

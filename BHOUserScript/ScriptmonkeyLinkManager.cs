@@ -28,6 +28,11 @@ namespace BHOUserScript
             Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/action/" + _key + '/' + action, true);
         }
 
+        public void Verify(string currentUrl)
+        {
+            Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/verify/" + _key + '/' + currentUrl.Replace('/', '§'), true);
+        }
+
         public void TickAsync()
         {
             if (_ticking)

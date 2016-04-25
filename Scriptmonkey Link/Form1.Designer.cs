@@ -35,6 +35,8 @@
             this.numInstancesLabel = new System.Windows.Forms.Label();
             this.broadcastBtn = new System.Windows.Forms.Button();
             this.txtBroadcast = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -72,32 +74,61 @@
             // 
             // broadcastBtn
             // 
-            this.broadcastBtn.Location = new System.Drawing.Point(204, 54);
+            this.broadcastBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.broadcastBtn.Location = new System.Drawing.Point(208, 54);
             this.broadcastBtn.Name = "broadcastBtn";
             this.broadcastBtn.Size = new System.Drawing.Size(75, 23);
-            this.broadcastBtn.TabIndex = 2;
+            this.broadcastBtn.TabIndex = 3;
             this.broadcastBtn.Text = "Broadcast";
             this.broadcastBtn.UseVisualStyleBackColor = true;
             this.broadcastBtn.Click += new System.EventHandler(this.broadcastBtn_Click);
             // 
             // txtBroadcast
             // 
+            this.txtBroadcast.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBroadcast.Location = new System.Drawing.Point(13, 56);
             this.txtBroadcast.Name = "txtBroadcast";
-            this.txtBroadcast.Size = new System.Drawing.Size(185, 20);
-            this.txtBroadcast.TabIndex = 3;
+            this.txtBroadcast.Size = new System.Drawing.Size(189, 20);
+            this.txtBroadcast.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 79);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(28, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Log:";
+            // 
+            // txtLog
+            // 
+            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLog.Location = new System.Drawing.Point(13, 96);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(270, 113);
+            this.txtLog.TabIndex = 5;
+            this.txtLog.WordWrap = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 89);
+            this.ClientSize = new System.Drawing.Size(295, 221);
+            this.Controls.Add(this.txtLog);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.txtBroadcast);
             this.Controls.Add(this.broadcastBtn);
             this.Controls.Add(this.numInstancesLabel);
             this.Controls.Add(this.checkBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(730, 575);
+            this.MinimumSize = new System.Drawing.Size(311, 132);
             this.Name = "Form1";
             this.ShowIcon = false;
             this.Text = "Scriptmonkey Link";
@@ -114,6 +145,8 @@
         private System.Windows.Forms.Label numInstancesLabel;
         private System.Windows.Forms.Button broadcastBtn;
         private System.Windows.Forms.TextBox txtBroadcast;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtLog;
     }
 }
 

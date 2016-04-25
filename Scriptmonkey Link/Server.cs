@@ -29,6 +29,10 @@ namespace Scriptmonkey_Link
         readonly Dictionary<string, InstanceData> _instances = new Dictionary<string, InstanceData>();
         private const int Port = 32888;
 
+        public delegate void OnReceivedEvent(string key, string data);
+
+        public event OnReceivedEvent OnReceived;
+
         public Server()
         {
             _listener.Prefixes.Add("http://localhost:" + Port + "/");
@@ -96,6 +100,7 @@ namespace Scriptmonkey_Link
                     {
                         _instances.Add(genKey, new InstanceData());
                         content = genKey;
+                        OnReceived?.Invoke(genKey, "registered");
                     }
                     else
                     {
@@ -146,6 +151,19 @@ namespace Scriptmonkey_Link
                                 i.Value.Queue.Add(action);
                         }
                         content = "success";
+                        OnReceived?.Invoke(key, action);
+                    }
+                    else
+                        content = "errinvrequest";
+                }
+                else if (context.Request.Url.AbsolutePath.StartsWith("/verify/"))
+                {
+                    var split = context.Request.Url.AbsolutePath.Substring(8).Split('/');
+                    if (split.Length == 2)
+                    {
+                        var key = split[0];
+                        var url = split[1];
+                        OnReceived?.Invoke(key, url.Replace('§', '/'));
                     }
                     else
                         content = "errinvrequest";
@@ -173,7 +191,10 @@ namespace Scriptmonkey_Link
             foreach (var i in _instances)
             {
                 if (i.Value.LastRequestTime < tPurge)
+                {
                     _instances.Remove(i.Key);
+                    OnReceived?.Invoke(i.Key, "purged");
+                }
             }
         }
 
@@ -189,9 +210,13 @@ namespace Scriptmonkey_Link
                 if (value && !_listener.IsListening)
                 {
                     TryStartListen();
+                    OnReceived?.Invoke("server", "start");
                 }
                 else if (!value && _listener.IsListening)
+                {
                     _listener.Stop();
+                    OnReceived?.Invoke("server", "stop");
+                }
             }
         }
 
