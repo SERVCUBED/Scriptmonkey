@@ -33,9 +33,8 @@ namespace Scriptmonkey_Link
         {
             _listener.Prefixes.Add("http://localhost:" + Port + "/");
             _listener.Prefixes.Add("http://127.0.0.1:" + Port + "/");
-            _listener.Start();
 
-            ThreadPool.QueueUserWorkItem(o => Listen());
+            TryStartListen();
         }
 
         /// <summary>
@@ -189,14 +188,39 @@ namespace Scriptmonkey_Link
             {
                 if (value && !_listener.IsListening)
                 {
-                    _listener.Start();
-                    ThreadPool.QueueUserWorkItem(o => Listen());
+                    TryStartListen();
                 }
                 else if (!value && _listener.IsListening)
                     _listener.Stop();
             }
         }
 
+        /// <summary>
+        /// Attempt to start listening on the port and queue the listener thread.
+        /// </summary>
+        private void TryStartListen()
+        {
+            try
+            {
+                _listener.Start();
+            }
+            catch (Exception ex)
+            {
+                var m = ex.Message;
+                if (ex is HttpListenerException)
+                    m = "Unable to open port. Is it in use by another program?\r\nTry running as an administrator.\r\n\r\n" + m;
+
+                MessageBox.Show(m);
+                return;
+            }
+
+            ThreadPool.QueueUserWorkItem(o => Listen());
+        }
+
+        /// <summary>
+        /// Send the action to all instances
+        /// </summary>
+        /// <param name="action">The action to broadcast</param>
         public void Broadcast(string action)
         {
             if (String.IsNullOrEmpty(action))

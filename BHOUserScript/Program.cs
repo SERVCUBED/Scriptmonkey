@@ -192,6 +192,9 @@ namespace BHOUserScript
 
                 var window = document2.parentWindow;
 
+                if (window == null)
+                    return;
+
                 if (_prefs.Settings.InjectAPI)
                     SetupWindow(window);
 
@@ -695,7 +698,7 @@ namespace BHOUserScript
                 _link = null;
             }
             else if (action == "testLink")
-                LogAndCheckDebugger(null, "Scriptmonkey Link alert");
+                LogAndCheckDebugger(null, "Scriptmonkey Link alert: " + (_currentUrl ?? ""));
         }
 
         #endregion
