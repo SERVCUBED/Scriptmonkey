@@ -188,12 +188,12 @@ namespace Scriptmonkey_Link
         public void Purge()
         {
             DateTime tPurge = DateTime.Now.Subtract(TimeSpan.FromMinutes(30));
-            foreach (var i in _instances)
+            for (int i = 0; i < _instances.Count; i++)
             {
-                if (i.Value.LastRequestTime < tPurge)
+                if (_instances.ElementAt(i).Value.LastRequestTime < tPurge)
                 {
-                    _instances.Remove(i.Key);
-                    OnReceived?.Invoke(i.Key, "purged");
+                    _instances.Remove(_instances.ElementAt(i).Key);
+                    OnReceived?.Invoke(_instances.ElementAt(i).Key, "purged");
                 }
             }
         }
