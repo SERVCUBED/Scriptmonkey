@@ -187,7 +187,7 @@ namespace BHOUserScript
 
                 if (document2 == null) return;
 
-                if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://"))
+                if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://") || document2.url == "about:blank")
                     return;
 
                 var window = document2.parentWindow;
