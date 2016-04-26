@@ -127,7 +127,7 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="pDisp">Browser object (for page currently displayed)</param>
         /// <param name="url">Current URL</param>
-        void Run(object pDisp, ref object url) // OnDocumentComplete handler
+        private void Run(object pDisp, ref object url) // OnDocumentComplete handler
         {
             _currentUrl = url;
 
@@ -321,7 +321,7 @@ namespace BHOUserScript
             {
                 var exp = (IExpando)window;
                 var info = exp.AddProperty("Scriptmonkey");
-                info.SetValue(exp, this);
+                info?.SetValue(exp, this);
             }
             catch (Exception ex)
             {
@@ -344,6 +344,9 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
+                if (ex is UnauthorizedAccessException) // These exceptions appear to be caused by an error in IE itself.
+                    return;
+
                 //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
                 //                    ex.Message.Replace("\"", "\\\"") + "\");");
                 bool shouldThrow;
@@ -581,52 +584,51 @@ namespace BHOUserScript
                 if (frm.ShowDialog() != DialogResult.OK)
                     return;
 
-                if (toUpdate.Count > 0)
+                if (toUpdate.Count == 0) return;
+
+                for (int i = 0; i < toUpdate.Count; i++)
                 {
-                    for (int i = 0; i < toUpdate.Count; i++)
+                    // Delete existing backups
+                    if (File.Exists(ScriptPath + toUpdate[i].Path + @".backup"))
+                        File.Delete(ScriptPath + toUpdate[i].Path + @".backup");
+
+                    // Move current file to backup
+                    File.Move(ScriptPath + toUpdate[i].Path, ScriptPath + toUpdate[i].Path + @".backup");
+
+                    try
                     {
-                        // Delete existing backups
-                        if (File.Exists(ScriptPath + toUpdate[i].Path + @".backup"))
-                            File.Delete(ScriptPath + toUpdate[i].Path + @".backup");
+                        // Save updated script
+                        Db.WriteFile(ScriptPath + toUpdate[i].Path, toUpdateTo[i].Content);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (LogAndCheckDebugger(ex, "Unable to update script: " + toUpdate[i].Name))
+                            throw;
 
-                        // Move current file to backup
-                        File.Move(ScriptPath + toUpdate[i].Path, ScriptPath + toUpdate[i].Path + @".backup");
+                        // Something went wrong. Restore from backup
+                        if (File.Exists(ScriptPath + toUpdate[i].Path))
+                            File.Delete(ScriptPath + toUpdate[i].Path);
 
-                        try
+                        File.Copy(ScriptPath + toUpdate[i].Path + @".backup", ScriptPath + toUpdate[i].Path);
+                    }
+
+                    // Remove from cache
+                    if (_scriptCache.ContainsKey(toUpdate[i].Path))
+                        _scriptCache.Remove(toUpdate[i].Path);
+
+                    // Update stored script with metadata of script updated to
+                    for (int j = 0; j < _prefs.AllScripts.Count; j++)
+                    {
+                        if (_prefs[j].Path == toUpdate[i].Path)
                         {
-                            // Save updated script
-                            Db.WriteFile(ScriptPath + toUpdate[i].Path, toUpdateTo[i].Content);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (LogAndCheckDebugger(ex, "Unable to update script: " + toUpdate[i].Name))
-                                throw;
-
-                            // Something went wrong. Restore from backup
-                            if (File.Exists(ScriptPath + toUpdate[i].Path))
-                                File.Delete(ScriptPath + toUpdate[i].Path);
-
-                            File.Copy(ScriptPath + toUpdate[i].Path + @".backup", ScriptPath + toUpdate[i].Path);
-                        }
-
-                        // Remove from cache
-                        if (_scriptCache.ContainsKey(toUpdate[i].Path))
-                            _scriptCache.Remove(toUpdate[i].Path);
-
-                        // Update stored script with metadata of script updated to
-                        for (int j = 0; j < _prefs.AllScripts.Count; j++)
-                        {
-                            if (_prefs[j].Path == toUpdate[i].Path)
-                            {
-                                toUpdateTo[i].ScriptData.Path = toUpdate[i].Path;
-                                _prefs[j] = toUpdateTo[i].ScriptData;
-                                break;
-                            }
+                            toUpdateTo[i].ScriptData.Path = toUpdate[i].Path;
+                            _prefs[j] = toUpdateTo[i].ScriptData;
+                            break;
                         }
                     }
-                    _prefs.Save(true);
-                    _prefs.ReloadData();
                 }
+                _prefs.Save(true);
+                _prefs.ReloadData();
             });
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
@@ -807,7 +809,11 @@ namespace BHOUserScript
                 {
                     Run(_browser, ref _currentUrl);
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    if (LogAndCheckDebugger(ex))
+                        throw;
+                }
             }
             _refresh = true;
 
