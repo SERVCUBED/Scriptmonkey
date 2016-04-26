@@ -40,13 +40,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.refreshPageChk = new System.Windows.Forms.CheckBox();
             this.injectApiChk = new System.Windows.Forms.CheckBox();
+            this.useLinkChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(220, 201);
+            this.saveBtn.Location = new System.Drawing.Point(221, 220);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -97,7 +98,7 @@
             // cacheChk
             // 
             this.cacheChk.AutoSize = true;
-            this.cacheChk.Location = new System.Drawing.Point(12, 133);
+            this.cacheChk.Location = new System.Drawing.Point(13, 132);
             this.cacheChk.Name = "cacheChk";
             this.cacheChk.Size = new System.Drawing.Size(90, 17);
             this.cacheChk.TabIndex = 5;
@@ -107,7 +108,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 184);
+            this.label1.Location = new System.Drawing.Point(12, 203);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 6;
@@ -115,7 +116,7 @@
             // 
             // reloadNum
             // 
-            this.reloadNum.Location = new System.Drawing.Point(121, 182);
+            this.reloadNum.Location = new System.Drawing.Point(122, 201);
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
             this.reloadNum.TabIndex = 7;
@@ -123,7 +124,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(184, 184);
+            this.label2.Location = new System.Drawing.Point(185, 203);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 8;
@@ -132,7 +133,7 @@
             // refreshPageChk
             // 
             this.refreshPageChk.AutoSize = true;
-            this.refreshPageChk.Location = new System.Drawing.Point(12, 157);
+            this.refreshPageChk.Location = new System.Drawing.Point(13, 156);
             this.refreshPageChk.Name = "refreshPageChk";
             this.refreshPageChk.Size = new System.Drawing.Size(131, 17);
             this.refreshPageChk.TabIndex = 9;
@@ -150,11 +151,22 @@
             this.injectApiChk.UseVisualStyleBackColor = true;
             this.injectApiChk.CheckedChanged += new System.EventHandler(this.injectApiChk_CheckedChanged);
             // 
+            // useLinkChk
+            // 
+            this.useLinkChk.AutoSize = true;
+            this.useLinkChk.Location = new System.Drawing.Point(13, 179);
+            this.useLinkChk.Name = "useLinkChk";
+            this.useLinkChk.Size = new System.Drawing.Size(211, 17);
+            this.useLinkChk.TabIndex = 11;
+            this.useLinkChk.Text = "Use Scriptmonkey Link (recommended)";
+            this.useLinkChk.UseVisualStyleBackColor = true;
+            // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 233);
+            this.ClientSize = new System.Drawing.Size(306, 253);
+            this.Controls.Add(this.useLinkChk);
             this.Controls.Add(this.injectApiChk);
             this.Controls.Add(this.refreshPageChk);
             this.Controls.Add(this.label2);
@@ -194,5 +206,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox refreshPageChk;
         private System.Windows.Forms.CheckBox injectApiChk;
+        private System.Windows.Forms.CheckBox useLinkChk;
     }
 }
