@@ -194,6 +194,7 @@ namespace Scriptmonkey_Link
                 {
                     _instances.Remove(_instances.ElementAt(i).Key);
                     OnReceived?.Invoke(_instances.ElementAt(i).Key, "purged");
+                    i--;
                 }
             }
         }
