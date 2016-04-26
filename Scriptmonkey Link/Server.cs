@@ -190,12 +190,13 @@ namespace Scriptmonkey_Link
             DateTime tPurge = DateTime.Now.Subtract(TimeSpan.FromMinutes(30));
             for (int i = 0; i < _instances.Count; i++)
             {
-                if (_instances.ElementAt(i).Value.LastRequestTime < tPurge)
-                {
-                    _instances.Remove(_instances.ElementAt(i).Key);
-                    OnReceived?.Invoke(_instances.ElementAt(i).Key, "purged");
-                    i--;
-                }
+                if (i >= _instances.Count)
+                    break;
+                if (_instances.ElementAt(i).Value.LastRequestTime >= tPurge) continue;
+
+                _instances.Remove(_instances.ElementAt(i).Key);
+                OnReceived?.Invoke(_instances.ElementAt(i).Key, "purged");
+                i--;
             }
         }
 
