@@ -194,8 +194,8 @@ namespace Scriptmonkey_Link
                     break;
                 if (_instances.ElementAt(i).Value.LastRequestTime >= tPurge) continue;
 
-                _instances.Remove(_instances.ElementAt(i).Key);
                 OnReceived?.Invoke(_instances.ElementAt(i).Key, "purged");
+                _instances.Remove(_instances.ElementAt(i).Key);
                 i--;
             }
         }
