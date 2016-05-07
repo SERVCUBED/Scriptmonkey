@@ -10,9 +10,10 @@ For more information see the [official Scriptmonkey wiki](https://servc.eu/p/scr
 It's recommended that you check out the [releases](https://github.com/SERVCUBED/Scriptmonkey/releases) page to discover what's new in the recent versions.
 
  [![Download Main Installer](https://servc.eu/images/btnScriptmonkeyInstaller.png)](https://github.com/SERVCUBED/Scriptmonkey/releases)
-
-1.	You should run [CanIRunIt.exe](dist/CanIRunIt.exe) to check if you have the required versions of the .NET Framework.
-2.	Run [ScriptmonkeyInstaller.exe](dist/ScriptmonkeyInstaller.exe) to install the BHO.
+ 
+1. Extract all files from the archive
+2. Run `InstallationManager.exe` and press `1` on your keyboard for `'1' Install Scriptmonkey`.
+3. Open Internet Explorer and press `Enable` on the bar at the bottom when prompted to enable Scriptmonkey.
 
 It is suggested that you use at least Microsoft Windows 7 with Internet Explorer 11. Earlier versions have not been tested and full support cannot be guaranteed. The .NET Framework version 4.5 can be downloaded from [here](https://www.microsoft.com/en-gb/download/details.aspx?id=30653) if required.
 
@@ -20,7 +21,7 @@ See also: https://servc.eu/p/scriptmonkey/wiki/How_to_install
 
 ## How to uninstall
 
-Select `Scriptmonkey` in `Control Panel` >`Programs and Features` and click `Uninstall`.
+Run `InstallationManager.exe` (found in the release archive) and press `2` on your keyboard for `'2' Remove Scriptmonkey`.
 
 See also: https://servc.eu/p/scriptmonkey/wiki/How_to_uninstall
 
