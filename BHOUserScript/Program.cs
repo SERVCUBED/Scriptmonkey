@@ -904,14 +904,14 @@ namespace BHOUserScript
                                           Registry.LocalMachine.CreateSubKey(RegCmd);
                 if (registryKey != null) {
                     var key = registryKey.OpenSubKey(guid) ?? registryKey.CreateSubKey(guid);
-                    key?.SetValue("ButtonText", "Manage Userscripts");
+                    key?.SetValue("ButtonText", "Manage Userscript&s");
                     key?.SetValue("CLSID", "{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}");
                     key?.SetValue("ClsidExtension", guid);
-                    key?.SetValue("Icon", AssemblyPath() + ",1");
-                    key?.SetValue("HotIcon", AssemblyPath() + ",1");
+                    key?.SetValue("Icon", AssemblyPath() + ",0");
+                    key?.SetValue("HotIcon", AssemblyPath() + ",0");
                     key?.SetValue("Default Visible", "Yes");
-                    key?.SetValue("MenuText", "&Manage Userscripts");
-                    key?.SetValue("ToolTip", "Manage ScriptMonkey Userscripts");
+                    key?.SetValue("MenuText", "Manage Userscript&s");
+                    key?.SetValue("ToolTip", "Manage Scriptmonkey Userscripts");
                     //key.SetValue("KeyPath", "no");
                     registryKey.Close();
                     key?.Close();
