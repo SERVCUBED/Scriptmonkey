@@ -789,7 +789,7 @@ namespace BHOUserScript
             if (pDisp != _site)
                 return;
 
-            if (_prefs.Settings.AutoDownloadScripts && url.ToString().Contains(".user.js"))
+            if (_prefs.Settings.AllowUserEdit && _prefs.Settings.AutoDownloadScripts && url.ToString().Contains(".user.js"))
                 cancel = AskInstallScript(url.ToString());
         }
 
@@ -967,6 +967,13 @@ namespace BHOUserScript
         private void ShowOptions()
         {
             _prefs.LoadData();
+
+            if (!_prefs.Settings.AllowUserEdit)
+            {
+                MessageBox.Show(@"Scriptmonkey options window has been disabled by your system administrator.", @"Scriptmonkey Options");
+                return;
+            }
+
             Options form = new Options(_prefs);
             if (form.ShowDialog() != DialogResult.Cancel)
             {

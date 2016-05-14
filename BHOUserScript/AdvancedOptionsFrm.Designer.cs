@@ -41,13 +41,14 @@
             this.refreshPageChk = new System.Windows.Forms.CheckBox();
             this.injectApiChk = new System.Windows.Forms.CheckBox();
             this.useLinkChk = new System.Windows.Forms.CheckBox();
+            this.lockSettingsBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(221, 220);
+            this.saveBtn.Location = new System.Drawing.Point(217, 227);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -161,11 +162,22 @@
             this.useLinkChk.Text = "Use Scriptmonkey Link (recommended)";
             this.useLinkChk.UseVisualStyleBackColor = true;
             // 
+            // lockSettingsBtn
+            // 
+            this.lockSettingsBtn.Location = new System.Drawing.Point(98, 227);
+            this.lockSettingsBtn.Name = "lockSettingsBtn";
+            this.lockSettingsBtn.Size = new System.Drawing.Size(113, 23);
+            this.lockSettingsBtn.TabIndex = 12;
+            this.lockSettingsBtn.Text = "Lock Settings File";
+            this.lockSettingsBtn.UseVisualStyleBackColor = true;
+            this.lockSettingsBtn.Click += new System.EventHandler(this.lockSettingsBtn_Click);
+            // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 253);
+            this.ClientSize = new System.Drawing.Size(306, 263);
+            this.Controls.Add(this.lockSettingsBtn);
             this.Controls.Add(this.useLinkChk);
             this.Controls.Add(this.injectApiChk);
             this.Controls.Add(this.refreshPageChk);
@@ -207,5 +219,6 @@
         private System.Windows.Forms.CheckBox refreshPageChk;
         private System.Windows.Forms.CheckBox injectApiChk;
         private System.Windows.Forms.CheckBox useLinkChk;
+        private System.Windows.Forms.Button lockSettingsBtn;
     }
 }

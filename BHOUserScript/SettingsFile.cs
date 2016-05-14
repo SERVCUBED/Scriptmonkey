@@ -8,6 +8,8 @@ namespace BHOUserScript
     /// </summary>
     public class SettingsFile
     {
+        public bool AllowUserEdit = true;
+        
         public bool Enabled = true;
 
         public string EditorPath = "notepad.exe";

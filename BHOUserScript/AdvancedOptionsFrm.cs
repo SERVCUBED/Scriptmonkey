@@ -52,5 +52,16 @@ namespace BHOUserScript
         {
             publicApiChk.Enabled = injectApiChk.Checked;
         }
+
+        private void lockSettingsBtn_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure?\r\n\r\nThis option is intended for system administrators. It" + 
+                " cannot easily be undone.\r\n\r\nEnable this to prevent end users from opening the options window " +
+                @"and automatically adding new scripts", @"Lock Scriptmonkey settings", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            Settings.AllowUserEdit = false;
+            lockSettingsBtn.Enabled = false;
+        }
     }
 }
