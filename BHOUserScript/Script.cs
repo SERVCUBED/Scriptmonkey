@@ -28,9 +28,6 @@ namespace BHOUserScript
 
         public string[] Exclude { get; set; }
 
-        // Needed when checking if BHO has been updated after script data has been saved due to possibility of changes to storage system
-        public Version LastUsedBhoVersion { get; set; }
-
         // Will be used when checking for updates after ... days after installation
         public DateTime InstallDate { get; set; }
 

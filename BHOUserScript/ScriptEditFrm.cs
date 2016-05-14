@@ -68,7 +68,6 @@ namespace BHOUserScript
             EditedScript.InstallDate = DateTime.UtcNow;
             EditedScript.UpdateUrl = updateTxt.Text;
             EditedScript.Version = versionTxt.Text;
-            EditedScript.LastUsedBhoVersion = Scriptmonkey.CurrentVersion();
             EditedScript.ShowMenuCommands = menuCmdChk.Checked;
 
             EditedScript.Include = new string[listBox1.Items.Count];
