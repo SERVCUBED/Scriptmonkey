@@ -42,13 +42,14 @@
             this.injectApiChk = new System.Windows.Forms.CheckBox();
             this.useLinkChk = new System.Windows.Forms.CheckBox();
             this.lockSettingsBtn = new System.Windows.Forms.Button();
+            this.menuCssBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(217, 227);
+            this.saveBtn.Location = new System.Drawing.Point(240, 227);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -164,7 +165,7 @@
             // 
             // lockSettingsBtn
             // 
-            this.lockSettingsBtn.Location = new System.Drawing.Point(98, 227);
+            this.lockSettingsBtn.Location = new System.Drawing.Point(121, 227);
             this.lockSettingsBtn.Name = "lockSettingsBtn";
             this.lockSettingsBtn.Size = new System.Drawing.Size(113, 23);
             this.lockSettingsBtn.TabIndex = 12;
@@ -172,11 +173,22 @@
             this.lockSettingsBtn.UseVisualStyleBackColor = true;
             this.lockSettingsBtn.Click += new System.EventHandler(this.lockSettingsBtn_Click);
             // 
+            // menuCssBtn
+            // 
+            this.menuCssBtn.Location = new System.Drawing.Point(15, 227);
+            this.menuCssBtn.Name = "menuCssBtn";
+            this.menuCssBtn.Size = new System.Drawing.Size(101, 23);
+            this.menuCssBtn.TabIndex = 13;
+            this.menuCssBtn.Text = "Edit Menu CSS";
+            this.menuCssBtn.UseVisualStyleBackColor = true;
+            this.menuCssBtn.Click += new System.EventHandler(this.menuCssBtn_Click);
+            // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 263);
+            this.ClientSize = new System.Drawing.Size(327, 263);
+            this.Controls.Add(this.menuCssBtn);
             this.Controls.Add(this.lockSettingsBtn);
             this.Controls.Add(this.useLinkChk);
             this.Controls.Add(this.injectApiChk);
@@ -197,7 +209,6 @@
             this.Name = "AdvancedOptionsFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Advanced Options";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.AdvancedOptionsFrm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).EndInit();
             this.ResumeLayout(false);
@@ -220,5 +231,6 @@
         private System.Windows.Forms.CheckBox injectApiChk;
         private System.Windows.Forms.CheckBox useLinkChk;
         private System.Windows.Forms.Button lockSettingsBtn;
+        private System.Windows.Forms.Button menuCssBtn;
     }
 }
