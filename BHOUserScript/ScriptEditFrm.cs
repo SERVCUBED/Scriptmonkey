@@ -31,6 +31,7 @@ namespace BHOUserScript
             fileTxt.Text = EditedScript.Path;
             updateTxt.Text = EditedScript.UpdateUrl;
             versionTxt.Text = EditedScript.Version;
+            menuCmdChk.Checked = EditedScript.ShowMenuCommands;
 
             listBox1.Items.Clear();
             foreach (string t in EditedScript.Include)
@@ -68,6 +69,7 @@ namespace BHOUserScript
             EditedScript.UpdateUrl = updateTxt.Text;
             EditedScript.Version = versionTxt.Text;
             EditedScript.LastUsedBhoVersion = Scriptmonkey.CurrentVersion();
+            EditedScript.ShowMenuCommands = menuCmdChk.Checked;
 
             EditedScript.Include = new string[listBox1.Items.Count];
             for (int i = 0; i < listBox1.Items.Count; i++)

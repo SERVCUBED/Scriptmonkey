@@ -63,6 +63,7 @@ namespace BHOUserScript
             this.clearValsBtn = new System.Windows.Forms.Button();
             this.editIncludeBtn = new System.Windows.Forms.Button();
             this.editExcludeBtn = new System.Windows.Forms.Button();
+            this.menuCmdChk = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -84,7 +85,7 @@ namespace BHOUserScript
             // okBtn
             // 
             this.okBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.okBtn.Location = new System.Drawing.Point(424, 346);
+            this.okBtn.Location = new System.Drawing.Point(424, 370);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 17;
@@ -94,7 +95,7 @@ namespace BHOUserScript
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(343, 346);
+            this.cancelBtn.Location = new System.Drawing.Point(343, 370);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 16;
@@ -235,7 +236,7 @@ namespace BHOUserScript
             // 
             // editBtn
             // 
-            this.editBtn.Location = new System.Drawing.Point(262, 346);
+            this.editBtn.Location = new System.Drawing.Point(262, 370);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(75, 23);
             this.editBtn.TabIndex = 15;
@@ -248,7 +249,7 @@ namespace BHOUserScript
             this.enabledChk.AutoSize = true;
             this.enabledChk.Checked = true;
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enabledChk.Location = new System.Drawing.Point(72, 350);
+            this.enabledChk.Location = new System.Drawing.Point(72, 374);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(65, 17);
             this.enabledChk.TabIndex = 14;
@@ -326,7 +327,7 @@ namespace BHOUserScript
             // 
             // clearValsBtn
             // 
-            this.clearValsBtn.Location = new System.Drawing.Point(142, 346);
+            this.clearValsBtn.Location = new System.Drawing.Point(142, 370);
             this.clearValsBtn.Name = "clearValsBtn";
             this.clearValsBtn.Size = new System.Drawing.Size(114, 23);
             this.clearValsBtn.TabIndex = 19;
@@ -355,11 +356,24 @@ namespace BHOUserScript
             this.editExcludeBtn.UseVisualStyleBackColor = true;
             this.editExcludeBtn.Click += new System.EventHandler(this.editExcludeBtn_Click);
             // 
+            // menuCmdChk
+            // 
+            this.menuCmdChk.AutoSize = true;
+            this.menuCmdChk.Checked = true;
+            this.menuCmdChk.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuCmdChk.Location = new System.Drawing.Point(72, 347);
+            this.menuCmdChk.Name = "menuCmdChk";
+            this.menuCmdChk.Size = new System.Drawing.Size(161, 17);
+            this.menuCmdChk.TabIndex = 21;
+            this.menuCmdChk.Text = "Show menu commands if set";
+            this.menuCmdChk.UseVisualStyleBackColor = true;
+            // 
             // ScriptEditFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(511, 376);
+            this.ClientSize = new System.Drawing.Size(511, 405);
+            this.Controls.Add(this.menuCmdChk);
             this.Controls.Add(this.editExcludeBtn);
             this.Controls.Add(this.editIncludeBtn);
             this.Controls.Add(this.clearValsBtn);
@@ -437,5 +451,6 @@ namespace BHOUserScript
         private Button clearValsBtn;
         private Button editIncludeBtn;
         private Button editExcludeBtn;
+        private CheckBox menuCmdChk;
     }
 }

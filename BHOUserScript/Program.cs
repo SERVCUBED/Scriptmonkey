@@ -277,7 +277,7 @@ namespace BHOUserScript
                 else
                     content += scriptContent;
 
-                if (_prefs[i].MenuCommands?.Count > 0)
+                if (_prefs[i].ShowMenuCommands && _prefs[i].MenuCommands?.Count > 0)
                 {
                     foreach (NameFunctionPair command in _prefs[i].MenuCommands)
                     {

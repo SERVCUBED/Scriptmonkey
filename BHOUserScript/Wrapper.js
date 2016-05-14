@@ -49,7 +49,7 @@ function Scriptmonkey_S0() { // Scriptmonkey_S[scriptIndex]
     }
 
     function GM_registerMenuCommand(caption, func, key) {
-        window.Scriptmonkey.setMenuCommand(func, caption, scriptIndex, apiKey);
+        window.Scriptmonkey.setMenuCommand(/^function\s+([\w\$]+)\s*\(/.exec(func.toString())[1], caption, scriptIndex, apiKey);
     }
 
     function GM_xmlhttpRequest(details) {
