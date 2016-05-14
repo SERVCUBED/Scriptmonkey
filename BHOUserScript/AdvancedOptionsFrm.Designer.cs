@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvancedOptionsFrm));
             this.saveBtn = new System.Windows.Forms.Button();
             this.updateChk = new System.Windows.Forms.CheckBox();
@@ -43,6 +44,7 @@
             this.useLinkChk = new System.Windows.Forms.CheckBox();
             this.lockSettingsBtn = new System.Windows.Forms.Button();
             this.menuCssBtn = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,6 +67,7 @@
             this.updateChk.Size = new System.Drawing.Size(113, 17);
             this.updateChk.TabIndex = 1;
             this.updateChk.Text = "Check for updates";
+            this.toolTip1.SetToolTip(this.updateChk, "Enable to check for Scriptmonkey updates every 3 days.");
             this.updateChk.UseVisualStyleBackColor = true;
             // 
             // refreshChk
@@ -75,6 +78,7 @@
             this.refreshChk.Size = new System.Drawing.Size(282, 17);
             this.refreshChk.TabIndex = 2;
             this.refreshChk.Text = "Run on page refresh (experimental, not recommended)";
+            this.toolTip1.SetToolTip(this.refreshChk, "This feature is very experimental.");
             this.refreshChk.UseVisualStyleBackColor = true;
             // 
             // autoChk
@@ -85,6 +89,7 @@
             this.autoChk.Size = new System.Drawing.Size(153, 17);
             this.autoChk.TabIndex = 3;
             this.autoChk.Text = "Detect scripts on webpage";
+            this.toolTip1.SetToolTip(this.autoChk, "Prompt to automatically install the userscript if the webpage is one.");
             this.autoChk.UseVisualStyleBackColor = true;
             // 
             // publicApiChk
@@ -95,6 +100,8 @@
             this.publicApiChk.Size = new System.Drawing.Size(179, 17);
             this.publicApiChk.TabIndex = 4;
             this.publicApiChk.Text = "Use public API (developers only)";
+            this.toolTip1.SetToolTip(this.publicApiChk, "Use the API key \'public\' to access any script via the API. \r\n\r\nThis setting is on" +
+        "ly for developers as it can allow websites to change Scriptmonkey settings.");
             this.publicApiChk.UseVisualStyleBackColor = true;
             // 
             // cacheChk
@@ -105,6 +112,8 @@
             this.cacheChk.Size = new System.Drawing.Size(90, 17);
             this.cacheChk.TabIndex = 5;
             this.cacheChk.Text = "Cache scripts";
+            this.toolTip1.SetToolTip(this.cacheChk, "Make loading times faster and reduce disk usage by caching script contents instea" +
+        "d of reload from disk every page load.");
             this.cacheChk.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -122,6 +131,9 @@
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
             this.reloadNum.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.reloadNum, "Reload the settings file after this many pages have been visited.\r\n\r\nThis number " +
+        "may be increased up to 100 if Scriptmonkey Link is running to avoid extra disk u" +
+        "sage.");
             // 
             // label2
             // 
@@ -140,6 +152,7 @@
             this.refreshPageChk.Size = new System.Drawing.Size(131, 17);
             this.refreshPageChk.TabIndex = 9;
             this.refreshPageChk.Text = "Refresh page on save";
+            this.toolTip1.SetToolTip(this.refreshPageChk, "Automatically refresh the current webpage when the options window is closed.");
             this.refreshPageChk.UseVisualStyleBackColor = true;
             // 
             // injectApiChk
@@ -150,6 +163,7 @@
             this.injectApiChk.Size = new System.Drawing.Size(139, 17);
             this.injectApiChk.TabIndex = 10;
             this.injectApiChk.Text = "Inject API into webpage";
+            this.toolTip1.SetToolTip(this.injectApiChk, "Allows access to GM_ functions.");
             this.injectApiChk.UseVisualStyleBackColor = true;
             this.injectApiChk.CheckedChanged += new System.EventHandler(this.injectApiChk_CheckedChanged);
             // 
@@ -161,6 +175,8 @@
             this.useLinkChk.Size = new System.Drawing.Size(211, 17);
             this.useLinkChk.TabIndex = 11;
             this.useLinkChk.Text = "Use Scriptmonkey Link (recommended)";
+            this.toolTip1.SetToolTip(this.useLinkChk, "Use Scriptmonkey Link to synchronise settings between browser windows if Link is " +
+        "currently running.");
             this.useLinkChk.UseVisualStyleBackColor = true;
             // 
             // lockSettingsBtn
@@ -170,6 +186,7 @@
             this.lockSettingsBtn.Size = new System.Drawing.Size(113, 23);
             this.lockSettingsBtn.TabIndex = 12;
             this.lockSettingsBtn.Text = "Lock Settings File";
+            this.toolTip1.SetToolTip(this.lockSettingsBtn, resources.GetString("lockSettingsBtn.ToolTip"));
             this.lockSettingsBtn.UseVisualStyleBackColor = true;
             this.lockSettingsBtn.Click += new System.EventHandler(this.lockSettingsBtn_Click);
             // 
@@ -180,8 +197,15 @@
             this.menuCssBtn.Size = new System.Drawing.Size(101, 23);
             this.menuCssBtn.TabIndex = 13;
             this.menuCssBtn.Text = "Edit Menu CSS";
+            this.toolTip1.SetToolTip(this.menuCssBtn, "Edit how the menu command buttons appear on the webpage. These buttons only appea" +
+        "r if a script has registered menu commands with Scriptmonkey.");
             this.menuCssBtn.UseVisualStyleBackColor = true;
             this.menuCssBtn.Click += new System.EventHandler(this.menuCssBtn_Click);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ToolTipTitle = "Help";
             // 
             // AdvancedOptionsFrm
             // 
@@ -232,5 +256,6 @@
         private System.Windows.Forms.CheckBox useLinkChk;
         private System.Windows.Forms.Button lockSettingsBtn;
         private System.Windows.Forms.Button menuCssBtn;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
