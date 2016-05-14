@@ -271,7 +271,7 @@ namespace BHOUserScript
                 }
 
                 var content = "function Scriptmonkey_S" + i + "_proto() {";
-                if (_prefs.Settings.InjectAPI)
+                if (_prefs.Settings.InjectAPI && scriptContent.Contains("GM_"))
                     content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
                                Resources.WrapperJS_After + scriptContent;
                 else
