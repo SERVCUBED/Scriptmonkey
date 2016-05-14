@@ -31,6 +31,7 @@ namespace BHOUserScript
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptEditFrm));
             this.label1 = new System.Windows.Forms.Label();
             this.nameTxt = new System.Windows.Forms.TextBox();
@@ -64,6 +65,7 @@ namespace BHOUserScript
             this.editIncludeBtn = new System.Windows.Forms.Button();
             this.editExcludeBtn = new System.Windows.Forms.Button();
             this.menuCmdChk = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -100,6 +102,7 @@ namespace BHOUserScript
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 16;
             this.cancelBtn.Text = "Cancel";
+            this.toolTip1.SetToolTip(this.cancelBtn, "Discard all changes.");
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
@@ -178,6 +181,8 @@ namespace BHOUserScript
             this.addMatchBtn.Size = new System.Drawing.Size(26, 23);
             this.addMatchBtn.TabIndex = 7;
             this.addMatchBtn.Text = "+";
+            this.toolTip1.SetToolTip(this.addMatchBtn, "The script will be run on these URLs.\r\n\r\nFor regex, start and end the input with " +
+        "a forward-slash. Otherwise * and ? \r\ncan be used as wildcard characters.");
             this.addMatchBtn.UseVisualStyleBackColor = true;
             this.addMatchBtn.Click += new System.EventHandler(this.addMatchBtn_Click);
             // 
@@ -213,6 +218,8 @@ namespace BHOUserScript
             this.updateTxt.Name = "updateTxt";
             this.updateTxt.Size = new System.Drawing.Size(410, 20);
             this.updateTxt.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.updateTxt, "The URL to check for updates from every 7 days. Leave blank to disable update che" +
+        "cking for this script.");
             // 
             // label7
             // 
@@ -231,6 +238,7 @@ namespace BHOUserScript
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(28, 23);
             this.button1.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.button1, "Load a script from a file or web URL.");
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -241,6 +249,8 @@ namespace BHOUserScript
             this.editBtn.Size = new System.Drawing.Size(75, 23);
             this.editBtn.TabIndex = 15;
             this.editBtn.Text = "Edit File";
+            this.toolTip1.SetToolTip(this.editBtn, "Edit the script file in the specified text editor. The editor used can be \r\nchang" +
+        "ed from the options button on the main window.");
             this.editBtn.UseVisualStyleBackColor = true;
             this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
@@ -254,6 +264,7 @@ namespace BHOUserScript
             this.enabledChk.Size = new System.Drawing.Size(65, 17);
             this.enabledChk.TabIndex = 14;
             this.enabledChk.Text = "Enabled";
+            this.toolTip1.SetToolTip(this.enabledChk, "Run the script.");
             this.enabledChk.UseVisualStyleBackColor = true;
             // 
             // refBtn
@@ -263,6 +274,7 @@ namespace BHOUserScript
             this.refBtn.Size = new System.Drawing.Size(75, 23);
             this.refBtn.TabIndex = 3;
             this.refBtn.Text = "Refresh";
+            this.toolTip1.SetToolTip(this.refBtn, "Reload the metadata from the script.");
             this.refBtn.UseVisualStyleBackColor = true;
             this.refBtn.Click += new System.EventHandler(this.refBtn_Click);
             // 
@@ -302,6 +314,8 @@ namespace BHOUserScript
             this.addExcludeBtn.Size = new System.Drawing.Size(26, 23);
             this.addExcludeBtn.TabIndex = 10;
             this.addExcludeBtn.Text = "+";
+            this.toolTip1.SetToolTip(this.addExcludeBtn, "The script will not be run on these URLs.\r\n\r\nFor regex, start and end the input w" +
+        "ith a forward-slash. Otherwise * and ? \r\ncan be used as wildcard characters.");
             this.addExcludeBtn.UseVisualStyleBackColor = true;
             this.addExcludeBtn.Click += new System.EventHandler(this.addExcludeBtn_Click);
             // 
@@ -332,6 +346,7 @@ namespace BHOUserScript
             this.clearValsBtn.Size = new System.Drawing.Size(114, 23);
             this.clearValsBtn.TabIndex = 19;
             this.clearValsBtn.Text = "Clear Saved Values";
+            this.toolTip1.SetToolTip(this.clearValsBtn, "Clear the saved values and menu commands.");
             this.clearValsBtn.UseVisualStyleBackColor = true;
             this.clearValsBtn.Visible = false;
             this.clearValsBtn.Click += new System.EventHandler(this.clearValsBtn_Click);
@@ -366,7 +381,14 @@ namespace BHOUserScript
             this.menuCmdChk.Size = new System.Drawing.Size(161, 17);
             this.menuCmdChk.TabIndex = 21;
             this.menuCmdChk.Text = "Show menu commands if set";
+            this.toolTip1.SetToolTip(this.menuCmdChk, "If this script sets menu commands, show those menu commands in the command list i" +
+        "n the browser window.");
             this.menuCmdChk.UseVisualStyleBackColor = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ToolTipTitle = "Help";
             // 
             // ScriptEditFrm
             // 
@@ -452,5 +474,6 @@ namespace BHOUserScript
         private Button editIncludeBtn;
         private Button editExcludeBtn;
         private CheckBox menuCmdChk;
+        private ToolTip toolTip1;
     }
 }
