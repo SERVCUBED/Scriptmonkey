@@ -187,7 +187,7 @@ namespace Scriptmonkey_Link
         /// </summary>
         public void Purge()
         {
-            DateTime tPurge = DateTime.Now.Subtract(TimeSpan.FromMinutes(30));
+            DateTime tPurge = DateTime.Now.Subtract(TimeSpan.FromMinutes(5));
             for (int i = 0; i < _instances.Count; i++)
             {
                 if (i >= _instances.Count)
