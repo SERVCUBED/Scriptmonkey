@@ -81,8 +81,8 @@ namespace BHOUserScript
             else
             {
                 // If file was selected and then form cancelled delete file
-                if (sw.fileTxt.Text != String.Empty && File.Exists(Scriptmonkey.ScriptPath + sw.fileTxt.Text))
-                    File.Delete(Scriptmonkey.ScriptPath + sw.fileTxt.Text);
+                if (sw.FileName != String.Empty && File.Exists(Scriptmonkey.ScriptPath + sw.FileName))
+                    File.Delete(Scriptmonkey.ScriptPath + sw.FileName);
             }
             sw.Dispose();
         }

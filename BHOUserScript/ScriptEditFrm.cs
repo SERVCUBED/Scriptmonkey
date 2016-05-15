@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using System.Net;
+using System.Reflection;
 using BHOUserScript.Properties;
 
 namespace BHOUserScript
@@ -14,12 +15,17 @@ namespace BHOUserScript
         public Script EditedScript = new Script();
         public Db Prefs;
         public string EditPath;
+        public string FileName;
 
         public ScriptEditFrm(bool editing)
         {
             InitializeComponent();
             if (editing)
+            {
                 clearValsBtn.Visible = true;
+                button1.Visible = false;
+                Text = @"Edit Userscript";
+            }
         }
 
         public void LoadFromEditedScript()
@@ -28,7 +34,7 @@ namespace BHOUserScript
             nameTxt.Text = EditedScript.Name;
             authorTxt.Text = EditedScript.Author;
             descriptionTxt.Text = EditedScript.Description;
-            fileTxt.Text = EditedScript.Path;
+            FileName = EditedScript.Path;
             updateTxt.Text = EditedScript.UpdateUrl;
             versionTxt.Text = EditedScript.Version;
             menuCmdChk.Checked = EditedScript.ShowMenuCommands;
@@ -54,9 +60,8 @@ namespace BHOUserScript
                 return;
             }
 
-            if (fileTxt.Text == String.Empty)
+            if (FileName == String.Empty)
             {
-                fileTxt.BackColor = Color.PaleVioletRed;
                 return;
             }
 
@@ -64,7 +69,7 @@ namespace BHOUserScript
             EditedScript.Name = nameTxt.Text;
             EditedScript.Author = authorTxt.Text;
             EditedScript.Description = descriptionTxt.Text;
-            EditedScript.Path = fileTxt.Text;
+            EditedScript.Path = FileName;
             EditedScript.InstallDate = DateTime.UtcNow;
             EditedScript.UpdateUrl = updateTxt.Text;
             EditedScript.Version = versionTxt.Text;
@@ -112,8 +117,8 @@ namespace BHOUserScript
                 Enabled = false; // Disable form while working
 
                 // Delete old script
-                if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
-                    File.Delete(Scriptmonkey.ScriptPath + fileTxt.Text);
+                if (File.Exists(Scriptmonkey.ScriptPath + FileName))
+                    File.Delete(Scriptmonkey.ScriptPath + FileName);
 
                 string prefix = Scriptmonkey.GenerateRandomString();
 
@@ -122,8 +127,9 @@ namespace BHOUserScript
                     try
                     {
                         File.Copy(form.Url, Scriptmonkey.ScriptPath + prefix + form.openFileDialog1.SafeFileName);
-                        fileTxt.Text = prefix + form.openFileDialog1.SafeFileName;
-                        LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
+                        FileName = prefix + form.openFileDialog1.SafeFileName;
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName));
+                        button1.Enabled = false;
                     }
                     catch (Exception ex)
                     {
@@ -138,8 +144,9 @@ namespace BHOUserScript
                         var webClient = new WebClient();
                         var f_ = WebUtility.HtmlDecode(form.Url);
                         webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + prefix + f_.Substring(f_.LastIndexOf('/')));
-                        fileTxt.Text = prefix + f_.Substring(f_.LastIndexOf('/'));
-                        LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
+                        FileName = prefix + ".user.js";
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName));
+                        button1.Enabled = false;
                     }
                     catch (Exception ex)
                     {
@@ -191,14 +198,14 @@ namespace BHOUserScript
 
         private void editBtn_Click(object sender, EventArgs e)
         {
-            if (fileTxt.Text == String.Empty)
+            if (FileName == String.Empty)
                 return;
             var p = new Process
             {
                 StartInfo =
                 {
                     FileName = EditPath,
-                    Arguments = Scriptmonkey.ScriptPath + fileTxt.Text
+                    Arguments = Scriptmonkey.ScriptPath + FileName
                 }
             };
             p.Start();
@@ -206,12 +213,11 @@ namespace BHOUserScript
 
         private void refBtn_Click(object sender, EventArgs e)
         {
-            if (fileTxt.Text != String.Empty)
-            {
-                // Double check file actually exists
-                if (File.Exists(Scriptmonkey.ScriptPath + fileTxt.Text))
-                    LoadFromParse(ParseScriptMetadata.Parse(fileTxt.Text));
-            }
+            if (FileName == String.Empty) return;
+
+            // Double check file actually exists
+            if (File.Exists(Scriptmonkey.ScriptPath + FileName))
+                LoadFromParse(ParseScriptMetadata.Parse(FileName));
         }
 
         private void CheckURLWarningLabel()

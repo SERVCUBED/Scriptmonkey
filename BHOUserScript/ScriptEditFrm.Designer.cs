@@ -37,8 +37,6 @@ namespace BHOUserScript
             this.nameTxt = new System.Windows.Forms.TextBox();
             this.okBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.fileTxt = new System.Windows.Forms.TextBox();
             this.authorTxt = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -105,23 +103,6 @@ namespace BHOUserScript
             this.toolTip1.SetToolTip(this.cancelBtn, "Discard all changes.");
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(26, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "File:";
-            // 
-            // fileTxt
-            // 
-            this.fileTxt.Location = new System.Drawing.Point(89, 11);
-            this.fileTxt.Name = "fileTxt";
-            this.fileTxt.ReadOnly = true;
-            this.fileTxt.Size = new System.Drawing.Size(295, 20);
-            this.fileTxt.TabIndex = 1;
             // 
             // authorTxt
             // 
@@ -234,10 +215,12 @@ namespace BHOUserScript
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(390, 9);
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(89, 8);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(28, 23);
+            this.button1.Size = new System.Drawing.Size(254, 23);
             this.button1.TabIndex = 2;
+            this.button1.Text = "Browse for file";
             this.toolTip1.SetToolTip(this.button1, "Load a script from a file or web URL.");
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -269,11 +252,11 @@ namespace BHOUserScript
             // 
             // refBtn
             // 
-            this.refBtn.Location = new System.Drawing.Point(424, 9);
+            this.refBtn.Location = new System.Drawing.Point(349, 8);
             this.refBtn.Name = "refBtn";
-            this.refBtn.Size = new System.Drawing.Size(75, 23);
+            this.refBtn.Size = new System.Drawing.Size(150, 23);
             this.refBtn.TabIndex = 3;
-            this.refBtn.Text = "Refresh";
+            this.refBtn.Text = "Refresh metadata from file";
             this.toolTip1.SetToolTip(this.refBtn, "Reload the metadata from the script.");
             this.refBtn.UseVisualStyleBackColor = true;
             this.refBtn.Click += new System.EventHandler(this.refBtn_Click);
@@ -421,8 +404,6 @@ namespace BHOUserScript
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.authorTxt);
-            this.Controls.Add(this.fileTxt);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.okBtn);
             this.Controls.Add(this.nameTxt);
@@ -433,7 +414,7 @@ namespace BHOUserScript
             this.MinimizeBox = false;
             this.Name = "ScriptEditFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Edit userscript";
+            this.Text = "New Userscript";
             this.Load += new System.EventHandler(this.ScriptEditFrm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -446,7 +427,6 @@ namespace BHOUserScript
         private TextBox nameTxt;
         private Button okBtn;
         private Button cancelBtn;
-        private Label label2;
         private TextBox authorTxt;
         private Label label3;
         private Label label4;
@@ -463,7 +443,6 @@ namespace BHOUserScript
         private Button editBtn;
         private CheckBox enabledChk;
         private Button refBtn;
-        public TextBox fileTxt;
         private Label noURLWarningLbl;
         private ListBox excludesBox;
         private Label label8;
