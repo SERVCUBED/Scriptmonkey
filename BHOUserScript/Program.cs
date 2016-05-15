@@ -315,8 +315,18 @@ namespace BHOUserScript
         /// Exposes the IExtension interface to the browser window.
         /// </summary>
         /// <param name="window"></param>
-        private void SetupWindow(dynamic window)
+        private void SetupWindow(IHTMLWindow2 window)
         {
+            // Prevent multiple injections of API
+            try
+            {
+                if (window.execScript("window['Scriptmonkey']") != null)
+                {
+                    return;
+                }
+            }
+            catch (Exception) { }
+            
             try
             {
                 var exp = (IExpando)window;
@@ -1328,7 +1338,7 @@ namespace BHOUserScript
         /// Displays the options window
         /// </summary>
         public void showOptions() { ShowOptions(); }
-
+        
         /// <summary>
         /// Checks if the provided access key is valid and supplied scriptIndex is in range.
         /// </summary>
