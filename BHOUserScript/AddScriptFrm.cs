@@ -8,9 +8,16 @@ namespace BHOUserScript
         public bool FromFile = true;
         public string Url;
 
-        public AddScriptFrm()
+        public AddScriptFrm(bool isCss)
         {
             InitializeComponent();
+
+            if (isCss)
+            {
+                Text = @"Add CSS";
+                openFileDialog1.Filter =
+                    @"CSS Files (*.css)|*.css|All files (*.*)|*.*";
+            }
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)

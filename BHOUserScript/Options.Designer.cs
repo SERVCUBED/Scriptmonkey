@@ -48,10 +48,14 @@ namespace BHOUserScript
             this.optionsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.setScriptEditorPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openInstallDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptEditorOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.openInstallDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addContextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.newScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCSSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsContextMenuStrip.SuspendLayout();
+            this.addContextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // okBtn
@@ -126,7 +130,7 @@ namespace BHOUserScript
             this.enabledChk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.enabledChk.Location = new System.Drawing.Point(348, 129);
             this.enabledChk.Name = "enabledChk";
-            this.enabledChk.Size = new System.Drawing.Size(78, 17);
+            this.enabledChk.Size = new System.Drawing.Size(79, 17);
             this.enabledChk.TabIndex = 7;
             this.enabledChk.Text = "All Enabled";
             this.enabledChk.UseVisualStyleBackColor = true;
@@ -138,7 +142,7 @@ namespace BHOUserScript
             this.eachEnabledChk.Enabled = false;
             this.eachEnabledChk.Location = new System.Drawing.Point(348, 152);
             this.eachEnabledChk.Name = "eachEnabledChk";
-            this.eachEnabledChk.Size = new System.Drawing.Size(70, 30);
+            this.eachEnabledChk.Size = new System.Drawing.Size(71, 30);
             this.eachEnabledChk.TabIndex = 8;
             this.eachEnabledChk.Text = "Selected \r\nEnabled";
             this.eachEnabledChk.UseVisualStyleBackColor = true;
@@ -192,26 +196,33 @@ namespace BHOUserScript
             this.openInstallDirectoryToolStripMenuItem,
             this.advancedOptionsToolStripMenuItem});
             this.optionsContextMenuStrip.Name = "optionsContextMenuStrip";
-            this.optionsContextMenuStrip.Size = new System.Drawing.Size(186, 92);
+            this.optionsContextMenuStrip.Size = new System.Drawing.Size(188, 92);
             // 
             // setScriptEditorPathToolStripMenuItem
             // 
             this.setScriptEditorPathToolStripMenuItem.Name = "setScriptEditorPathToolStripMenuItem";
-            this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.setScriptEditorPathToolStripMenuItem.Text = "Set script editor path";
             this.setScriptEditorPathToolStripMenuItem.Click += new System.EventHandler(this.setScriptEditorPathToolStripMenuItem_Click);
             // 
             // resetAllToolStripMenuItem
             // 
             this.resetAllToolStripMenuItem.Name = "resetAllToolStripMenuItem";
-            this.resetAllToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.resetAllToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.resetAllToolStripMenuItem.Text = "Reset all";
             this.resetAllToolStripMenuItem.Click += new System.EventHandler(this.resetAllToolStripMenuItem_Click);
+            // 
+            // openInstallDirectoryToolStripMenuItem
+            // 
+            this.openInstallDirectoryToolStripMenuItem.Name = "openInstallDirectoryToolStripMenuItem";
+            this.openInstallDirectoryToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.openInstallDirectoryToolStripMenuItem.Text = "Open install directory";
+            this.openInstallDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openInstallDirectoryToolStripMenuItem_Click);
             // 
             // advancedOptionsToolStripMenuItem
             // 
             this.advancedOptionsToolStripMenuItem.Name = "advancedOptionsToolStripMenuItem";
-            this.advancedOptionsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.advancedOptionsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.advancedOptionsToolStripMenuItem.Text = "Advanced options";
             this.advancedOptionsToolStripMenuItem.Click += new System.EventHandler(this.advancedOptionsToolStripMenuItem_Click);
             // 
@@ -219,12 +230,28 @@ namespace BHOUserScript
             // 
             this.scriptEditorOpenFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
-            // openInstallDirectoryToolStripMenuItem
+            // addContextMenuStrip1
             // 
-            this.openInstallDirectoryToolStripMenuItem.Name = "openInstallDirectoryToolStripMenuItem";
-            this.openInstallDirectoryToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.openInstallDirectoryToolStripMenuItem.Text = "Open install directory";
-            this.openInstallDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openInstallDirectoryToolStripMenuItem_Click);
+            this.addContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newScriptToolStripMenuItem,
+            this.newCSSToolStripMenuItem});
+            this.addContextMenuStrip1.Name = "addContextMenuStrip1";
+            this.addContextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            // 
+            // newScriptToolStripMenuItem
+            // 
+            this.newScriptToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.newScriptToolStripMenuItem.Name = "newScriptToolStripMenuItem";
+            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newScriptToolStripMenuItem.Text = "New Script";
+            this.newScriptToolStripMenuItem.Click += new System.EventHandler(this.newScriptToolStripMenuItem_Click);
+            // 
+            // newCSSToolStripMenuItem
+            // 
+            this.newCSSToolStripMenuItem.Name = "newCSSToolStripMenuItem";
+            this.newCSSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newCSSToolStripMenuItem.Text = "New CSS";
+            this.newCSSToolStripMenuItem.Click += new System.EventHandler(this.newCSSToolStripMenuItem_Click);
             // 
             // Options
             // 
@@ -253,6 +280,7 @@ namespace BHOUserScript
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Options_FormClosed);
             this.Load += new System.EventHandler(this.Options_Load);
             this.optionsContextMenuStrip.ResumeLayout(false);
+            this.addContextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,5 +306,8 @@ namespace BHOUserScript
         private OpenFileDialog scriptEditorOpenFileDialog;
         private ToolStripMenuItem advancedOptionsToolStripMenuItem;
         private ToolStripMenuItem openInstallDirectoryToolStripMenuItem;
+        private ContextMenuStrip addContextMenuStrip1;
+        private ToolStripMenuItem newScriptToolStripMenuItem;
+        private ToolStripMenuItem newCSSToolStripMenuItem;
     }
 }

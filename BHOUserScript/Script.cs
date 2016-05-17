@@ -8,6 +8,14 @@ namespace BHOUserScript
     /// </summary>
     public class Script
     {
+        public enum ValueType
+        {
+            Script,
+            StyleSheet
+        }
+        
+        public ValueType Type = ValueType.Script;
+
         public string Name {get;set;}
 
         public string Path { get; set; }

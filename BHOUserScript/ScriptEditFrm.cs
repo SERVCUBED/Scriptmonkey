@@ -5,7 +5,6 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using System.Net;
-using System.Reflection;
 using BHOUserScript.Properties;
 
 namespace BHOUserScript
@@ -13,19 +12,35 @@ namespace BHOUserScript
     public partial class ScriptEditFrm : Form
     {
         public Script EditedScript = new Script();
-        public Db Prefs;
         public string EditPath;
-        public string FileName;
+        public string FileName = String.Empty;
+        private bool isCss;
 
-        public ScriptEditFrm(bool editing)
+        public ScriptEditFrm(bool editing, bool isCss)
         {
+            this.isCss = isCss;
+
             InitializeComponent();
+
+            if (isCss)
+            {
+                updateTxt.Enabled = false;
+                menuCmdChk.Enabled = false;
+                clearValsBtn.Enabled = false;
+                versionTxt.Enabled = false;
+                refBtn.Enabled = false;
+                EditedScript.Type = Script.ValueType.StyleSheet;
+                
+                Text = @"New CSS";
+            }
+
             if (editing)
             {
                 clearValsBtn.Visible = true;
                 button1.Visible = false;
-                Text = @"Edit Userscript";
+                Text = isCss ? @"Edit CSS" : @"Edit Userscript";
             }
+
         }
 
         public void LoadFromEditedScript()
@@ -62,6 +77,7 @@ namespace BHOUserScript
 
             if (FileName == String.Empty)
             {
+                button1.Focus();
                 return;
             }
 
@@ -111,7 +127,7 @@ namespace BHOUserScript
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddScriptFrm form = new AddScriptFrm();
+            AddScriptFrm form = new AddScriptFrm(isCss);
             if (form.ShowDialog() == DialogResult.OK && form.Url != String.Empty)
             {
                 Enabled = false; // Disable form while working
@@ -142,14 +158,16 @@ namespace BHOUserScript
                     try
                     {
                         var webClient = new WebClient();
-                        var f_ = WebUtility.HtmlDecode(form.Url);
-                        webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + prefix + f_.Substring(f_.LastIndexOf('/')));
-                        FileName = prefix + ".user.js";
+                        FileName = prefix + (isCss? ".css" : ".user.js");
+                        webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + FileName);
                         LoadFromParse(ParseScriptMetadata.Parse(FileName));
                         button1.Enabled = false;
                     }
                     catch (Exception ex)
                     {
+                        MessageBox.Show(@"Unable to download file: " + Environment.NewLine + ex.Message, Resources.Title,
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        FileName = String.Empty;
                         if (Scriptmonkey.LogAndCheckDebugger(ex))
                             throw;
                     }

@@ -52,11 +52,11 @@ namespace BHOUserScript
         {
             if (listBox1.SelectedIndex > -1)
             {
-                ScriptEditFrm sw = new ScriptEditFrm(true)
+                ScriptEditFrm sw = new ScriptEditFrm(true, 
+                    Prefs.AllScripts[listBox1.SelectedIndex].Type == Script.ValueType.StyleSheet)
                 {
                     EditedScript = Prefs.AllScripts[listBox1.SelectedIndex],
-                    EditPath = _editPath,
-                    Prefs = Prefs
+                    EditPath = _editPath
                 };
                 sw.LoadFromEditedScript();
                 if (sw.ShowDialog() == DialogResult.OK)
@@ -72,7 +72,14 @@ namespace BHOUserScript
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            var sw = new ScriptEditFrm(false) {EditPath = _editPath, Prefs = Prefs };
+            addContextMenuStrip1.Show(this, new System.Drawing.Point(
+                addBtn.Left, addBtn.Top + addBtn.Height));
+        }
+
+        private void addItem(Script.ValueType type)
+        {
+            var sw = new ScriptEditFrm(false, type == Script.ValueType.StyleSheet) { EditPath = _editPath};
+            
             if (sw.ShowDialog() == DialogResult.OK)
             {
                 Prefs.AllScripts.Add(sw.EditedScript);
@@ -208,6 +215,16 @@ namespace BHOUserScript
             };
             p.Start();
             DialogResult = DialogResult.OK;
+        }
+
+        private void newScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addItem(Script.ValueType.Script);
+        }
+
+        private void newCSSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addItem(Script.ValueType.StyleSheet);
         }
     }
 }

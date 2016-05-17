@@ -220,7 +220,13 @@ namespace BHOUserScript
 
                 for (int i = 0; i < _prefs.AllScripts.Count; i++)
                 {
-                    TryCheckRunScript(i, url.ToString(), window, ref useMenuCommands, ref menuContent);
+                    if (ShouldRunScript(i, url.ToString()))
+                    {
+                        if (_prefs[i].Type == Script.ValueType.Script)
+                            TryRunScript(i, window, ref useMenuCommands, ref menuContent);
+                        else
+                            TryInjectCss(i, window);
+                    }
                 }
 
                 menuContent += "</div>";
@@ -236,39 +242,64 @@ namespace BHOUserScript
         }
 
         /// <summary>
-        /// Try to check if the script can be run in the current browser window and run it
+        /// Check if the script can be run in the current browser window
+        /// </summary>
+        /// <param name="i">The index of the script in the settings file</param>
+        /// <param name="url">The current URL</param>
+        /// <returns>True if the script should run</returns>
+        private bool ShouldRunScript(int i, string url)
+        {
+            if (!_prefs[i].Enabled) return false;
+
+            if (_prefs[i].Include.Length > 0 && !Regex.IsMatch(url, WildcardToRegex(_prefs[i].Include)))
+                return false;
+
+            if (_prefs[i].Exclude.Length > 0 && Regex.IsMatch(url, WildcardToRegex(_prefs[i].Exclude)))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Get the script content and cache it if caching is enabled.
+        /// </summary>
+        /// <param name="i">The index of the script in the settings file.</param>
+        /// <returns>The script content.</returns>
+        private string GetScriptFileData(int i)
+        {
+            if (_prefs.Settings.CacheScripts && _scriptCache.ContainsKey(_prefs[i].Path))
+                return _scriptCache[_prefs[i].Path];
+            else
+            {
+                //var str = new StreamReader(ScriptPath + _prefs[i].Path);
+                //scriptContent = str.ReadToEnd();
+                //str.Close();
+                string content = _prefs.ReadFile(ScriptPath + _prefs[i].Path);
+
+                if (_prefs.Settings.CacheScripts)
+                    _scriptCache.Add(_prefs[i].Path, content);
+                return content;
+            }
+        }
+
+        /// <summary>
+        /// Try to run the script in the browser window
         /// </summary>
         /// <param name="i">The index of the script in the settings file</param>
         /// <param name="url">The current URL</param>
         /// <param name="window">The current IHTMLWindow2</param>
         /// <param name="useMenuCommands">Should the menu commands HTML be injected into the page?</param>
         /// <param name="menuContent">The content for the menu commands HTML</param>
-        private void TryCheckRunScript(int i, string url, IHTMLWindow2 window, ref bool useMenuCommands, ref string menuContent)
+        private void TryRunScript(int i, IHTMLWindow2 window, ref bool useMenuCommands, ref string menuContent)
         {
-            if (!_prefs[i].Enabled) return;
-
-            if (_prefs[i].Include.Length > 0 && !Regex.IsMatch(url, WildcardToRegex(_prefs[i].Include)))
+            if (_prefs[i].Type != Script.ValueType.Script)
                 return;
 
-            if (_prefs[i].Exclude.Length > 0 && Regex.IsMatch(url, WildcardToRegex(_prefs[i].Exclude)))
-                return;
-
-                string scriptContent = String.Empty;
+            string scriptContent = String.Empty;
 
             try
             {
-                if (_prefs.Settings.CacheScripts && _scriptCache.ContainsKey(_prefs[i].Path))
-                    scriptContent = _scriptCache[_prefs[i].Path];
-                else
-                {
-                    //var str = new StreamReader(ScriptPath + _prefs[i].Path);
-                    //scriptContent = str.ReadToEnd();
-                    //str.Close();
-                    scriptContent = _prefs.ReadFile(ScriptPath + _prefs[i].Path);
-
-                    if (_prefs.Settings.CacheScripts)
-                        _scriptCache.Add(_prefs[i].Path, scriptContent);
-                }
+                scriptContent = GetScriptFileData(i);
 
                 var content = "function Scriptmonkey_S" + i + "_proto() {";
                 if (_prefs.Settings.InjectAPI && scriptContent.Contains("GM_"))
@@ -308,6 +339,38 @@ namespace BHOUserScript
                 if (shouldThrow)
                     throw;
 
+            }
+        }
+
+        /// <summary>
+        /// Try to inject CSS into the current window.
+        /// </summary>
+        /// <param name="i">The index of the Script object in the settings file.</param>
+        /// <param name="window">The current IHTMLWindow2.</param>
+        private void TryInjectCss(int i, IHTMLWindow2 window)
+        {
+            if (_prefs[i].Type != Script.ValueType.StyleSheet)
+                return;
+
+            try
+            {
+                var content = GetScriptFileData(i);
+
+                var doc = window.document;
+                
+                var t = new Thread(() =>
+                {
+                    if (doc.styleSheets.length > 31) return; // doc.createStyleSheet throws Invalid Argument if length > 31
+
+                    doc.createStyleSheet().cssText = content;
+                });
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start();
+            }
+            catch (Exception ex)
+            {
+                if (LogAndCheckDebugger(ex))
+                    throw;
             }
         }
 
