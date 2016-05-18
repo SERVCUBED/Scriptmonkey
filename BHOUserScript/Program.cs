@@ -217,7 +217,7 @@ namespace BHOUserScript
                 var runJS = true;
                 try
                 {
-                    runJS = window.navigator?.javaEnabled() ?? true;
+                    runJS = window.navigator?.javaEnabled() != null;
                 }
                 catch (Exception) { }
 
@@ -381,9 +381,11 @@ namespace BHOUserScript
             if (_prefs[i].Type != Script.ValueType.StyleSheet)
                 return;
 
+            string content = String.Empty;
+
             try
             {
-                var content = GetScriptFileData(i);
+                content = GetScriptFileData(i);
 
                 var doc = window.document;
                 
@@ -398,7 +400,13 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                if (LogAndCheckDebugger(ex))
+                bool shouldThrow;
+                if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
+                    shouldThrow = LogAndCheckDebugger(ex, "At CSS: " + _prefs[i].Name + ':' + Environment.NewLine + content);
+                else
+                    shouldThrow = LogAndCheckDebugger(ex, "At CSS: " + _prefs[i].Name);
+
+                if (shouldThrow)
                     throw;
             }
         }
@@ -863,6 +871,12 @@ namespace BHOUserScript
                 serviceProv.QueryService(ref guidIWebBrowserApp, ref guidIWebBrowser2, out intPtr);
 
                 _browser = (IWebBrowser2)Marshal.GetObjectForIUnknown(intPtr);
+                
+                // Ensure the handlers are not already added
+                ((DWebBrowserEvents2_Event)_browser).DocumentComplete -= Run;
+                ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -= BeforeNavigate;
+                ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 -= NavigateComplete2;
+                ((DWebBrowserEvents2_Event)_browser).DownloadComplete -= DownloadComplete;
 
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete += Run;
                 ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 += BeforeNavigate;
