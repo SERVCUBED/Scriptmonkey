@@ -214,7 +214,12 @@ namespace BHOUserScript
                     }
                 }
 
-                var runJS = window.navigator?.javaEnabled() ?? true;
+                var runJS = true;
+                try
+                {
+                    runJS = window.navigator?.javaEnabled() ?? true;
+                }
+                catch (Exception) { }
 
                 if (_prefs.Settings.InjectAPI)
                     SetupWindow(window);
