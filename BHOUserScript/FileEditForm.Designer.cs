@@ -87,6 +87,7 @@
             this.scintilla1.Size = new System.Drawing.Size(744, 350);
             this.scintilla1.TabIndex = 1;
             this.scintilla1.UseTabs = false;
+            this.scintilla1.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.scintilla1_CharAdded);
             this.scintilla1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // FileEditForm

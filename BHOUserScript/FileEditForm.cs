@@ -61,6 +61,20 @@ namespace BHOUserScript
             _maxLineNumberCharLength = maxLineNumberCharLength;
         }
 
+        private void scintilla1_CharAdded(object sender, CharAddedEventArgs e)
+        {
+            // Find the word start
+            var currentPos = scintilla1.CurrentPosition;
+            var wordStartPos = scintilla1.WordStartPosition(currentPos, true);
+
+            // Display the autocompletion list
+            var lenEntered = currentPos - wordStartPos;
+            if (lenEntered > 0)
+            {
+                scintilla1.AutoCShow(lenEntered, Properties.Resources.JsKeywords);
+            }
+        }
+
         private void saveBtn_Click(object sender, EventArgs e)
         {
             Db.WriteFile(_url, scintilla1.Text);
