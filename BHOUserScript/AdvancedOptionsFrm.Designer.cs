@@ -98,7 +98,7 @@
             this.publicApiChk.Location = new System.Drawing.Point(32, 109);
             this.publicApiChk.Name = "publicApiChk";
             this.publicApiChk.Size = new System.Drawing.Size(179, 17);
-            this.publicApiChk.TabIndex = 4;
+            this.publicApiChk.TabIndex = 5;
             this.publicApiChk.Text = "Use public API (developers only)";
             this.toolTip1.SetToolTip(this.publicApiChk, "Use the API key \'public\' to access any script via the API. \r\n\r\nThis setting is on" +
         "ly for developers as it can allow websites to change Scriptmonkey settings.");
@@ -110,7 +110,7 @@
             this.cacheChk.Location = new System.Drawing.Point(13, 132);
             this.cacheChk.Name = "cacheChk";
             this.cacheChk.Size = new System.Drawing.Size(90, 17);
-            this.cacheChk.TabIndex = 5;
+            this.cacheChk.TabIndex = 6;
             this.cacheChk.Text = "Cache scripts";
             this.toolTip1.SetToolTip(this.cacheChk, "Make loading times faster and reduce disk usage by caching script contents instea" +
         "d of reload from disk every page load.");
@@ -130,7 +130,7 @@
             this.reloadNum.Location = new System.Drawing.Point(122, 201);
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
-            this.reloadNum.TabIndex = 7;
+            this.reloadNum.TabIndex = 9;
             this.toolTip1.SetToolTip(this.reloadNum, "Reload the settings file after this many pages have been visited.\r\n\r\nThis number " +
         "may be increased up to 100 if Scriptmonkey Link is running to avoid extra disk u" +
         "sage.");
@@ -150,7 +150,7 @@
             this.refreshPageChk.Location = new System.Drawing.Point(13, 156);
             this.refreshPageChk.Name = "refreshPageChk";
             this.refreshPageChk.Size = new System.Drawing.Size(131, 17);
-            this.refreshPageChk.TabIndex = 9;
+            this.refreshPageChk.TabIndex = 7;
             this.refreshPageChk.Text = "Refresh page on save";
             this.toolTip1.SetToolTip(this.refreshPageChk, "Automatically refresh the current webpage when the options window is closed.");
             this.refreshPageChk.UseVisualStyleBackColor = true;
@@ -161,7 +161,7 @@
             this.injectApiChk.Location = new System.Drawing.Point(13, 86);
             this.injectApiChk.Name = "injectApiChk";
             this.injectApiChk.Size = new System.Drawing.Size(139, 17);
-            this.injectApiChk.TabIndex = 10;
+            this.injectApiChk.TabIndex = 4;
             this.injectApiChk.Text = "Inject API into webpage";
             this.toolTip1.SetToolTip(this.injectApiChk, "Allows access to GM_ functions.");
             this.injectApiChk.UseVisualStyleBackColor = true;
@@ -173,7 +173,7 @@
             this.useLinkChk.Location = new System.Drawing.Point(13, 179);
             this.useLinkChk.Name = "useLinkChk";
             this.useLinkChk.Size = new System.Drawing.Size(211, 17);
-            this.useLinkChk.TabIndex = 11;
+            this.useLinkChk.TabIndex = 8;
             this.useLinkChk.Text = "Use Scriptmonkey Link (recommended)";
             this.toolTip1.SetToolTip(this.useLinkChk, "Use Scriptmonkey Link to synchronise settings between browser windows if Link is " +
         "currently running.");
@@ -184,7 +184,7 @@
             this.lockSettingsBtn.Location = new System.Drawing.Point(121, 227);
             this.lockSettingsBtn.Name = "lockSettingsBtn";
             this.lockSettingsBtn.Size = new System.Drawing.Size(113, 23);
-            this.lockSettingsBtn.TabIndex = 12;
+            this.lockSettingsBtn.TabIndex = 11;
             this.lockSettingsBtn.Text = "Lock Settings File";
             this.toolTip1.SetToolTip(this.lockSettingsBtn, resources.GetString("lockSettingsBtn.ToolTip"));
             this.lockSettingsBtn.UseVisualStyleBackColor = true;
@@ -195,10 +195,11 @@
             this.menuCssBtn.Location = new System.Drawing.Point(15, 227);
             this.menuCssBtn.Name = "menuCssBtn";
             this.menuCssBtn.Size = new System.Drawing.Size(101, 23);
-            this.menuCssBtn.TabIndex = 13;
+            this.menuCssBtn.TabIndex = 10;
             this.menuCssBtn.Text = "Edit Menu CSS";
             this.toolTip1.SetToolTip(this.menuCssBtn, "Edit how the menu command buttons appear on the webpage. These buttons only appea" +
-        "r if a script has registered menu commands with Scriptmonkey.");
+        "r if a script has registered menu commands with Scriptmonkey.\r\n\r\nEnter \'default\'" +
+        " to set to the default value.");
             this.menuCssBtn.UseVisualStyleBackColor = true;
             this.menuCssBtn.Click += new System.EventHandler(this.menuCssBtn_Click);
             // 

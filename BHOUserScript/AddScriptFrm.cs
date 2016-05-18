@@ -7,6 +7,7 @@ namespace BHOUserScript
     {
         public bool FromFile = true;
         public string Url;
+        private readonly string _newUrl;
 
         public AddScriptFrm(bool isCss)
         {
@@ -17,7 +18,10 @@ namespace BHOUserScript
                 Text = @"Add CSS";
                 openFileDialog1.Filter =
                     @"CSS Files (*.css)|*.css|All files (*.*)|*.*";
+                _newUrl = "https://servc.eu/p/scriptmonkey/new_files/new.css";
             }
+            else
+                _newUrl = "https://servc.eu/p/scriptmonkey/new_files/new.user.js";
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
@@ -48,6 +52,12 @@ namespace BHOUserScript
             browseBtn.Enabled = radioButton1.Checked;
             fileTxt.Enabled = radioButton1.Checked;
             urlTxt.Enabled = !radioButton1.Checked;
+        }
+
+        private void newBtn_Click(object sender, EventArgs e)
+        {
+            radioButton2.Checked = true;
+            urlTxt.Text = _newUrl;
         }
     }
 }

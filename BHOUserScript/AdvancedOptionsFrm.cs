@@ -58,7 +58,7 @@ namespace BHOUserScript
         {
             if (MessageBox.Show("Are you sure?\r\n\r\nThis option is intended for system administrators. It" + 
                 " cannot easily be undone.\r\n\r\nEnable this to prevent end users from opening the options window " +
-                @"and automatically adding new scripts", @"Lock Scriptmonkey settings", MessageBoxButtons.YesNo) == DialogResult.No)
+                @"and automatically adding new scripts", @"Lock Scriptmonkey settings", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 return;
 
             Settings.AllowUserEdit = false;
@@ -70,7 +70,9 @@ namespace BHOUserScript
             string s = Interaction.InputBox("Enter valid CSS to use in the menu command element when script menu commands are present:",
                 "Scriptmonkey - Edit Menu Command CSS", Settings.MenuCommandCSS);
 
-            if (s != String.Empty)
+            if (s == "default")
+                Settings.MenuCommandCSS = new SettingsFile().MenuCommandCSS;
+            else if (!String.IsNullOrWhiteSpace(s))
                 Settings.MenuCommandCSS = s;
         }
     }

@@ -196,34 +196,34 @@ namespace BHOUserScript
             this.openInstallDirectoryToolStripMenuItem,
             this.advancedOptionsToolStripMenuItem});
             this.optionsContextMenuStrip.Name = "optionsContextMenuStrip";
-            this.optionsContextMenuStrip.Size = new System.Drawing.Size(188, 92);
+            this.optionsContextMenuStrip.Size = new System.Drawing.Size(188, 114);
             // 
             // setScriptEditorPathToolStripMenuItem
             // 
             this.setScriptEditorPathToolStripMenuItem.Name = "setScriptEditorPathToolStripMenuItem";
             this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.setScriptEditorPathToolStripMenuItem.Text = "Set script editor path";
+            this.setScriptEditorPathToolStripMenuItem.Text = "&Set script editor path";
             this.setScriptEditorPathToolStripMenuItem.Click += new System.EventHandler(this.setScriptEditorPathToolStripMenuItem_Click);
             // 
             // resetAllToolStripMenuItem
             // 
             this.resetAllToolStripMenuItem.Name = "resetAllToolStripMenuItem";
             this.resetAllToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.resetAllToolStripMenuItem.Text = "Reset all";
+            this.resetAllToolStripMenuItem.Text = "&Reset all";
             this.resetAllToolStripMenuItem.Click += new System.EventHandler(this.resetAllToolStripMenuItem_Click);
             // 
             // openInstallDirectoryToolStripMenuItem
             // 
             this.openInstallDirectoryToolStripMenuItem.Name = "openInstallDirectoryToolStripMenuItem";
             this.openInstallDirectoryToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.openInstallDirectoryToolStripMenuItem.Text = "Open install directory";
+            this.openInstallDirectoryToolStripMenuItem.Text = "&Open install directory";
             this.openInstallDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openInstallDirectoryToolStripMenuItem_Click);
             // 
             // advancedOptionsToolStripMenuItem
             // 
             this.advancedOptionsToolStripMenuItem.Name = "advancedOptionsToolStripMenuItem";
             this.advancedOptionsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.advancedOptionsToolStripMenuItem.Text = "Advanced options";
+            this.advancedOptionsToolStripMenuItem.Text = "&Advanced options";
             this.advancedOptionsToolStripMenuItem.Click += new System.EventHandler(this.advancedOptionsToolStripMenuItem_Click);
             // 
             // scriptEditorOpenFileDialog
@@ -236,21 +236,21 @@ namespace BHOUserScript
             this.newScriptToolStripMenuItem,
             this.newCSSToolStripMenuItem});
             this.addContextMenuStrip1.Name = "addContextMenuStrip1";
-            this.addContextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.addContextMenuStrip1.Size = new System.Drawing.Size(132, 48);
             // 
             // newScriptToolStripMenuItem
             // 
             this.newScriptToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.newScriptToolStripMenuItem.Name = "newScriptToolStripMenuItem";
-            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newScriptToolStripMenuItem.Text = "New Script";
+            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.newScriptToolStripMenuItem.Text = "New &Script";
             this.newScriptToolStripMenuItem.Click += new System.EventHandler(this.newScriptToolStripMenuItem_Click);
             // 
             // newCSSToolStripMenuItem
             // 
             this.newCSSToolStripMenuItem.Name = "newCSSToolStripMenuItem";
-            this.newCSSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newCSSToolStripMenuItem.Text = "New CSS";
+            this.newCSSToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.newCSSToolStripMenuItem.Text = "New &CSS";
             this.newCSSToolStripMenuItem.Click += new System.EventHandler(this.newCSSToolStripMenuItem_Click);
             // 
             // Options

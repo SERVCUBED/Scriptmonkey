@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using System.Net;
@@ -14,11 +15,11 @@ namespace BHOUserScript
         public Script EditedScript = new Script();
         public string EditPath;
         public string FileName = String.Empty;
-        private bool isCss;
+        private readonly bool _isCss;
 
         public ScriptEditFrm(bool editing, bool isCss)
         {
-            this.isCss = isCss;
+            _isCss = isCss;
 
             InitializeComponent();
 
@@ -28,7 +29,6 @@ namespace BHOUserScript
                 menuCmdChk.Enabled = false;
                 clearValsBtn.Enabled = false;
                 versionTxt.Enabled = false;
-                refBtn.Enabled = false;
                 EditedScript.Type = Script.ValueType.StyleSheet;
                 
                 Text = @"New CSS";
@@ -37,7 +37,7 @@ namespace BHOUserScript
             if (editing)
             {
                 clearValsBtn.Visible = true;
-                button1.Visible = false;
+                browseBtn.Enabled = false;
                 Text = isCss ? @"Edit CSS" : @"Edit Userscript";
             }
 
@@ -77,7 +77,7 @@ namespace BHOUserScript
 
             if (FileName == String.Empty)
             {
-                button1.Focus();
+                browseBtn.Focus();
                 return;
             }
 
@@ -127,7 +127,7 @@ namespace BHOUserScript
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddScriptFrm form = new AddScriptFrm(isCss);
+            AddScriptFrm form = new AddScriptFrm(_isCss);
             if (form.ShowDialog() == DialogResult.OK && form.Url != String.Empty)
             {
                 Enabled = false; // Disable form while working
@@ -142,10 +142,18 @@ namespace BHOUserScript
                 {
                     try
                     {
+                        if (!File.Exists(form.Url))
+                        {
+                            MessageBox.Show(@"File does not exist or access is denied.", Resources.Title, MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                            form.Dispose();
+                            return;
+                        }
+
                         File.Copy(form.Url, Scriptmonkey.ScriptPath + prefix + form.openFileDialog1.SafeFileName);
                         FileName = prefix + form.openFileDialog1.SafeFileName;
                         LoadFromParse(ParseScriptMetadata.Parse(FileName));
-                        button1.Enabled = false;
+                        browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
                     {
@@ -158,10 +166,10 @@ namespace BHOUserScript
                     try
                     {
                         var webClient = new WebClient();
-                        FileName = prefix + (isCss? ".css" : ".user.js");
+                        FileName = prefix + (_isCss? ".css" : ".user.js");
                         webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + FileName);
                         LoadFromParse(ParseScriptMetadata.Parse(FileName));
-                        button1.Enabled = false;
+                        browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
                     {
@@ -198,10 +206,9 @@ namespace BHOUserScript
             authorTxt.Text = s.Author;
             versionTxt.Text = s.Version;
             listBox1.Items.Clear();
-            foreach (string t in s.Include)
+            foreach (string t in s.Include.Where(t => t != null))
             {
-                if (t != null)
-                    listBox1.Items.Add(t);
+                listBox1.Items.Add(t);
             }
             excludesBox.Items.Clear();
             foreach (string t in s.Exclude)
@@ -236,6 +243,12 @@ namespace BHOUserScript
             // Double check file actually exists
             if (File.Exists(Scriptmonkey.ScriptPath + FileName))
                 LoadFromParse(ParseScriptMetadata.Parse(FileName));
+            else
+            {
+                MessageBox.Show(@"File has been deleted or is inaccessible. Select another file.", Resources.Title,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                browseBtn.Enabled = true;
+            }
         }
 
         private void CheckURLWarningLabel()
@@ -279,11 +292,11 @@ namespace BHOUserScript
             EditedScript.MenuCommands = null;
         }
 
-        private void editIncludeBtn_Click(object sender, EventArgs e) => editValue(listBox1);
+        private void editIncludeBtn_Click(object sender, EventArgs e) => EditValue(listBox1);
 
-        private void editExcludeBtn_Click(object sender, EventArgs e) => editValue(excludesBox);
+        private void editExcludeBtn_Click(object sender, EventArgs e) => EditValue(excludesBox);
 
-        private void editValue(ListBox box)
+        private void EditValue(ListBox box)
         {
             if (box.SelectedIndex >= 0)
             {

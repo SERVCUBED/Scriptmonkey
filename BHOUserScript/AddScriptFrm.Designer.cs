@@ -40,6 +40,7 @@ namespace BHOUserScript
             this.cancelBtn = new System.Windows.Forms.Button();
             this.okBtn = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.newBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // radioButton1
@@ -48,7 +49,7 @@ namespace BHOUserScript
             this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(13, 13);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(66, 17);
+            this.radioButton1.Size = new System.Drawing.Size(67, 17);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "From File";
@@ -79,7 +80,7 @@ namespace BHOUserScript
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(13, 39);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(98, 17);
+            this.radioButton2.Size = new System.Drawing.Size(99, 17);
             this.radioButton2.TabIndex = 3;
             this.radioButton2.Text = "From Web URL";
             this.radioButton2.UseVisualStyleBackColor = true;
@@ -97,7 +98,7 @@ namespace BHOUserScript
             this.cancelBtn.Location = new System.Drawing.Point(207, 64);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 5;
+            this.cancelBtn.TabIndex = 6;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
@@ -108,7 +109,7 @@ namespace BHOUserScript
             this.okBtn.Location = new System.Drawing.Point(288, 64);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
-            this.okBtn.TabIndex = 6;
+            this.okBtn.TabIndex = 7;
             this.okBtn.Text = "Ok";
             this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
@@ -119,11 +120,22 @@ namespace BHOUserScript
     "*)|*.*";
             this.openFileDialog1.Title = "Select a userscript to install";
             // 
+            // newBtn
+            // 
+            this.newBtn.Location = new System.Drawing.Point(126, 64);
+            this.newBtn.Name = "newBtn";
+            this.newBtn.Size = new System.Drawing.Size(75, 23);
+            this.newBtn.TabIndex = 5;
+            this.newBtn.Text = "New File";
+            this.newBtn.UseVisualStyleBackColor = true;
+            this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
+            // 
             // AddScriptFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(376, 96);
+            this.Controls.Add(this.newBtn);
             this.Controls.Add(this.okBtn);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.urlTxt);
@@ -153,5 +165,6 @@ namespace BHOUserScript
         private Button cancelBtn;
         private Button okBtn;
         public OpenFileDialog openFileDialog1;
+        private Button newBtn;
     }
 }

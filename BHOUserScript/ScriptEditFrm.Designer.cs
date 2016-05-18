@@ -49,7 +49,7 @@ namespace BHOUserScript
             this.label6 = new System.Windows.Forms.Label();
             this.updateTxt = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.browseBtn = new System.Windows.Forms.Button();
             this.editBtn = new System.Windows.Forms.Button();
             this.enabledChk = new System.Windows.Forms.CheckBox();
             this.refBtn = new System.Windows.Forms.Button();
@@ -88,7 +88,7 @@ namespace BHOUserScript
             this.okBtn.Location = new System.Drawing.Point(424, 370);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
-            this.okBtn.TabIndex = 17;
+            this.okBtn.TabIndex = 19;
             this.okBtn.Text = "Save";
             this.okBtn.UseVisualStyleBackColor = false;
             this.okBtn.Click += new System.EventHandler(this.okBtn_Click);
@@ -98,7 +98,7 @@ namespace BHOUserScript
             this.cancelBtn.Location = new System.Drawing.Point(343, 370);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 16;
+            this.cancelBtn.TabIndex = 18;
             this.cancelBtn.Text = "Cancel";
             this.toolTip1.SetToolTip(this.cancelBtn, "Discard all changes.");
             this.cancelBtn.UseVisualStyleBackColor = true;
@@ -211,26 +211,26 @@ namespace BHOUserScript
             this.label7.TabIndex = 17;
             this.label7.Text = "Update URL:";
             // 
-            // button1
+            // browseBtn
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(89, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(254, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Browse for file";
-            this.toolTip1.SetToolTip(this.button1, "Load a script from a file or web URL.");
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.browseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.browseBtn.Image = ((System.Drawing.Image)(resources.GetObject("browseBtn.Image")));
+            this.browseBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.browseBtn.Location = new System.Drawing.Point(89, 8);
+            this.browseBtn.Name = "browseBtn";
+            this.browseBtn.Size = new System.Drawing.Size(254, 23);
+            this.browseBtn.TabIndex = 2;
+            this.browseBtn.Text = "Browse for file";
+            this.toolTip1.SetToolTip(this.browseBtn, "Load a script from a file or web URL.");
+            this.browseBtn.UseVisualStyleBackColor = false;
+            this.browseBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // editBtn
             // 
             this.editBtn.Location = new System.Drawing.Point(262, 370);
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(75, 23);
-            this.editBtn.TabIndex = 15;
+            this.editBtn.TabIndex = 17;
             this.editBtn.Text = "Edit File";
             this.toolTip1.SetToolTip(this.editBtn, "Edit the script file in the specified text editor. The editor used can be \r\nchang" +
         "ed from the options button on the main window.");
@@ -245,7 +245,7 @@ namespace BHOUserScript
             this.enabledChk.Location = new System.Drawing.Point(72, 374);
             this.enabledChk.Name = "enabledChk";
             this.enabledChk.Size = new System.Drawing.Size(65, 17);
-            this.enabledChk.TabIndex = 14;
+            this.enabledChk.TabIndex = 15;
             this.enabledChk.Text = "Enabled";
             this.toolTip1.SetToolTip(this.enabledChk, "Run the script.");
             this.enabledChk.UseVisualStyleBackColor = true;
@@ -327,7 +327,7 @@ namespace BHOUserScript
             this.clearValsBtn.Location = new System.Drawing.Point(142, 370);
             this.clearValsBtn.Name = "clearValsBtn";
             this.clearValsBtn.Size = new System.Drawing.Size(114, 23);
-            this.clearValsBtn.TabIndex = 19;
+            this.clearValsBtn.TabIndex = 16;
             this.clearValsBtn.Text = "Clear Saved Values";
             this.toolTip1.SetToolTip(this.clearValsBtn, "Clear the saved values and menu commands.");
             this.clearValsBtn.UseVisualStyleBackColor = true;
@@ -362,7 +362,7 @@ namespace BHOUserScript
             this.menuCmdChk.Location = new System.Drawing.Point(72, 347);
             this.menuCmdChk.Name = "menuCmdChk";
             this.menuCmdChk.Size = new System.Drawing.Size(161, 17);
-            this.menuCmdChk.TabIndex = 21;
+            this.menuCmdChk.TabIndex = 14;
             this.menuCmdChk.Text = "Show menu commands if set";
             this.toolTip1.SetToolTip(this.menuCmdChk, "If this script sets menu commands, show those menu commands in the command list i" +
         "n the browser window.");
@@ -387,7 +387,7 @@ namespace BHOUserScript
             this.Controls.Add(this.refBtn);
             this.Controls.Add(this.enabledChk);
             this.Controls.Add(this.editBtn);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.browseBtn);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.updateTxt);
             this.Controls.Add(this.label6);
@@ -439,7 +439,7 @@ namespace BHOUserScript
         private Label label6;
         private TextBox updateTxt;
         private Label label7;
-        private Button button1;
+        private Button browseBtn;
         private Button editBtn;
         private CheckBox enabledChk;
         private Button refBtn;
