@@ -760,11 +760,12 @@ namespace BHOUserScript
             HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
             if (quick)
                 wc.Timeout = 1000;
+            wc.KeepAlive = false;
             byte[] buf = new byte[8192];
             StringBuilder sb = new StringBuilder();
             try
             {
-                WebResponse wr = wc.GetResponse();
+                var wr = wc.GetResponse();
                 Stream resStream = wr.GetResponseStream();
 
                 int? count;
