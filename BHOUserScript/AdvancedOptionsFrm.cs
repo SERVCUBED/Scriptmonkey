@@ -30,6 +30,7 @@ namespace BHOUserScript
             refreshPageChk.Checked = Settings.RefreshOnSave;
             injectApiChk.Checked = Settings.InjectAPI;
             useLinkChk.Checked = Settings.UseScriptmonkeyLink;
+            updateDisabledChk.Checked = Settings.UpdateDisabledScripts;
             reloadNum.Value = Settings.ReloadAfterPages;
 
             publicApiChk.Enabled = injectApiChk.Checked;
@@ -45,6 +46,7 @@ namespace BHOUserScript
             Settings.RefreshOnSave = refreshPageChk.Checked;
             Settings.InjectAPI = injectApiChk.Checked;
             Settings.UseScriptmonkeyLink = useLinkChk.Checked;
+            Settings.UpdateDisabledScripts = updateDisabledChk.Checked;
             Settings.ReloadAfterPages = (int)reloadNum.Value;
             DialogResult = DialogResult.OK;
         }

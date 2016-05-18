@@ -45,13 +45,14 @@
             this.lockSettingsBtn = new System.Windows.Forms.Button();
             this.menuCssBtn = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.updateDisabledChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(240, 227);
+            this.saveBtn.Location = new System.Drawing.Point(240, 253);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -119,7 +120,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 203);
+            this.label1.Location = new System.Drawing.Point(12, 229);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 6;
@@ -127,7 +128,7 @@
             // 
             // reloadNum
             // 
-            this.reloadNum.Location = new System.Drawing.Point(122, 201);
+            this.reloadNum.Location = new System.Drawing.Point(122, 227);
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
             this.reloadNum.TabIndex = 9;
@@ -138,7 +139,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(185, 203);
+            this.label2.Location = new System.Drawing.Point(185, 229);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 8;
@@ -181,7 +182,7 @@
             // 
             // lockSettingsBtn
             // 
-            this.lockSettingsBtn.Location = new System.Drawing.Point(121, 227);
+            this.lockSettingsBtn.Location = new System.Drawing.Point(121, 253);
             this.lockSettingsBtn.Name = "lockSettingsBtn";
             this.lockSettingsBtn.Size = new System.Drawing.Size(113, 23);
             this.lockSettingsBtn.TabIndex = 11;
@@ -192,7 +193,7 @@
             // 
             // menuCssBtn
             // 
-            this.menuCssBtn.Location = new System.Drawing.Point(15, 227);
+            this.menuCssBtn.Location = new System.Drawing.Point(15, 253);
             this.menuCssBtn.Name = "menuCssBtn";
             this.menuCssBtn.Size = new System.Drawing.Size(101, 23);
             this.menuCssBtn.TabIndex = 10;
@@ -208,11 +209,22 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ToolTipTitle = "Help";
             // 
+            // updateDisabledChk
+            // 
+            this.updateDisabledChk.AutoSize = true;
+            this.updateDisabledChk.Location = new System.Drawing.Point(13, 202);
+            this.updateDisabledChk.Name = "updateDisabledChk";
+            this.updateDisabledChk.Size = new System.Drawing.Size(136, 17);
+            this.updateDisabledChk.TabIndex = 12;
+            this.updateDisabledChk.Text = "Update disabled scripts";
+            this.updateDisabledChk.UseVisualStyleBackColor = true;
+            // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(327, 263);
+            this.ClientSize = new System.Drawing.Size(327, 286);
+            this.Controls.Add(this.updateDisabledChk);
             this.Controls.Add(this.menuCssBtn);
             this.Controls.Add(this.lockSettingsBtn);
             this.Controls.Add(this.useLinkChk);
@@ -258,5 +270,6 @@
         private System.Windows.Forms.Button lockSettingsBtn;
         private System.Windows.Forms.Button menuCssBtn;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox updateDisabledChk;
     }
 }

@@ -626,6 +626,9 @@ namespace BHOUserScript
             var toUpdateTo = new List<ScriptWithContent>();
             foreach (Script s in _prefs.AllScripts)
             {
+                if (!_prefs.Settings.UpdateDisabledScripts && !s.Enabled)
+                    continue;
+
                 if (!String.IsNullOrWhiteSpace(s.UpdateUrl) && s.InstallDate < now - TimeSpan.FromDays(7))
                 {
                     try
