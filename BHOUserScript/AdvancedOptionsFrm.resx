@@ -130,6 +130,12 @@ This setting is intended for system administrators who want to prevent end users
 
 To disable this, you need to manually edit the settings file and change 'AllowUserEdit' to 'true'.</value>
   </data>
+  <data name="addMatchBtn.ToolTip" xml:space="preserve">
+    <value>Scriptmonkey will never run on these URLs. Use this if Scriptmonkey causes problems on a website.
+
+For regex, start and end the input with a forward-slash. Otherwise * and ? 
+can be used as wildcard characters.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

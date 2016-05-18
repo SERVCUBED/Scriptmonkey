@@ -33,6 +33,9 @@ namespace BHOUserScript
             updateDisabledChk.Checked = Settings.UpdateDisabledScripts;
             reloadNum.Value = Settings.ReloadAfterPages;
 
+            if (Settings.BlacklistedUrls.Length > 0)
+                listBox1.Items.AddRange(Settings.BlacklistedUrls);
+
             publicApiChk.Enabled = injectApiChk.Checked;
         }
 
@@ -48,6 +51,11 @@ namespace BHOUserScript
             Settings.UseScriptmonkeyLink = useLinkChk.Checked;
             Settings.UpdateDisabledScripts = updateDisabledChk.Checked;
             Settings.ReloadAfterPages = (int)reloadNum.Value;
+
+            Settings.BlacklistedUrls = new string[listBox1.Items.Count];
+            for (int i = 0; i < listBox1.Items.Count; i++)
+                Settings.BlacklistedUrls[i] = listBox1.Items[i].ToString();
+
             DialogResult = DialogResult.OK;
         }
 
@@ -77,5 +85,29 @@ namespace BHOUserScript
             else if (!String.IsNullOrWhiteSpace(s))
                 Settings.MenuCommandCSS = s;
         }
+
+        private void addMatchBtn_Click(object sender, EventArgs e)
+        {
+            string t = Interaction.InputBox("Add URL Match");
+            if (t != String.Empty)
+                listBox1.Items.Add(t);
+        }
+
+        private void remMatchBtn_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex > -1)
+                listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+        }
+
+        private void editIncludeBtn_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex < 0) return;
+
+            string s = Interaction.InputBox("Edit value:", Properties.Resources.Title, listBox1.SelectedItem.ToString());
+            if (!String.IsNullOrEmpty(s))
+                listBox1.Items[listBox1.SelectedIndex] = s;
+        }
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e) => editIncludeBtn_Click(sender, e);
     }
 }

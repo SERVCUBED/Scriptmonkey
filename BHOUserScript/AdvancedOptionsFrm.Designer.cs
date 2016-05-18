@@ -46,13 +46,18 @@
             this.menuCssBtn = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.updateDisabledChk = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.editIncludeBtn = new System.Windows.Forms.Button();
+            this.remMatchBtn = new System.Windows.Forms.Button();
+            this.addMatchBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
             // saveBtn
             // 
             this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.saveBtn.Location = new System.Drawing.Point(240, 253);
+            this.saveBtn.Location = new System.Drawing.Point(466, 251);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 0;
@@ -182,7 +187,7 @@
             // 
             // lockSettingsBtn
             // 
-            this.lockSettingsBtn.Location = new System.Drawing.Point(121, 253);
+            this.lockSettingsBtn.Location = new System.Drawing.Point(347, 251);
             this.lockSettingsBtn.Name = "lockSettingsBtn";
             this.lockSettingsBtn.Size = new System.Drawing.Size(113, 23);
             this.lockSettingsBtn.TabIndex = 11;
@@ -193,7 +198,7 @@
             // 
             // menuCssBtn
             // 
-            this.menuCssBtn.Location = new System.Drawing.Point(15, 253);
+            this.menuCssBtn.Location = new System.Drawing.Point(241, 251);
             this.menuCssBtn.Name = "menuCssBtn";
             this.menuCssBtn.Size = new System.Drawing.Size(101, 23);
             this.menuCssBtn.TabIndex = 10;
@@ -219,11 +224,65 @@
             this.updateDisabledChk.Text = "Update disabled scripts";
             this.updateDisabledChk.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(317, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(91, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Blacklisted URLs:";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(320, 38);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(224, 82);
+            this.listBox1.TabIndex = 14;
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
+            // 
+            // editIncludeBtn
+            // 
+            this.editIncludeBtn.Location = new System.Drawing.Point(488, 9);
+            this.editIncludeBtn.Name = "editIncludeBtn";
+            this.editIncludeBtn.Size = new System.Drawing.Size(56, 23);
+            this.editIncludeBtn.TabIndex = 23;
+            this.editIncludeBtn.Text = "Edit";
+            this.editIncludeBtn.UseVisualStyleBackColor = true;
+            this.editIncludeBtn.Click += new System.EventHandler(this.editIncludeBtn_Click);
+            // 
+            // remMatchBtn
+            // 
+            this.remMatchBtn.Location = new System.Drawing.Point(458, 9);
+            this.remMatchBtn.Name = "remMatchBtn";
+            this.remMatchBtn.Size = new System.Drawing.Size(24, 23);
+            this.remMatchBtn.TabIndex = 22;
+            this.remMatchBtn.Text = "-";
+            this.remMatchBtn.UseVisualStyleBackColor = true;
+            this.remMatchBtn.Click += new System.EventHandler(this.remMatchBtn_Click);
+            // 
+            // addMatchBtn
+            // 
+            this.addMatchBtn.Location = new System.Drawing.Point(426, 9);
+            this.addMatchBtn.Name = "addMatchBtn";
+            this.addMatchBtn.Size = new System.Drawing.Size(26, 23);
+            this.addMatchBtn.TabIndex = 21;
+            this.addMatchBtn.Text = "+";
+            this.toolTip1.SetToolTip(this.addMatchBtn, resources.GetString("addMatchBtn.ToolTip"));
+            this.addMatchBtn.UseVisualStyleBackColor = true;
+            this.addMatchBtn.Click += new System.EventHandler(this.addMatchBtn_Click);
+            // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(327, 286);
+            this.ClientSize = new System.Drawing.Size(553, 286);
+            this.Controls.Add(this.editIncludeBtn);
+            this.Controls.Add(this.remMatchBtn);
+            this.Controls.Add(this.addMatchBtn);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.updateDisabledChk);
             this.Controls.Add(this.menuCssBtn);
             this.Controls.Add(this.lockSettingsBtn);
@@ -271,5 +330,10 @@
         private System.Windows.Forms.Button menuCssBtn;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox updateDisabledChk;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button editIncludeBtn;
+        private System.Windows.Forms.Button remMatchBtn;
+        private System.Windows.Forms.Button addMatchBtn;
     }
 }

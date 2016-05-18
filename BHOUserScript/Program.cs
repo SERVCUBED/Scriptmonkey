@@ -177,6 +177,27 @@ namespace BHOUserScript
 
                 if (!_prefs.Settings.Enabled) return;
 
+                var document2 = _browser.Document as HTMLDocument;
+                //var document3 = browser.Document as IHTMLDocument3;
+
+                if (document2 == null) return;
+
+                if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://") || document2.url == "about:blank")
+                    return;
+
+                // Check if current URL has not been blacklisted
+                if (_prefs.Settings.BlacklistedUrls.Length > 0)
+                {
+                    var r = new Regex(WildcardToRegex(_prefs.Settings.BlacklistedUrls));
+                    if (r.IsMatch(url.ToString()))
+                        return;
+                }
+                
+                var window = document2.parentWindow;
+
+                if (window == null)
+                    return;
+
                 // Set up API keys with random length for each script
                 if (_apiKeys == null || _apiKeys.Length != _prefs.AllScripts.Count)
                 {
@@ -192,19 +213,6 @@ namespace BHOUserScript
                         _apiKeys[i] = sb.ToString();
                     }
                 }
-
-                var document2 = _browser.Document as HTMLDocument;
-                //var document3 = browser.Document as IHTMLDocument3;
-
-                if (document2 == null) return;
-
-                if (url.ToString().StartsWith("javascript:") || document2.url.StartsWith("res://") || document2.url == "about:blank")
-                    return;
-
-                var window = document2.parentWindow;
-
-                if (window == null)
-                    return;
 
                 var runJS = window.navigator?.javaEnabled() ?? true;
 
@@ -505,10 +513,10 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="pattern"></param>
         /// <returns>Regex pattern</returns>
-        private static string WildcardToRegex(string[] pattern)
+        private static string WildcardToRegex(IReadOnlyList<string> pattern)
         {
             var _out = String.Empty;
-            for (int i = 0; i < pattern.Length; i++)
+            for (int i = 0; i < pattern.Count; i++)
             {
                 // Allow regex in include/match (http://wiki.greasespot.net/Include_and_exclude_rules#Regular_Expressions)
                 if (pattern[i].Length > 3 && pattern[i].StartsWith("/") && pattern[i].EndsWith("/"))
@@ -519,7 +527,7 @@ namespace BHOUserScript
                         Replace("\\*", ".*").
                         Replace("\\?", ".");
                 }
-                if (i < pattern.Length - 1) // If not the last item
+                if (i < pattern.Count - 1) // If not the last item
                     _out += "|";
             }
             return _out;

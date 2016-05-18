@@ -41,6 +41,8 @@ namespace BHOUserScript
 
         public bool UpdateDisabledScripts = false;
 
+        public string[] BlacklistedUrls = new string[0];
+
         public int ReloadAfterPages = 5;
 
         public bool UseScriptmonkeyLink = true;
