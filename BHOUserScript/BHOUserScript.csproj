@@ -78,6 +78,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="ScintillaNET">
+      <HintPath>..\..\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -174,6 +177,8 @@
     <Compile Include="XmlHttpRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\Newtonsoft.Json.dll" />
+    <None Include="Resources\ScintillaNET.dll" />
     <Content Include="Unregister.NETv4.0.30319.vbs" />
     <None Include="Wrapper.js" />
     <None Include="App.config" />

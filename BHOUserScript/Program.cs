@@ -70,6 +70,17 @@ namespace BHOUserScript
         private Db _prefs;
         #endregion
 
+        public Scriptmonkey()
+        {
+            // Dynamically load resources if required
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, arg) =>
+            {
+                if (arg.Name.StartsWith("Newtonsoft")) return Assembly.Load(Resources.Newtonsoft_Json);
+                if (arg.Name.StartsWith("Scintilla")) return Assembly.Load(Resources.ScintillaNET);
+                return null;
+            };
+        }
+
         #region Is installed?
         /// <summary>
         /// Checks for a valid installation. If Scriptmonkey is not installed, it creates the config files and directories.
@@ -195,7 +206,7 @@ namespace BHOUserScript
                 if (window == null)
                     return;
 
-                var runJS = window.navigator.javaEnabled();
+                var runJS = window.navigator?.javaEnabled() ?? true;
 
                 if (_prefs.Settings.InjectAPI)
                     SetupWindow(window);

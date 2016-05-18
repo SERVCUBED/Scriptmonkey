@@ -226,7 +226,7 @@ namespace BHOUserScript
             if (FileName == String.Empty)
                 return;
 
-            var f = new FileEditForm(Scriptmonkey.ScriptPath + EditedScript.Path, nameTxt.Text);
+            var f = new FileEditForm(Scriptmonkey.ScriptPath + EditedScript.Path, _isCss, nameTxt.Text);
             if (f.ShowDialog() == DialogResult.Retry)
             {
                 var p = new Process
