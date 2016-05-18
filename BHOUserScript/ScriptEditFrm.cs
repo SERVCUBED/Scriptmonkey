@@ -225,15 +225,20 @@ namespace BHOUserScript
         {
             if (FileName == String.Empty)
                 return;
-            var p = new Process
+
+            var f = new FileEditForm(Scriptmonkey.ScriptPath + EditedScript.Path, nameTxt.Text);
+            if (f.ShowDialog() == DialogResult.Retry)
             {
-                StartInfo =
+                var p = new Process
+                {
+                    StartInfo =
                 {
                     FileName = EditPath,
                     Arguments = Scriptmonkey.ScriptPath + FileName
                 }
-            };
-            p.Start();
+                };
+                p.Start();
+            }
         }
 
         private void refBtn_Click(object sender, EventArgs e)

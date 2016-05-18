@@ -107,7 +107,7 @@ namespace BHOUserScript
             var r = new Regex(regex);
             var m = r.Match(c);
             if (m == null)
-                return "";
+                return String.Empty;
             else
                 return m.Groups[2].Value;
         }

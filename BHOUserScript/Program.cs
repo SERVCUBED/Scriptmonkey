@@ -195,6 +195,8 @@ namespace BHOUserScript
                 if (window == null)
                     return;
 
+                var runJS = window.navigator.javaEnabled();
+
                 if (_prefs.Settings.InjectAPI)
                     SetupWindow(window);
 
@@ -222,9 +224,9 @@ namespace BHOUserScript
                 {
                     if (ShouldRunScript(i, url.ToString()))
                     {
-                        if (_prefs[i].Type == Script.ValueType.Script)
+                        if (_prefs[i].Type == Script.ValueType.Script && runJS)
                             TryRunScript(i, window, ref useMenuCommands, ref menuContent);
-                        else
+                        else if (_prefs[i].Type == Script.ValueType.StyleSheet)
                             TryInjectCss(i, window);
                     }
                 }
@@ -236,7 +238,10 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 if (LogAndCheckDebugger(ex, "At: main"))
+                {
+                    Debugger.Break(); // Need to break then throw as IE will just terminate the BHO if it errors in the main thread.
                     throw;
+                }
                 CheckInstall(); // Error may be caused by invalid installation. Verify files haven't been deleted.
             }
         }
@@ -274,7 +279,7 @@ namespace BHOUserScript
                 //var str = new StreamReader(ScriptPath + _prefs[i].Path);
                 //scriptContent = str.ReadToEnd();
                 //str.Close();
-                string content = _prefs.ReadFile(ScriptPath + _prefs[i].Path);
+                string content = Db.ReadFile(ScriptPath + _prefs[i].Path);
 
                 if (_prefs.Settings.CacheScripts)
                     _scriptCache.Add(_prefs[i].Path, content);
@@ -452,6 +457,8 @@ namespace BHOUserScript
                     webClient.Dispose();
                     var s = ParseScriptMetadata.Parse(relativeScriptPath);
                     s.Path = relativeScriptPath;
+                    if (s.Name == String.Empty)
+                        s.Name = "Userscript from " + url;
                     _prefs.AddScript(s);
                 }
                 catch (Exception ex)

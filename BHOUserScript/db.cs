@@ -172,22 +172,22 @@ namespace BHOUserScript
                 Save();
             }
         }
-
-        private int _maxFileSize = 20 * 1024 * 1024;
-
+        
         /// <summary>
         /// Read a file without locking it
         /// </summary>
         /// <param name="url">The URL of the file to read.</param>
         /// <param name="onError">Optional. The string to return if the file cannot be found.</param>
         /// <returns></returns>
-        public string ReadFile(string url, string onError = null)
+        public static string ReadFile(string url, string onError = null)
         {
             if (!File.Exists(url))
             {
                 Scriptmonkey.LogAndCheckDebugger(null, $"Attempted to read \"{url}\". File does not exist.");
                 return onError;
             }
+
+            int maxFileSize = 20 * 1024 * 1024;
 
             using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -200,13 +200,13 @@ namespace BHOUserScript
                 // If the number of bytes to read equals the maximum file length, try to read more data from the file
                 do
                 {
-                    fileBytes = new byte[_maxFileSize];
-                    numBytes = str.Read(fileBytes, 0, _maxFileSize);
+                    fileBytes = new byte[maxFileSize];
+                    numBytes = str.Read(fileBytes, 0, maxFileSize);
                     
-                    if (numBytes >= _maxFileSize)
-                        _maxFileSize *= 2;
+                    if (numBytes >= maxFileSize)
+                        maxFileSize *= 2;
 
-                } while (numBytes == _maxFileSize);
+                } while (numBytes == maxFileSize);
                 
                 return utf8.GetString(fileBytes, 0, numBytes);
             }
