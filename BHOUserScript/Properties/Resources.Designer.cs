@@ -70,6 +70,15 @@ namespace BHOUserScript.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -khtml-border-radius -khtml-opacity -khtml-background-clip -khtml-background-origin -khtml-background-size -khtml-border-top-left-radius -khtml-border-top-right-radius -khtml-border-bottom-right-radius -khtml-border-bottom-left-radius -moz-animation -moz-animation-delay -moz-animation-direction -moz-animation-duration -moz-animation-fill-mode -moz-animation-iteration-count -moz-animation-name -moz-animation-play-state -moz-animation-timing-function -moz-appearance -moz-background-clip -moz-background-inline [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CssKeywords {
+            get {
+                return ResourceManager.GetString("CssKeywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scriptmonkey is being set up for first time use. Please stand by. Your browser may appear unresponsive..
         /// </summary>
         public static string FirstTimeSetup {

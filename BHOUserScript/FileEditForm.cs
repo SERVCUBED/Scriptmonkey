@@ -37,8 +37,8 @@ namespace BHOUserScript
             scintilla1.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
             scintilla1.Styles[Style.Cpp.Operator].ForeColor = Color.Purple;
             scintilla1.Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
-            if (!isCss)
-                scintilla1.SetKeywords(0, Properties.Resources.JsKeywords);
+
+            scintilla1.SetKeywords(0, isCss? Properties.Resources.CssKeywords : Properties.Resources.JsKeywords);
 
             scintilla1.Text = Db.ReadFile(url,String.Empty);
             statusLbl.Text = scintilla1.TextLength + @"C " + scintilla1.Lines.Count + 'L';
