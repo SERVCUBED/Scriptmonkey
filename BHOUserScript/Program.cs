@@ -400,13 +400,12 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
-                bool shouldThrow;
-                if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
-                    shouldThrow = LogAndCheckDebugger(ex, "At CSS: " + _prefs[i].Name + ':' + Environment.NewLine + content);
-                else
-                    shouldThrow = LogAndCheckDebugger(ex, "At CSS: " + _prefs[i].Name);
+                if (ex.Message.Contains("Access is denied"))
+                    return;
 
-                if (shouldThrow)
+                if(_prefs.Settings.LogScriptContentsOnRunError ? 
+                    LogAndCheckDebugger(ex, "At CSS: " + _prefs[i].Name + ':' + Environment.NewLine + content) : 
+                    LogAndCheckDebugger(ex, "At CSS: " + _prefs[i].Name))
                     throw;
             }
         }
