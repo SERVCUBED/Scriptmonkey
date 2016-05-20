@@ -285,6 +285,8 @@ namespace Scriptmonkey_Link
                 performBackup(virtualised, saveUri);
                 return;
             }
+
+            MessageBox.Show(@"Settings file not found. You will need to backup manually.");
         }
 
         /// <summary>
@@ -294,12 +296,12 @@ namespace Scriptmonkey_Link
         /// <param name="saveUri">The destination file path (without file extension).</param>
         private void performBackup(string settingsPath, string saveUri)
         {
+            var file = saveUri;
             try
             {
                 if (!Directory.Exists(settingsPath))
                     return;
 
-                var file = saveUri;
                 if (File.Exists(file + ".zip"))
                 {
                     var exists = 1;
@@ -313,10 +315,9 @@ namespace Scriptmonkey_Link
                 ZipFile.CreateFromDirectory(settingsPath, file + ".zip");
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                MessageBox.Show($"Whoops. Unable to backup the folder {settingsPath} to {file}.zip {Environment.NewLine + ex.Message}");
             }
         }
 
