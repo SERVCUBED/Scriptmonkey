@@ -214,10 +214,10 @@ namespace BHOUserScript
                     }
                 }
 
-                var runJS = true;
+                var runJs = true;
                 try
                 {
-                    runJS = window.navigator?.javaEnabled() != null;
+                    runJs = window.navigator?.javaEnabled() != null;
                 }
                 catch (Exception) { }
 
@@ -248,7 +248,7 @@ namespace BHOUserScript
                 {
                     if (ShouldRunScript(i, url.ToString()))
                     {
-                        if (_prefs[i].Type == Script.ValueType.Script && runJS)
+                        if (_prefs[i].Type == Script.ValueType.Script && runJs)
                             TryRunScript(i, window, ref useMenuCommands, ref menuContent);
                         else if (_prefs[i].Type == Script.ValueType.StyleSheet)
                             TryInjectCss(i, window);
@@ -315,7 +315,6 @@ namespace BHOUserScript
         /// Try to run the script in the browser window
         /// </summary>
         /// <param name="i">The index of the script in the settings file</param>
-        /// <param name="url">The current URL</param>
         /// <param name="window">The current IHTMLWindow2</param>
         /// <param name="useMenuCommands">Should the menu commands HTML be injected into the page?</param>
         /// <param name="menuContent">The content for the menu commands HTML</param>
@@ -428,7 +427,9 @@ namespace BHOUserScript
             
             try
             {
-                var exp = (IExpando)window;
+                var exp = window as IExpando;
+                if (exp == null)
+                    return;
                 var info = exp.AddProperty("Scriptmonkey");
                 info?.SetValue(exp, this);
             }
@@ -826,6 +827,7 @@ namespace BHOUserScript
         [InterfaceType(1)]
         public interface IServiceProvider
         {
+            // ReSharper disable once UnusedMethodReturnValue.Global
             int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
         }
 
@@ -960,7 +962,8 @@ namespace BHOUserScript
 
             try
             {
-                events.onload += RefreshHandler;
+                if (events != null)
+                    events.onload += RefreshHandler;
             }
             catch (Exception) { }
         }
@@ -1046,9 +1049,7 @@ namespace BHOUserScript
                     {
                         var key = regKey.OpenSubKey(guid) ?? regKey.CreateSubKey(guid);
 
-                        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                        if (path == null)
-                            path = String.Empty;
+                        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? String.Empty;
 
                         key?.SetValue("AppName", "Scriptmonkey.dll");
                         key?.SetValue("AppPath", path);
