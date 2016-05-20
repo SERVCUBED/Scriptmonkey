@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace Scriptmonkey_Link
 {
@@ -262,6 +262,63 @@ namespace Scriptmonkey_Link
         /// The number of instances active since the last purge
         /// </summary>
         public int NumInstances => _instances.Count;
+
+        public void DoBackup()
+        {
+            var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            var d = DateTime.Now;
+            var saveUri = profile + $"\\Scriptmonkey.backup{d.Day}.{d.Month}.{d.Year}";
+
+            var profilePath = profile + "\\.Scriptmonkey";
+            if (Directory.Exists(profilePath))
+            {
+                performBackup(profilePath, saveUri);
+                return;
+            }
+
+            var virtualised = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                "\\Microsoft\\Windows\\Temporary Internet Files\\Virtualized\\" + profilePath.Replace(":", "");
+
+            if (Directory.Exists(virtualised))
+            {
+                performBackup(virtualised, saveUri);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Backup a directory to the specified file.
+        /// </summary>
+        /// <param name="settingsPath">The directory to backup.</param>
+        /// <param name="saveUri">The destination file path (without file extension).</param>
+        private void performBackup(string settingsPath, string saveUri)
+        {
+            try
+            {
+                if (!Directory.Exists(settingsPath))
+                    return;
+
+                var file = saveUri;
+                if (File.Exists(file + ".zip"))
+                {
+                    var exists = 1;
+                    do
+                    {
+                        file = $"{saveUri} ({exists})";
+                        exists++;
+                    } while (File.Exists(file + ".zip"));
+                }
+
+                ZipFile.CreateFromDirectory(settingsPath, file + ".zip");
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
 
         #region From Scriptmonkey
 

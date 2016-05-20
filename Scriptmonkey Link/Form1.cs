@@ -50,5 +50,12 @@ namespace Scriptmonkey_Link
             }
             txtLog.Text = DateTime.Now.TimeOfDay.ToString() + " " + key + "=>" + data + Environment.NewLine +  txtLog.Text;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            s.DoBackup();
+            Enabled = true;
+        }
     }
 }
