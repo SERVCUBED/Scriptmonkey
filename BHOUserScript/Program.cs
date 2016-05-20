@@ -460,7 +460,10 @@ namespace BHOUserScript
                 //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
                 //                    ex.Message.Replace("\"", "\\\"") + "\");");
                 bool shouldThrow;
-                if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
+
+                if (ex.HResult == -2147352319) // JScript Error
+                    shouldThrow = false;
+                else if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
                     shouldThrow = LogAndCheckDebugger(ex, "At script: " + name + ':' + Environment.NewLine + content);
                 else
                     shouldThrow = LogAndCheckDebugger(ex, "At script: " + name);
