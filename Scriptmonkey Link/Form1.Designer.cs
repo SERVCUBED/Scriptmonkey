@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.instanceNumTimer = new System.Windows.Forms.Timer(this.components);
             this.purgeTimer = new System.Windows.Forms.Timer(this.components);
@@ -38,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // checkBox1
@@ -126,6 +128,13 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Scriptmonkey Link";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,11 +147,11 @@
             this.Controls.Add(this.broadcastBtn);
             this.Controls.Add(this.numInstancesLabel);
             this.Controls.Add(this.checkBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(730, 575);
             this.MinimumSize = new System.Drawing.Size(311, 132);
             this.Name = "Form1";
-            this.ShowIcon = false;
             this.Text = "Scriptmonkey Link";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,6 +169,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 

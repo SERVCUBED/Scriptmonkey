@@ -327,7 +327,7 @@ namespace Scriptmonkey_Link
         /// Gets the version of the current assembly.
         /// </summary>
         /// <returns>Assembly version</returns>
-        public static Version CurrentVersion()
+        private static Version CurrentVersion()
         {
             var thisApp = Assembly.GetExecutingAssembly();
             AssemblyName name = new AssemblyName(thisApp.FullName);
@@ -338,7 +338,7 @@ namespace Scriptmonkey_Link
         /// Generate a random number to use as a script prefix and avoid duplicate installs
         /// </summary>
         /// <returns>A random number from 0 to 100,000</returns>
-        public static string GenerateRandomString()
+        private static string GenerateRandomString()
         {
             Random r = new Random();
             return (char)(r.Next(97, 122)) + Convert.ToString(r.Next(100000));
