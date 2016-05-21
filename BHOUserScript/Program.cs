@@ -330,7 +330,7 @@ namespace BHOUserScript
                 scriptContent = GetScriptFileData(i);
 
                 var content = "function Scriptmonkey_S" + i + "_proto() {";
-                if (_prefs.Settings.InjectAPI && scriptContent.Contains("GM_"))
+                if (_prefs.Settings.InjectAPI && _prefs[i].RequiresApi)
                     content += Resources.WrapperJS_Before + i + Resources.WrapperJS_Mid + _apiKeys[i] +
                                Resources.WrapperJS_After + scriptContent;
                 else
@@ -351,7 +351,8 @@ namespace BHOUserScript
 
                 //RunScript(content, window, _prefs[i].Name);
                 var f = i;
-                var t = new Thread(() => RunScript(content, window, _prefs[f].Name));
+                var t = new Thread(() => RunScript(content, window, _prefs[f].Name,
+                    _prefs[f].Require != null && _prefs[f].Require.Count > 0? _prefs[f].Require.Values.ToList() : null));
                 t.SetApartmentState(ApartmentState.STA);
                 t.Start();
             }
@@ -439,38 +440,59 @@ namespace BHOUserScript
                     throw;
             }
         }
-        
+
         /// <summary>
         /// Executes JavaScript on the window
         /// </summary>
         /// <param name="content">The JavaScript to execute.</param>
         /// <param name="window">The window.</param>
         /// <param name="name">Name of the script.</param>
-        private void RunScript(string content, IHTMLWindow2 window, string name)
+        /// <param name="dependencyContent">String array of dependencies to include</param>
+        private void RunScript(string content, IHTMLWindow2 window, string name, List<string> dependencyContent)
         {
+            if (dependencyContent != null)
+            {
+                foreach (var dependency in dependencyContent)
+                {
+                    try
+                    {
+                        window.execScript(dependency);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ShouldThrowScriptException(ex, name, dependency))
+                            throw;
+                    }
+                }
+            }
+
             try
             {
                 window.execScript(content);
             }
             catch (Exception ex)
             {
-                if (ex is UnauthorizedAccessException) // These exceptions appear to be caused by an error in IE itself.
-                    return;
-
-                //window.execScript("console.log(\"Scriptmonkey: Unable to load script: " + name + ". Error: " +
-                //                    ex.Message.Replace("\"", "\\\"") + "\");");
-                bool shouldThrow;
-
-                if (ex.HResult == -2147352319) // JScript Error
-                    shouldThrow = false;
-                else if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
-                    shouldThrow = LogAndCheckDebugger(ex, "At script: " + name + ':' + Environment.NewLine + content);
-                else
-                    shouldThrow = LogAndCheckDebugger(ex, "At script: " + name);
-
-                if (shouldThrow)
+                if (ShouldThrowScriptException(ex, name, content))
                     throw;
             }
+
+        }
+
+        private bool ShouldThrowScriptException(Exception ex, string name, string content)
+        {
+            if (ex is UnauthorizedAccessException) // These exceptions appear to be caused by an error in IE itself.
+                return false;
+
+            bool shouldThrow;
+
+            if (ex.HResult == -2147352319) // JScript Error
+                shouldThrow = false;
+            else if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
+                shouldThrow = LogAndCheckDebugger(ex, "At script: " + name + ':' + Environment.NewLine + content);
+            else
+                shouldThrow = LogAndCheckDebugger(ex, "At script: " + name);
+
+            return shouldThrow;
         }
 
         /// <summary>
@@ -490,7 +512,7 @@ namespace BHOUserScript
                     webClient.DownloadFile(url, ScriptPath
                         + relativeScriptPath);
                     webClient.Dispose();
-                    var s = ParseScriptMetadata.Parse(relativeScriptPath);
+                    var s = ParseScriptMetadata.Parse(relativeScriptPath, false);
                     s.Path = relativeScriptPath;
                     if (s.Name == String.Empty)
                         s.Name = "Userscript from " + url;
@@ -658,7 +680,7 @@ namespace BHOUserScript
                     try
                     {
                         var content = SendWebRequest(s.UpdateUrl);
-                        var newScript = ParseScriptMetadata.ParseFromContents(content);
+                        var newScript = ParseScriptMetadata.ParseFromContents(content, false);
                         if (newScript.Version != s.Version)
                         {
                             var scriptContents = new ScriptWithContent(newScript) {Content = content};

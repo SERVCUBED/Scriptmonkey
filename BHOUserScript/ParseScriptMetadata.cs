@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Enumerable = System.Linq.Enumerable;
 
 namespace BHOUserScript
 {
@@ -17,19 +19,20 @@ namespace BHOUserScript
         static readonly string Match = @"@match( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Include = @"@include( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Exclude = @"@exclude( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
+        static readonly string Require = @"@require( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string UpdateUrl = @"@updateURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string DownloadUrl = @"@downloadURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
         static readonly string Resource = @"@resource( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
 
-        public static Script Parse(string path)
+        public static Script Parse(string path, bool isCss)
         {
             StreamReader str = new StreamReader(Scriptmonkey.ScriptPath + path);
             string contents = str.ReadToEnd();
             str.Close();
-            return ParseFromContents(contents);
+            return ParseFromContents(contents, isCss);
         }
 
-        public static Script ParseFromContents(string contents)
+        public static Script ParseFromContents(string contents, bool isCss)
         {
             Script scr = new Script();
             try
@@ -70,7 +73,7 @@ namespace BHOUserScript
                     scr.Exclude[i] = matches[i].Groups[2].Value;
                 }
 
-                scr = ParseResources(scr, contents);
+                scr = UpdateParsedData(scr, contents, isCss);
 
                 scr.UpdateUrl = GetContents(contents, DownloadUrl);
 
@@ -90,8 +93,23 @@ namespace BHOUserScript
             return scr;
         }
 
-        public static Script ParseResources(Script s, string contents)
+        /// <summary>
+        /// Parse the metadata block for resources and dependencies if it not CSS.
+        /// </summary>
+        /// <param name="s">The script object.</param>
+        /// <param name="contents">The contents of the script.</param>
+        /// <param name="isCss">If the script is CSS.</param>
+        /// <returns>The populated script object.</returns>
+        public static Script UpdateParsedData(Script s, string contents, bool isCss)
         {
+            // CSS can't have resources and dependencies.
+            if (isCss)
+                return s;
+
+            //Requires API (should the API wrapper be added to the script)
+            s.RequiresApi = contents.Contains("GM_");
+
+            // Resources
             var reg = new Regex(Resource);
             var matches = reg.Matches(contents);
             s.Resources = new Dictionary<string, string>();
@@ -99,6 +117,35 @@ namespace BHOUserScript
             {
                 s.Resources.Add(match.Groups[2].Value, match.Groups[3].Value);
             }
+
+            // Require
+            // Get new values
+            if (s.Require == null)
+                s.Require = new Dictionary<string, string>();
+
+            reg = new Regex(Require);
+            matches = reg.Matches(contents);
+            var req = new List<string>();
+            for (int i = 0; i < matches.Count; i++)
+            {
+                req.Add(matches[i].Groups[2].Value);
+            }
+            // Remove old values
+            for (int i = 0; i < s.Require.Count; i++)
+            {
+                var key = s.Require.Keys.ToArray()[i];
+                if (!req.Contains(key))
+                {
+                    s.Require.Remove(key);
+                    i--;
+                }
+            }
+            // Add values not in list
+            foreach (string t in req.Where(t => !s.Require.ContainsKey(t)))
+            {
+                s.Require.Add(t, Scriptmonkey.SendWebRequest(t));
+            }
+
             return s;
         }
 

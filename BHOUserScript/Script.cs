@@ -25,7 +25,7 @@ namespace BHOUserScript
         public string Version { get; set; }
 
         // Array for require properties
-        public string[] Require { get; set; }
+        public Dictionary<string, string> Require { get; set; }
 
         public string Description { get; set; }
 
@@ -40,6 +40,8 @@ namespace BHOUserScript
         public DateTime InstallDate { get; set; }
 
         public bool Enabled { get; set; }
+
+        public bool RequiresApi { get; set; } = true;
 
         public Dictionary<string, string> SavedValues { get; set; }
 

@@ -108,7 +108,8 @@ namespace BHOUserScript
                 try
                 {
                     string contents = str.ReadToEnd();
-                    EditedScript = ParseScriptMetadata.ParseResources(EditedScript, contents);
+                    EditedScript = ParseScriptMetadata.UpdateParsedData(EditedScript, contents, 
+                        EditedScript.Type == Script.ValueType.StyleSheet);
                 }
                 catch (Exception ex)
                 {
@@ -152,7 +153,7 @@ namespace BHOUserScript
 
                         File.Copy(form.Url, Scriptmonkey.ScriptPath + prefix + form.openFileDialog1.SafeFileName);
                         FileName = prefix + form.openFileDialog1.SafeFileName;
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
                         browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
@@ -168,7 +169,7 @@ namespace BHOUserScript
                         var webClient = new WebClient();
                         FileName = prefix + (_isCss? ".css" : ".user.js");
                         webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + FileName);
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
                         browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
@@ -247,7 +248,7 @@ namespace BHOUserScript
 
             // Double check file actually exists
             if (File.Exists(Scriptmonkey.ScriptPath + FileName))
-                LoadFromParse(ParseScriptMetadata.Parse(FileName));
+                LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
             else
             {
                 MessageBox.Show(@"File has been deleted or is inaccessible. Select another file.", Resources.Title,
