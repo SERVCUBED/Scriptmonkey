@@ -837,27 +837,36 @@ namespace BHOUserScript
         #region Implementation of IObjectWithSite
         int IObjectWithSite.SetSite(object site)
         {
-            if (_prefs == null)
-                _prefs = new Db(this);
-
-            if (_link == null)
+            try
             {
-                _link = new ScriptmonkeyLinkManager();
-                _link.OnReceiveEvent += OnReceiveLinkEvent;
+
+                if (_prefs == null)
+                    _prefs = new Db(this);
+
+                if (_link == null)
+                {
+                    _link = new ScriptmonkeyLinkManager();
+                    _link.OnReceiveEvent += OnReceiveLinkEvent;
+                }
+
+                // Only need to check for install once per run.
+                if (!_installChecked)
+                {
+                    CheckInstall();
+
+                    var u = new Thread(CheckUpdate);
+                    u.SetApartmentState(ApartmentState.STA);
+                    u.Start();
+
+                    var s = new Thread(CheckScriptUpdate);
+                    s.SetApartmentState(ApartmentState.STA);
+                    s.Start();
+                }
             }
-
-            // Only need to check for install once per run.
-            if (!_installChecked)
+            catch (Exception ex)
             {
-                CheckInstall();
-
-                var u = new Thread(CheckUpdate);
-                u.SetApartmentState(ApartmentState.STA);
-                u.Start();
-
-                var s = new Thread(CheckScriptUpdate);
-                s.SetApartmentState(ApartmentState.STA);
-                s.Start();
+                if (LogAndCheckDebugger(ex, "SetSite:Setup"))
+                    throw;
             }
 
             _site = site;
@@ -869,14 +878,26 @@ namespace BHOUserScript
 
             if (site != null)
             {
-                var serviceProv = (IServiceProvider)_site;
-                var guidIWebBrowserApp = Marshal.GenerateGuidForType(typeof(IWebBrowserApp));
-                var guidIWebBrowser2 = Marshal.GenerateGuidForType(typeof(IWebBrowser2));
-                IntPtr intPtr;
-                serviceProv.QueryService(ref guidIWebBrowserApp, ref guidIWebBrowser2, out intPtr);
+                try
+                {
 
-                _browser = (IWebBrowser2)Marshal.GetObjectForIUnknown(intPtr);
-                
+                    var serviceProv = (IServiceProvider) _site;
+                    var guidIWebBrowserApp = Marshal.GenerateGuidForType(typeof (IWebBrowserApp));
+                    var guidIWebBrowser2 = Marshal.GenerateGuidForType(typeof (IWebBrowser2));
+                    IntPtr intPtr;
+                    serviceProv.QueryService(ref guidIWebBrowserApp, ref guidIWebBrowser2, out intPtr);
+
+                    _browser = Marshal.GetObjectForIUnknown(intPtr) as IWebBrowser2;
+                }
+                catch (Exception ex)
+                {
+                    if (LogAndCheckDebugger(ex, "SetSite:TrySetBrowserObject"))
+                        throw;
+                }
+
+                if (_browser == null)
+                    return 0;
+
                 // Ensure the handlers are not already added
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete -= Run;
                 ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 -= BeforeNavigate;
@@ -886,7 +907,7 @@ namespace BHOUserScript
                 ((DWebBrowserEvents2_Event)_browser).DocumentComplete += Run;
                 ((DWebBrowserEvents2_Event)_browser).BeforeNavigate2 += BeforeNavigate;
 
-                if (_prefs.Settings.RunOnPageRefresh)
+                if (_prefs != null && _prefs.Settings.RunOnPageRefresh)
                 {
                     ((DWebBrowserEvents2_Event)_browser).NavigateComplete2 += NavigateComplete2;
                     ((DWebBrowserEvents2_Event)_browser).DownloadComplete += DownloadComplete;
@@ -895,17 +916,16 @@ namespace BHOUserScript
             else
             {
                 // No site. Remove handlers
-                if (_browser != null)
+                if (_browser == null) return 0;
+
+                ((DWebBrowserEvents2_Event) _browser).DocumentComplete -= Run;
+                ((DWebBrowserEvents2_Event) _browser).BeforeNavigate2 -= BeforeNavigate;
+                if (_prefs.Settings.RunOnPageRefresh)
                 {
-                    ((DWebBrowserEvents2_Event) _browser).DocumentComplete -= Run;
-                    ((DWebBrowserEvents2_Event) _browser).BeforeNavigate2 -= BeforeNavigate;
-                    if (_prefs.Settings.RunOnPageRefresh)
-                    {
-                        ((DWebBrowserEvents2_Event) _browser).NavigateComplete2 -= NavigateComplete2;
-                        ((DWebBrowserEvents2_Event) _browser).DownloadComplete -= DownloadComplete;
-                    }
-                    _browser = null;
+                    ((DWebBrowserEvents2_Event) _browser).NavigateComplete2 -= NavigateComplete2;
+                    ((DWebBrowserEvents2_Event) _browser).DownloadComplete -= DownloadComplete;
                 }
+                _browser = null;
             }
             return 0;
         }
