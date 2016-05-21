@@ -225,7 +225,10 @@ namespace BHOUserScript
         private void editBtn_Click(object sender, EventArgs e)
         {
             if (FileName == String.Empty)
+            {
+                browseBtn.Focus();
                 return;
+            }
 
             var f = new FileEditForm(Scriptmonkey.ScriptPath + FileName, _isCss, nameTxt.Text);
             if (f.ShowDialog() == DialogResult.Retry)

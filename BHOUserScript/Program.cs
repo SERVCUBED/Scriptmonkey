@@ -1473,6 +1473,23 @@ namespace BHOUserScript
             _prefs.Save();
         }
 
+        public void deleteMenuCommand(string caption, int scriptIndex, string apiKey)
+        {
+            if (!CheckScriptApiKey(scriptIndex, apiKey))
+                return;
+
+            if (_prefs[scriptIndex].MenuCommands == null)
+                return;
+
+            for (int i = 0; i < _prefs[scriptIndex].MenuCommands.Count; i++)
+            {
+                if (_prefs[scriptIndex].MenuCommands[i].Name != caption) continue;
+
+                _prefs[scriptIndex].MenuCommands.RemoveAt(i);
+                break;
+            }
+        }
+
         /// <summary>
         /// Gets the current version of Scriptmonkey
         /// </summary>

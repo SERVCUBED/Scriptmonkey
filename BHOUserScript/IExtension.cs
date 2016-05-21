@@ -25,6 +25,8 @@ namespace BHOUserScript
 
         void setMenuCommand(string function, string caption, int scriptIndex, string apiKey);
 
+        void deleteMenuCommand(string caption, int scriptIndex, string apiKey);
+
         string getVersion();
 
         int getScriptCount();
