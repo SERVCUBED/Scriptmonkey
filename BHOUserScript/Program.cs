@@ -486,7 +486,11 @@ namespace BHOUserScript
             bool shouldThrow;
 
             if (ex.HResult == -2147352319) // JScript Error
+            {
+                if (_prefs.Settings.LogJScriptErrors)
+                    WriteToLogFile("Error at script:" + name + (_prefs.Settings.LogScriptContentsOnRunError? content: String.Empty));
                 shouldThrow = false;
+            }
             else if (_prefs.Settings.LogScriptContentsOnRunError && !ex.Message.Contains("Access is denied"))
                 shouldThrow = LogAndCheckDebugger(ex, "At script: " + name + ':' + Environment.NewLine + content);
             else
@@ -581,21 +585,17 @@ namespace BHOUserScript
         /// <returns>If the exception should be thrown</returns>
         public static bool LogAndCheckDebugger(Exception ex, string extraInfo = null)
         {
-            try
+            var text = String.Empty;
+            if (ex != null)
             {
-                using (StreamWriter writer = File.AppendText(InstallPath + "log.txt"))
-                {
-                    if (ex != null)
-                    {
-                        writer.WriteLine(ex.Message);
-                        writer.WriteLine(ex.StackTrace);
-                    }
-                    if (extraInfo != null) 
-                        writer.WriteLine(extraInfo);
-                    writer.WriteLine("------------ " + DateTime.Now);
-                }
+                text += ex.Message + Environment.NewLine;
+                text += ex.StackTrace + Environment.NewLine;
             }
-            catch (Exception) { }
+            if (extraInfo != null)
+                text += extraInfo;
+
+            WriteToLogFile(text);
+
 #if DEBUG
             var shouldDebug = MessageBox.Show(ex?.Message + Environment.NewLine + @"Stack: " + Environment.NewLine + ex?.StackTrace +
                                 Environment.NewLine + @"Souce: " + Environment.NewLine + ex?.Source + @": Main" +
@@ -610,6 +610,19 @@ namespace BHOUserScript
             }
 #endif
             return false;
+        }
+
+        private static void WriteToLogFile(string content)
+        {
+            try
+            {
+                using (StreamWriter writer = File.AppendText(InstallPath + "log.txt"))
+                {
+                    writer.WriteLine(content);
+                    writer.WriteLine("------------ " + DateTime.Now);
+                }
+            }
+            catch (Exception) { }
         }
 
         /// <summary>

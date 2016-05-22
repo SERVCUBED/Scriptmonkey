@@ -39,6 +39,8 @@ namespace BHOUserScript
 
         public bool LogScriptContentsOnRunError = false;
 
+        public bool LogJScriptErrors = false;
+
         public bool UpdateDisabledScripts = false;
 
         public string[] BlacklistedUrls = new string[0];
