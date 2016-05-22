@@ -309,7 +309,7 @@ namespace BHOUserScript
         {
             if (box.SelectedIndex >= 0)
             {
-                string s = Interaction.InputBox("Edit value:", Resources.Title, listBox1.SelectedItem.ToString());
+                string s = Interaction.InputBox("Edit value:", Resources.Title, box.SelectedItem.ToString());
                 if (!String.IsNullOrEmpty(s))
                     box.Items[listBox1.SelectedIndex] = s;
             }
