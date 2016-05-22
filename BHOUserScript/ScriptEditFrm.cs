@@ -311,7 +311,7 @@ namespace BHOUserScript
             {
                 string s = Interaction.InputBox("Edit value:", Resources.Title, box.SelectedItem.ToString());
                 if (!String.IsNullOrEmpty(s))
-                    box.Items[listBox1.SelectedIndex] = s;
+                    box.Items[box.SelectedIndex] = s;
             }
         }
     }
