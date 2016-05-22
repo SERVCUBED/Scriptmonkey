@@ -174,7 +174,7 @@ namespace BHOUserScript.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function GM_deleteValue(e){window.Scriptmonkey.deleteScriptValue(e,scriptIndex,apiKey)}function GM_getValue(e,t){return window.Scriptmonkey.getScriptValue(e,t,scriptIndex,apiKey)}function GM_listValues(){return window.Scriptmonkey.getScriptValuesList(scriptIndex,apiKey)}function GM_setValue(e,t){window.Scriptmonkey.setScriptValue(e,t,scriptIndex,apiKey)}function GM_addStyle(e){css=document.createElement(&apos;style&apos;),css.type=&apos;text/css&apos;,css.innerHTML=e,document.body.appendChild(css)}function GM_openInTab(e){wind [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to var GM_info = {};function GM_deleteValue(e){window.Scriptmonkey.deleteScriptValue(e,scriptIndex,apiKey)}function GM_getValue(e,t){return window.Scriptmonkey.getScriptValue(e,t,scriptIndex,apiKey)}function GM_listValues(){return window.Scriptmonkey.getScriptValuesList(scriptIndex,apiKey)}function GM_setValue(e,t){window.Scriptmonkey.setScriptValue(e,t,scriptIndex,apiKey)}function GM_addStyle(e){css=document.createElement(&apos;style&apos;),css.type=&apos;text/css&apos;,css.innerHTML=e,document.body.appendChild(css)}function GM_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WrapperJS_Before {
             get {

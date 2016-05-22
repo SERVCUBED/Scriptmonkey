@@ -57,4 +57,7 @@ function Scriptmonkey_S0() { // Scriptmonkey_S[scriptIndex]
         if (details.onload)
             details.onload(JSON.parse(response));
     }
+
+    // Placeholder
+    var GM_info = {};
 }

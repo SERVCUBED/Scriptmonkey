@@ -516,6 +516,8 @@ namespace BHOUserScript
                     s.Path = relativeScriptPath;
                     if (s.Name == String.Empty)
                         s.Name = "Userscript from " + url;
+                    if (String.IsNullOrWhiteSpace(s.UpdateUrl))
+                        s.UpdateUrl = url;
                     _prefs.AddScript(s);
                 }
                 catch (Exception ex)
