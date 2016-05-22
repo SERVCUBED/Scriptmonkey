@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace BHOUserScript
@@ -96,14 +97,31 @@ namespace BHOUserScript
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex > -1)
+            if (listBox1.SelectedIndex < 0) return;
+
+            if (File.Exists(Scriptmonkey.ScriptPath + Prefs.AllScripts[listBox1.SelectedIndex].Path))
+                File.Delete(Scriptmonkey.ScriptPath + Prefs.AllScripts[listBox1.SelectedIndex].Path);
+
+            // Delete any saved resources
+            if (Prefs[listBox1.SelectedIndex].Resources.Count > 0)
             {
-                if (File.Exists(Scriptmonkey.ScriptPath + Prefs.AllScripts[listBox1.SelectedIndex].Path))
-                    File.Delete(Scriptmonkey.ScriptPath + Prefs.AllScripts[listBox1.SelectedIndex].Path);
-                Prefs.AllScripts.RemoveAt(listBox1.SelectedIndex);
-                eachEnabledChk.Enabled = false;
-                RefreshList();
+                foreach (var u in Prefs[listBox1.SelectedIndex].Resources.Select(resource => 
+                Scriptmonkey.ResourcePath + Prefs[listBox1.SelectedIndex].Path + '.' + resource.Key).Where(File.Exists))
+                {
+                    try
+                    {
+                        File.Delete(u);
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
             }
+
+            Prefs.AllScripts.RemoveAt(listBox1.SelectedIndex);
+            eachEnabledChk.Enabled = false;
+            RefreshList();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
