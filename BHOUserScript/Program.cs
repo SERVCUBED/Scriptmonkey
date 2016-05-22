@@ -1300,44 +1300,40 @@ namespace BHOUserScript
             if (!CheckScriptApiKey(scriptIndex, apiKey))
                 return null;
 
-            try
+            if (!_prefs[scriptIndex].Resources.ContainsKey(resourceName))
+                return null;
+            
+            string filepath = ResourcePath + _prefs[scriptIndex].Path + '.' + resourceName;
+            if (!File.Exists(filepath))
             {
-                string filepath = ResourcePath + _prefs[scriptIndex].Path + '.' + resourceName;
-                if (!File.Exists(filepath))
-                {
-                    WebClient webClient = new WebClient();
-                    try
-                    {
-                        webClient.DownloadFile(_prefs[scriptIndex].Resources[resourceName], filepath);
-                        webClient.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        webClient.Dispose();
-                        if (LogAndCheckDebugger(ex, "getScriptResourceText: Error downloading file"))
-                            throw;
-                        return null;
-                    }
-                }
-                
-                StreamReader str = new StreamReader(filepath);
-                string o = null;
+                WebClient webClient = new WebClient();
                 try
                 {
-                    o = str.ReadToEnd();
+                    webClient.DownloadFile(_prefs[scriptIndex].Resources[resourceName], filepath);
+                    webClient.Dispose();
                 }
                 catch (Exception ex)
                 {
-                    if (LogAndCheckDebugger(ex, "getScriptResourceText: Error reading from file"))
+                    webClient.Dispose();
+                    if (LogAndCheckDebugger(ex, "getScriptResourceText: Error downloading file"))
                         throw;
+                    return null;
                 }
-                str.Close();
-                return o;
             }
-            catch (Exception)
+                
+            StreamReader str = new StreamReader(filepath);
+            string o = null;
+            try
             {
-                return null;
+                o = str.ReadToEnd();
             }
+            catch (Exception ex)
+            {
+                if (LogAndCheckDebugger(ex, "getScriptResourceText: Error reading from file"))
+                    throw;
+            }
+            str.Close();
+            return o;
         }
 
         /// <summary>
