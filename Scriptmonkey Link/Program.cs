@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scriptmonkey_Link
 {
     static class Program
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         private static readonly Mutex _mutex = new Mutex(true, "{fdabff7f-d5d9-4799-aa5c-aa6ea403968b}");
 
         /// <summary>
@@ -23,6 +27,19 @@ namespace Scriptmonkey_Link
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Form1());
                 _mutex.ReleaseMutex();
+            }
+            else
+            {
+                Process current = Process.GetCurrentProcess();
+                foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+                {
+                    if (process.Id == current.Id) continue;
+
+                    ShowWindow(process.MainWindowHandle, 1); // SW_SHOWNORMAL
+                    SetForegroundWindow(process.MainWindowHandle);
+                    break;
+                }
+
             }
         }
     }
