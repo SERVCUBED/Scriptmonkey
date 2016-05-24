@@ -331,18 +331,23 @@ namespace Scriptmonkey_Link
 
         public void StartSaveWindowState()
         {
-            // Write new file
-            WriteFile(_savedWindowsPath, String.Empty);
 
             ThreadPool.QueueUserWorkItem((callback) =>
             {
+                var s = String.Empty;
+
                 ShellWindows iExplorerInstances = new ShellWindows();
                 foreach (var iExplorerInstance in iExplorerInstances)
                 {
-                    InternetExplorer iExplorer = (InternetExplorer)iExplorerInstance;
-                    WriteFile(_savedWindowsPath, iExplorer.LocationURL + '\n', true);
-                    iExplorer.Quit();
+                    var iExplorer = (InternetExplorer) iExplorerInstance;
+                    if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
+                    {
+                        s += iExplorer.LocationURL + '\n';
+                        iExplorer.Quit();
+                    }
                 }
+                
+                WriteFile(_savedWindowsPath, s);
             });
         }
 
@@ -364,6 +369,8 @@ namespace Scriptmonkey_Link
                 for (int index = 0; index < s.Length - 1; index++)
                 {
                     var url = s[index];
+
+                    OnReceived?.Invoke("restored", url);
 
                     // Open new tab, not a new window
                     ShellWindows iExplorerInstances = new ShellWindows();
@@ -457,9 +464,9 @@ namespace Scriptmonkey_Link
             }
         }
 
-        private static void WriteFile(string url, string contents, bool append = false)
+        private static void WriteFile(string url, string contents)
         {
-            using (var str = new FileStream(url, append? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (var str = new FileStream(url, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
                 var fileBytes = Encoding.ASCII.GetBytes(contents);
 
