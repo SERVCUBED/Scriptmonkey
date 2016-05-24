@@ -86,5 +86,24 @@ namespace Scriptmonkey_Link
             _s.IsActive = !_s.IsActive;
             stopServerToolStripMenuItem.Text = (_s.IsActive ? "Stop" : "Start") + @" Server";
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason != CloseReason.UserClosing)
+                return;
+            Hide();
+            e.Cancel = true;
+            
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void showHideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            notifyIcon1_MouseDoubleClick(null, null);
+        }
     }
 }

@@ -48,7 +48,11 @@
             this.purgeNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moreContextMenuStrip.SuspendLayout();
+            this.notifyIconContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // instanceNumTimer
@@ -107,6 +111,7 @@
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.ContextMenuStrip = this.notifyIconContextMenuStrip;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Scriptmonkey Link";
             this.notifyIcon1.Visible = true;
@@ -123,7 +128,7 @@
             this.toolStripSeparator2,
             this.advancedToolStripMenuItem});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 148);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 126);
             // 
             // backupSettingsFileToolStripMenuItem
             // 
@@ -194,6 +199,28 @@
             this.stopServerToolStripMenuItem.Text = "Stop Server";
             this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
             // 
+            // notifyIconContextMenuStrip
+            // 
+            this.notifyIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showHideToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.notifyIconContextMenuStrip.Name = "notifyIconContextMenuStrip";
+            this.notifyIconContextMenuStrip.Size = new System.Drawing.Size(134, 48);
+            // 
+            // showHideToolStripMenuItem
+            // 
+            this.showHideToolStripMenuItem.Name = "showHideToolStripMenuItem";
+            this.showHideToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.showHideToolStripMenuItem.Text = "Show/Hide";
+            this.showHideToolStripMenuItem.Click += new System.EventHandler(this.showHideToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -209,7 +236,9 @@
             this.MinimumSize = new System.Drawing.Size(311, 260);
             this.Name = "Form1";
             this.Text = "Scriptmonkey Link";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.moreContextMenuStrip.ResumeLayout(false);
+            this.notifyIconContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,6 +263,9 @@
         private System.Windows.Forms.ToolStripMenuItem purgeNowToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem stopServerToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip notifyIconContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem showHideToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 
