@@ -336,16 +336,11 @@ namespace Scriptmonkey_Link
             {
                 var s = String.Empty;
 
-                ShellWindows iExplorerInstances = new ShellWindows();
-                foreach (var iExplorerInstance in iExplorerInstances)
+                ForEachInternetExplorer((iExplorer) =>
                 {
-                    var iExplorer = (InternetExplorer) iExplorerInstance;
-                    if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
-                    {
-                        s += iExplorer.LocationURL + '\n';
-                        iExplorer.Quit();
-                    }
-                }
+                    s += iExplorer.LocationURL + '\n';
+                    iExplorer.Quit();
+                });
                 
                 WriteFile(_savedWindowsPath, s);
             });
@@ -373,17 +368,12 @@ namespace Scriptmonkey_Link
                     OnReceived?.Invoke("restored", url);
 
                     // Open new tab, not a new window
-                    ShellWindows iExplorerInstances = new ShellWindows();
                     var f = false;
-                    foreach (InternetExplorer iExplorer in iExplorerInstances)
+                    ForEachInternetExplorer((iExplorer) =>
                     {
-                        if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
-                        {
-                            iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
-                            f = true;
-                            break;
-                        }
-                    }
+                        iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
+                        f = true;
+                    });
                     if (!f) // No IE instances. Open new window
                     {
                         var p = new Process
@@ -400,6 +390,33 @@ namespace Scriptmonkey_Link
                 }
 
                 File.Delete(_savedWindowsPath);
+            });
+        }
+
+        delegate void IEOperation(InternetExplorer iExplorer);
+
+        /// <summary>
+        /// Performs an operation on each instance of Internet Explorer
+        /// </summary>
+        /// <param name="operation"></param>
+        private void ForEachInternetExplorer(IEOperation operation)
+        {
+            ShellWindows iExplorerInstances = new ShellWindows();
+            foreach (var iExplorerInstance in iExplorerInstances)
+            {
+                var iExplorer = (InternetExplorer)iExplorerInstance;
+                if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
+                {
+                    operation(iExplorer);
+                }
+            }
+        }
+
+        public void RefreshAllInstances()
+        {
+            ForEachInternetExplorer((iExplorer) =>
+            {
+                iExplorer.Refresh2();
             });
         }
 

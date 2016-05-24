@@ -44,6 +44,7 @@
             this.backupSettingsFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveUrlsAndCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restoreSavedWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshAllWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,30 +147,38 @@
             this.moreContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backupSettingsFileToolStripMenuItem,
             this.saveUrlsAndCloseToolStripMenuItem,
-            this.restoreSavedWindowsToolStripMenuItem});
+            this.restoreSavedWindowsToolStripMenuItem,
+            this.refreshAllWindowsToolStripMenuItem});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 70);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 114);
             // 
             // backupSettingsFileToolStripMenuItem
             // 
             this.backupSettingsFileToolStripMenuItem.Name = "backupSettingsFileToolStripMenuItem";
             this.backupSettingsFileToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.backupSettingsFileToolStripMenuItem.Text = "Backup Settings File";
+            this.backupSettingsFileToolStripMenuItem.Text = "&Backup Settings File";
             this.backupSettingsFileToolStripMenuItem.Click += new System.EventHandler(this.backupSettingsFileToolStripMenuItem_Click);
             // 
             // saveUrlsAndCloseToolStripMenuItem
             // 
             this.saveUrlsAndCloseToolStripMenuItem.Name = "saveUrlsAndCloseToolStripMenuItem";
             this.saveUrlsAndCloseToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.saveUrlsAndCloseToolStripMenuItem.Text = "Save URLs and Close";
+            this.saveUrlsAndCloseToolStripMenuItem.Text = "&Save URLs and Close";
             this.saveUrlsAndCloseToolStripMenuItem.Click += new System.EventHandler(this.saveUrlsAndCloseToolStripMenuItem_Click);
             // 
             // restoreSavedWindowsToolStripMenuItem
             // 
             this.restoreSavedWindowsToolStripMenuItem.Name = "restoreSavedWindowsToolStripMenuItem";
             this.restoreSavedWindowsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.restoreSavedWindowsToolStripMenuItem.Text = "Restore Saved Windows";
+            this.restoreSavedWindowsToolStripMenuItem.Text = "&Restore Saved Windows";
             this.restoreSavedWindowsToolStripMenuItem.Click += new System.EventHandler(this.restoreSavedWindowsToolStripMenuItem_Click);
+            // 
+            // refreshAllWindowsToolStripMenuItem
+            // 
+            this.refreshAllWindowsToolStripMenuItem.Name = "refreshAllWindowsToolStripMenuItem";
+            this.refreshAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.refreshAllWindowsToolStripMenuItem.Text = "R&efresh All Windows";
+            this.refreshAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.refreshAllWindowsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -211,6 +220,7 @@
         private System.Windows.Forms.ToolStripMenuItem backupSettingsFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveUrlsAndCloseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreSavedWindowsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshAllWindowsToolStripMenuItem;
     }
 }
 

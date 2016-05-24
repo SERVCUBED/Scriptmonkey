@@ -71,5 +71,10 @@ namespace Scriptmonkey_Link
         {
             _s.RestoreSavedWindows();
         }
+
+        private void refreshAllWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _s.RefreshAllInstances();
+        }
     }
 }
