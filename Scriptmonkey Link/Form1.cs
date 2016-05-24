@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Windows.Forms;
 
 namespace Scriptmonkey_Link
@@ -12,11 +13,6 @@ namespace Scriptmonkey_Link
             _s.OnReceived += OnServerReceived;
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            _s.IsActive = checkBox1.Checked;
-        }
-
         private void instanceNumTimer_Tick(object sender, EventArgs e)
         {
             numInstancesLabel.Text = @"Scriptmonkey Instances: " + _s.NumInstances;
@@ -25,13 +21,6 @@ namespace Scriptmonkey_Link
         private void purgeTimer_Tick(object sender, EventArgs e)
         {
             _s.Purge();
-        }
-
-        private void broadcastBtn_Click(object sender, EventArgs e)
-        {
-            _s.Broadcast(txtBroadcast.Text);
-            txtLog.Text = "Broadcast: " + txtBroadcast.Text + Environment.NewLine + txtLog.Text;
-            txtBroadcast.Text = String.Empty;
         }
 
         private void OnServerReceived(string key, string data)
@@ -75,6 +64,27 @@ namespace Scriptmonkey_Link
         private void refreshAllWindowsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _s.RefreshAllInstances();
+        }
+
+        private void broadcastCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var s = Interaction.InputBox("Enter command to broadcast:");
+            if (String.IsNullOrWhiteSpace((s)))
+                return;
+
+            txtLog.Text = @"Broadcast: " + s + Environment.NewLine + txtLog.Text;
+            _s.Broadcast(s);
+        }
+
+        private void purgeNowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _s.Purge();
+        }
+
+        private void stopServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _s.IsActive = !_s.IsActive;
+            stopServerToolStripMenuItem.Text = (_s.IsActive ? "Stop" : "Start") + @" Server";
         }
     }
 }

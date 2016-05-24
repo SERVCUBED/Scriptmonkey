@@ -30,12 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.instanceNumTimer = new System.Windows.Forms.Timer(this.components);
             this.purgeTimer = new System.Windows.Forms.Timer(this.components);
             this.numInstancesLabel = new System.Windows.Forms.Label();
-            this.broadcastBtn = new System.Windows.Forms.Button();
-            this.txtBroadcast = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -45,21 +42,14 @@
             this.saveUrlsAndCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restoreSavedWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshAllWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.broadcastCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.purgeNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(13, 13);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(60, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Started";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // instanceNumTimer
             // 
@@ -75,36 +65,16 @@
             // numInstancesLabel
             // 
             this.numInstancesLabel.AutoSize = true;
-            this.numInstancesLabel.Location = new System.Drawing.Point(13, 37);
+            this.numInstancesLabel.Location = new System.Drawing.Point(13, 14);
             this.numInstancesLabel.Name = "numInstancesLabel";
             this.numInstancesLabel.Size = new System.Drawing.Size(132, 13);
             this.numInstancesLabel.TabIndex = 1;
             this.numInstancesLabel.Text = "Scriptmonkey Instances: 0";
             // 
-            // broadcastBtn
-            // 
-            this.broadcastBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.broadcastBtn.Location = new System.Drawing.Point(208, 54);
-            this.broadcastBtn.Name = "broadcastBtn";
-            this.broadcastBtn.Size = new System.Drawing.Size(75, 23);
-            this.broadcastBtn.TabIndex = 3;
-            this.broadcastBtn.Text = "Broadcast";
-            this.broadcastBtn.UseVisualStyleBackColor = true;
-            this.broadcastBtn.Click += new System.EventHandler(this.broadcastBtn_Click);
-            // 
-            // txtBroadcast
-            // 
-            this.txtBroadcast.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBroadcast.Location = new System.Drawing.Point(13, 56);
-            this.txtBroadcast.Name = "txtBroadcast";
-            this.txtBroadcast.Size = new System.Drawing.Size(189, 20);
-            this.txtBroadcast.TabIndex = 2;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 79);
+            this.label1.Location = new System.Drawing.Point(13, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(28, 13);
             this.label1.TabIndex = 4;
@@ -115,12 +85,12 @@
             this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLog.Location = new System.Drawing.Point(13, 96);
+            this.txtLog.Location = new System.Drawing.Point(13, 52);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(270, 113);
+            this.txtLog.Size = new System.Drawing.Size(270, 157);
             this.txtLog.TabIndex = 5;
             this.txtLog.WordWrap = false;
             // 
@@ -145,12 +115,15 @@
             // moreContextMenuStrip
             // 
             this.moreContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.backupSettingsFileToolStripMenuItem,
             this.saveUrlsAndCloseToolStripMenuItem,
             this.restoreSavedWindowsToolStripMenuItem,
-            this.refreshAllWindowsToolStripMenuItem});
+            this.refreshAllWindowsToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.backupSettingsFileToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.advancedToolStripMenuItem});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 114);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 148);
             // 
             // backupSettingsFileToolStripMenuItem
             // 
@@ -180,6 +153,47 @@
             this.refreshAllWindowsToolStripMenuItem.Text = "R&efresh All Windows";
             this.refreshAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.refreshAllWindowsToolStripMenuItem_Click);
             // 
+            // advancedToolStripMenuItem
+            // 
+            this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.broadcastCommandToolStripMenuItem,
+            this.purgeNowToolStripMenuItem,
+            this.stopServerToolStripMenuItem});
+            this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
+            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.advancedToolStripMenuItem.Text = "Advanced";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(196, 6);
+            // 
+            // broadcastCommandToolStripMenuItem
+            // 
+            this.broadcastCommandToolStripMenuItem.Name = "broadcastCommandToolStripMenuItem";
+            this.broadcastCommandToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.broadcastCommandToolStripMenuItem.Text = "Broadcast Command";
+            this.broadcastCommandToolStripMenuItem.Click += new System.EventHandler(this.broadcastCommandToolStripMenuItem_Click);
+            // 
+            // purgeNowToolStripMenuItem
+            // 
+            this.purgeNowToolStripMenuItem.Name = "purgeNowToolStripMenuItem";
+            this.purgeNowToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.purgeNowToolStripMenuItem.Text = "Purge Now";
+            this.purgeNowToolStripMenuItem.Click += new System.EventHandler(this.purgeNowToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(196, 6);
+            // 
+            // stopServerToolStripMenuItem
+            // 
+            this.stopServerToolStripMenuItem.Name = "stopServerToolStripMenuItem";
+            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.stopServerToolStripMenuItem.Text = "Stop Server";
+            this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,14 +202,11 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtBroadcast);
-            this.Controls.Add(this.broadcastBtn);
             this.Controls.Add(this.numInstancesLabel);
-            this.Controls.Add(this.checkBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(730, 575);
-            this.MinimumSize = new System.Drawing.Size(311, 132);
+            this.MinimumSize = new System.Drawing.Size(311, 260);
             this.Name = "Form1";
             this.Text = "Scriptmonkey Link";
             this.moreContextMenuStrip.ResumeLayout(false);
@@ -205,13 +216,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Timer instanceNumTimer;
         private System.Windows.Forms.Timer purgeTimer;
         private System.Windows.Forms.Label numInstancesLabel;
-        private System.Windows.Forms.Button broadcastBtn;
-        private System.Windows.Forms.TextBox txtBroadcast;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Button button1;
@@ -221,6 +228,12 @@
         private System.Windows.Forms.ToolStripMenuItem saveUrlsAndCloseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreSavedWindowsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshAllWindowsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem broadcastCommandToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem purgeNowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem stopServerToolStripMenuItem;
     }
 }
 

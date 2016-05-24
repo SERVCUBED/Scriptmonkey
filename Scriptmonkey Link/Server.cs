@@ -414,10 +414,7 @@ namespace Scriptmonkey_Link
 
         public void RefreshAllInstances()
         {
-            ForEachInternetExplorer((iExplorer) =>
-            {
-                iExplorer.Refresh2();
-            });
+            ForEachInternetExplorer(i => i.Refresh2() );
         }
 
         #region From Scriptmonkey
