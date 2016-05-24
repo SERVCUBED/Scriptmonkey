@@ -40,6 +40,11 @@
             this.txtLog = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.moreContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.backupSettingsFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveUrlsAndCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restoreSavedWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBox1
@@ -120,11 +125,12 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(157, 9);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(229, 9);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 23);
+            this.button1.Size = new System.Drawing.Size(54, 23);
             this.button1.TabIndex = 6;
-            this.button1.Text = "Backup Settings File";
+            this.button1.Text = "More...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -134,6 +140,36 @@
             this.notifyIcon1.Text = "Scriptmonkey Link";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // moreContextMenuStrip
+            // 
+            this.moreContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backupSettingsFileToolStripMenuItem,
+            this.saveUrlsAndCloseToolStripMenuItem,
+            this.restoreSavedWindowsToolStripMenuItem});
+            this.moreContextMenuStrip.Name = "moreContextMenuStrip";
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 70);
+            // 
+            // backupSettingsFileToolStripMenuItem
+            // 
+            this.backupSettingsFileToolStripMenuItem.Name = "backupSettingsFileToolStripMenuItem";
+            this.backupSettingsFileToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.backupSettingsFileToolStripMenuItem.Text = "Backup Settings File";
+            this.backupSettingsFileToolStripMenuItem.Click += new System.EventHandler(this.backupSettingsFileToolStripMenuItem_Click);
+            // 
+            // saveUrlsAndCloseToolStripMenuItem
+            // 
+            this.saveUrlsAndCloseToolStripMenuItem.Name = "saveUrlsAndCloseToolStripMenuItem";
+            this.saveUrlsAndCloseToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.saveUrlsAndCloseToolStripMenuItem.Text = "Save URLs and Close";
+            this.saveUrlsAndCloseToolStripMenuItem.Click += new System.EventHandler(this.saveUrlsAndCloseToolStripMenuItem_Click);
+            // 
+            // restoreSavedWindowsToolStripMenuItem
+            // 
+            this.restoreSavedWindowsToolStripMenuItem.Name = "restoreSavedWindowsToolStripMenuItem";
+            this.restoreSavedWindowsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.restoreSavedWindowsToolStripMenuItem.Text = "Restore Saved Windows";
+            this.restoreSavedWindowsToolStripMenuItem.Click += new System.EventHandler(this.restoreSavedWindowsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -153,6 +189,7 @@
             this.MinimumSize = new System.Drawing.Size(311, 132);
             this.Name = "Form1";
             this.Text = "Scriptmonkey Link";
+            this.moreContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,6 +207,10 @@
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip moreContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem backupSettingsFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveUrlsAndCloseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restoreSavedWindowsToolStripMenuItem;
     }
 }
 

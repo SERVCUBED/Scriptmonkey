@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO.Compression;
+using SHDocVw;
 
 namespace Scriptmonkey_Link
 {
@@ -28,6 +31,7 @@ namespace Scriptmonkey_Link
         readonly HttpListener _listener = new HttpListener();
         readonly Dictionary<string, InstanceData> _instances = new Dictionary<string, InstanceData>();
         private const int Port = 32888;
+        private string _savedWindowsPath = String.Empty;
 
         public delegate void OnReceivedEvent(string key, string data);
 
@@ -35,6 +39,9 @@ namespace Scriptmonkey_Link
 
         public Server()
         {
+            _savedWindowsPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                Path.DirectorySeparatorChar + ".ScriptmonkeyLinkSavedWindows.tmp";
+
             _listener.Prefixes.Add("http://localhost:" + Port + "/");
             _listener.Prefixes.Add("http://127.0.0.1:" + Port + "/");
 
@@ -162,8 +169,9 @@ namespace Scriptmonkey_Link
                     if (split.Length == 2)
                     {
                         var key = split[0];
-                        var url = split[1];
-                        OnReceived?.Invoke(key, url.Replace('§', '/'));
+                        var url = Uri.UnescapeDataString(split[1]).Replace('§', '/');
+                        
+                        OnReceived?.Invoke(key, url);
                     }
                     else
                         content = "errinvrequest";
@@ -321,6 +329,73 @@ namespace Scriptmonkey_Link
             }
         }
 
+        public void StartSaveWindowState()
+        {
+            // Write new file
+            WriteFile(_savedWindowsPath, String.Empty);
+
+            ThreadPool.QueueUserWorkItem((callback) =>
+            {
+                ShellWindows iExplorerInstances = new ShellWindows();
+                foreach (var iExplorerInstance in iExplorerInstances)
+                {
+                    InternetExplorer iExplorer = (InternetExplorer)iExplorerInstance;
+                    WriteFile(_savedWindowsPath, iExplorer.LocationURL + '\n', true);
+                    iExplorer.Quit();
+                }
+            });
+        }
+
+        public void RestoreSavedWindows()
+        {
+            if (!File.Exists(_savedWindowsPath))
+                return;
+
+            var c = ReadFile(_savedWindowsPath);
+            if (String.IsNullOrWhiteSpace(c))
+                return;
+
+            ThreadPool.QueueUserWorkItem((callback) =>
+            {
+                var s = c.Split('\n');
+                if (s.Length == 0)
+                    return;
+
+                for (int index = 0; index < s.Length - 1; index++)
+                {
+                    var url = s[index];
+
+                    // Open new tab, not a new window
+                    ShellWindows iExplorerInstances = new ShellWindows();
+                    var f = false;
+                    foreach (InternetExplorer iExplorer in iExplorerInstances)
+                    {
+                        if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
+                        {
+                            iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
+                            f = true;
+                            break;
+                        }
+                    }
+                    if (!f) // No IE instances. Open new window
+                    {
+                        var p = new Process
+                        {
+                            StartInfo =
+                            {
+                                FileName = "iexplore.exe",
+                                Arguments = url
+                            }
+                        };
+                        p.Start();
+                        Thread.Sleep(200); // Allow IE to start before opening new tabs
+                    }
+                }
+
+                File.Delete(_savedWindowsPath);
+            });
+        }
+
         #region From Scriptmonkey
 
         /// <summary>
@@ -344,6 +419,75 @@ namespace Scriptmonkey_Link
             return (char)(r.Next(97, 122)) + Convert.ToString(r.Next(100000));
         }
 
+        /// <summary>
+        /// Read a file without locking it
+        /// </summary>
+        /// <param name="url">The URL of the file to read.</param>
+        /// <param name="onError">Optional. The string to return if the file cannot be found.</param>
+        /// <returns></returns>
+        private static string ReadFile(string url, string onError = null)
+        {
+            if (!File.Exists(url))
+            {
+                return onError;
+            }
+
+            int maxFileSize = 20 * 1024 * 1024;
+
+            using (var str = new FileStream(url, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+
+                var utf8 = new UTF8Encoding();
+
+                byte[] fileBytes;
+                int numBytes;
+
+                // If the number of bytes to read equals the maximum file length, try to read more data from the file
+                do
+                {
+                    fileBytes = new byte[maxFileSize];
+                    numBytes = str.Read(fileBytes, 0, maxFileSize);
+
+                    if (numBytes >= maxFileSize)
+                        maxFileSize *= 2;
+
+                } while (numBytes == maxFileSize);
+
+                return utf8.GetString(fileBytes, 0, numBytes);
+            }
+        }
+
+        private static void WriteFile(string url, string contents, bool append = false)
+        {
+            using (var str = new FileStream(url, append? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Write))
+            {
+                var fileBytes = Encoding.ASCII.GetBytes(contents);
+
+                str.Write(fileBytes, 0, fileBytes.Length);
+            }
+        }
+
         #endregion
+
+        private enum BrowserNavConstants
+        {
+            navOpenInNewWindow = 1,
+            navNoHistory = 2,
+            navNoReadFromCache = 4,
+            navNoWriteToCache = 8,
+            navAllowAutosearch = 16,
+            navBrowserBar = 32,
+            navHyperlink = 64,
+            navEnforceRestricted = 128,
+            navNewWindowsManaged = 256,
+            navUntrustedForDownload = 512,
+            navTrustedForActiveX = 1024,
+            navOpenInNewTab = 2048,
+            navOpenInBackgroundTab = 4096,
+            navKeepWordWheelText = 8192,
+            navVirtualTab = 16384,
+            navBlockRedirectsXDomain = 32768,
+            navOpenNewForegroundTab = 65536
+        }
     }
 }

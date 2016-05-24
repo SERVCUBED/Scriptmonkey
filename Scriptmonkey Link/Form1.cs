@@ -46,14 +46,30 @@ namespace Scriptmonkey_Link
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Enabled = false;
-            _s.DoBackup();
-            Enabled = true;
+            moreContextMenuStrip.Show(this, new System.Drawing.Point(
+                button1.Left, button1.Top + button1.Height));
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Visible = !Visible;
+        }
+
+        private void backupSettingsFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            _s.DoBackup();
+            Enabled = true;
+        }
+
+        private void saveUrlsAndCloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _s.StartSaveWindowState();
+        }
+
+        private void restoreSavedWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _s.RestoreSavedWindows();
         }
     }
 }
