@@ -198,8 +198,16 @@ namespace Scriptmonkey_Link
                     var currentUrl = data[2];
                     var host = new Uri(currentUrl).Host;
 
-                    OnReceived?.Invoke(key, $"The page at {host} says:\r\n{title}\r\n\r\n{text}");
-                    OnNotify?.Invoke(title, $"The page at {host} says:\r\n{text}");
+                    if (String.IsNullOrWhiteSpace(text))
+                    {
+                        OnReceived?.Invoke(key, $"The page at {host} says:\r\n{title}");
+                        OnNotify?.Invoke(title, $"From {host}");
+                    }
+                    else
+                    {
+                        OnReceived?.Invoke(key, $"The page at {host} says:\r\n{title}\r\n{text}");
+                        OnNotify?.Invoke(title, $"The page at {host} says:\r\n{text}");
+                    }
                 }
                 else
                 {
