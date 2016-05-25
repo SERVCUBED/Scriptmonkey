@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -428,7 +427,14 @@ namespace Scriptmonkey_Link
 
         public void RefreshAllInstances()
         {
-            TryForEachInternetExplorer(i => i.Refresh2() );
+            TryForEachInternetExplorer(i =>
+            {
+                if (IsActive)   // Using .Refresh2() causes Scriptmonkey to not run if it is not set to run on refresh. 
+                                // Navigate to the same URL instead.
+                    i.Navigate2(i.LocationURL, BrowserNavConstants.navNoHistory);
+                else
+                    i.Refresh2();
+            });
         }
 
         #region From Scriptmonkey
