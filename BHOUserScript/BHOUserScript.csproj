@@ -179,6 +179,7 @@
   <ItemGroup>
     <None Include="bin\Debug\Newtonsoft.Json.dll" />
     <None Include="Resources\ScintillaNET.dll" />
+    <Content Include="Notification.js" />
     <Content Include="Unregister.NETv4.0.30319.vbs" />
     <None Include="Wrapper.js" />
     <None Include="App.config" />

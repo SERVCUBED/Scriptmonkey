@@ -429,6 +429,7 @@ namespace BHOUserScript
             }
             catch (Exception) { }
             
+            // Expose API methods
             try
             {
                 var exp = window as IExpando;
@@ -440,6 +441,19 @@ namespace BHOUserScript
             catch (Exception ex)
             {
                 if (LogAndCheckDebugger(ex, "SetupWindow"))
+                    throw;
+            }
+
+            // Run Notification.js
+            if (!_prefs.Settings.InjectNotificationAPI)
+                return;
+            try
+            {
+                window.execScript(Resources.NotificationJS);
+            }
+            catch (Exception ex)
+            {
+                if (ShouldThrowScriptException(ex, "NotificationWrapper", Resources.NotificationJS))
                     throw;
             }
         }
@@ -798,8 +812,9 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="url">The requested resource</param>
         /// <param name="quick">True to set a timeout of 1000ms</param>
+        /// <param name="postData">The data to include in the POST request</param>
         /// <returns>The requested resource</returns>
-        public static string SendWebRequest(string url, bool quick = false)
+        public static string SendWebRequest(string url, bool quick = false, string postData = null)
         {
             HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
             if (quick)
@@ -809,6 +824,21 @@ namespace BHOUserScript
             StringBuilder sb = new StringBuilder();
             try
             {
+                if (postData != null)
+                {
+                    wc.Method = "POST";
+                    wc.ContentType = "application/x-www-form-urlencoded";
+
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+
+                    byte[] data = encoding.GetBytes(postData);
+                    wc.ContentLength = data.Length;
+
+                    var stream = wc.GetRequestStream();
+                    stream.Write(data, 0, data.Length);
+                    stream.Close();
+                }
+
                 var wr = wc.GetResponse();
                 Stream resStream = wr.GetResponseStream();
 
@@ -1527,7 +1557,18 @@ namespace BHOUserScript
         /// Displays the options window
         /// </summary>
         public void showOptions() { ShowOptions(); }
-        
+
+        /// <summary>
+        /// Show a notification on Scriptmonkey Link
+        /// </summary>
+        /// <param name="title">The notification title.</param>
+        /// <param name="text">The text of the notification.</param>
+        /// <param name="currentUrl">The current URL of the document.</param>
+        public void showNotification(string title, string text, string currentUrl)
+        {
+            _link.SendNotify(title, text, currentUrl);
+        }
+
         /// <summary>
         /// Checks if the provided access key is valid and supplied scriptIndex is in range.
         /// </summary>

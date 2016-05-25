@@ -32,5 +32,7 @@ namespace BHOUserScript
         int getScriptCount();
 
         void showOptions();
+
+        void showNotification(string title, string text, string currentUrl);
     }
 }

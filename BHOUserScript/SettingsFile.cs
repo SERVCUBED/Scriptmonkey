@@ -35,6 +35,8 @@ namespace BHOUserScript
 
         public bool InjectAPI = true;
 
+        public bool InjectNotificationAPI = true;
+
         public bool CacheScripts = true;
 
         public bool LogScriptContentsOnRunError = false;

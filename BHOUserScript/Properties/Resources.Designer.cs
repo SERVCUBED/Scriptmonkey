@@ -136,6 +136,15 @@ namespace BHOUserScript.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to window.Notification=function(i,o){window.Scriptmonkey.showNotification(i,o.body,document.URL)},window.Notification.permission=&quot;granted&quot;,window.Notification.checkPermission=function(){return&quot;granted&quot;};window.Notification.requestPermission=function(f){f(&quot;granted&quot;);};.
+        /// </summary>
+        public static string NotificationJS {
+            get {
+                return ResourceManager.GetString("NotificationJS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] ScintillaNET {

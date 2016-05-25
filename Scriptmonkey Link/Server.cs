@@ -33,8 +33,10 @@ namespace Scriptmonkey_Link
         private string _savedWindowsPath = String.Empty;
 
         public delegate void OnReceivedEvent(string key, string data);
+        public delegate void OnNotifyEvent(string title, string text);
 
         public event OnReceivedEvent OnReceived;
+        public event OnNotifyEvent OnNotify;
 
         public Server()
         {
@@ -82,7 +84,7 @@ namespace Scriptmonkey_Link
         {
             try
             {
-                var context = (HttpListenerContext)state;
+                var context = (HttpListenerContext) state;
 
                 context.Response.StatusCode = 200;
                 context.Response.SendChunked = true;
@@ -91,13 +93,13 @@ namespace Scriptmonkey_Link
 
                 if (context.Request.Url.AbsolutePath == "/ping")
                 {
-                        var v = CurrentVersion();
-                        content = "pong/ScriptmonkeyLink/" + v.Major + "." + v.Minor + "." + v.Revision;
+                    var v = CurrentVersion();
+                    content = "pong/ScriptmonkeyLink/" + v.Major + "." + v.Minor + "." + v.Revision;
                 }
                 else if (context.Request.Url.AbsolutePath == "/about")
                 {
-                        var v = CurrentVersion();
-                        content = "ScriptmonkeyLink HTTP Service v" + v.Major + "." + v.Minor;
+                    var v = CurrentVersion();
+                    content = "ScriptmonkeyLink HTTP Service v" + v.Major + "." + v.Minor;
                 }
                 else if (context.Request.Url.AbsolutePath == "/register")
                 {
@@ -169,11 +171,35 @@ namespace Scriptmonkey_Link
                     {
                         var key = split[0];
                         var url = Uri.UnescapeDataString(split[1]).Replace('§', '/');
-                        
+
                         OnReceived?.Invoke(key, url);
                     }
                     else
                         content = "errinvrequest";
+                }
+                else if (context.Request.Url.AbsolutePath.StartsWith("/notify/"))
+                {
+                    var key = context.Request.Url.AbsolutePath.Substring(8);
+
+                    string[] data;
+
+                    using (var reader = new StreamReader(context.Request.InputStream,
+                        context.Request.ContentEncoding))
+                        data = reader.ReadToEnd().Split('&');
+
+                    if (data.Length != 3)
+                    {
+                        context.MakeError();
+                        return;
+                    }
+
+                    var title = data[0];
+                    var text = data[1];
+                    var currentUrl = data[2];
+                    var host = new Uri(currentUrl).Host;
+
+                    OnReceived?.Invoke(key, $"The page at {host} says:\r\n{title}\r\n\r\n{text}");
+                    OnNotify?.Invoke(title, $"The page at {host} says:\r\n{text}");
                 }
                 else
                 {
@@ -183,10 +209,13 @@ namespace Scriptmonkey_Link
                 }
 
                 var bytes = Encoding.UTF8.GetBytes(content);
-                context.Response.OutputStream.Write(bytes, 0, bytes.Length);
-                context.Response.OutputStream.Close();
+                context.MakeError();
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                if (Debugger.IsAttached)
+                    throw;
+            }
         }
 
         /// <summary>
@@ -529,6 +558,16 @@ namespace Scriptmonkey_Link
             navVirtualTab = 16384,
             navBlockRedirectsXDomain = 32768,
             navOpenNewForegroundTab = 65536
+        }
+    }
+
+    public static class Extras
+    {
+        public static HttpListenerContext MakeError(this HttpListenerContext context)
+        {
+            context.Response.StatusCode = 404;
+            context.Response.StatusDescription = "Invalid request: err404";
+            return context;
         }
     }
 }

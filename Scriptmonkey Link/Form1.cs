@@ -11,6 +11,7 @@ namespace Scriptmonkey_Link
         {
             InitializeComponent();
             _s.OnReceived += OnServerReceived;
+            _s.OnNotify += OnNotifyReceived;
         }
 
         private void instanceNumTimer_Tick(object sender, EventArgs e)
@@ -31,6 +32,11 @@ namespace Scriptmonkey_Link
                 return;
             }
             txtLog.Text = DateTime.Now.TimeOfDay.ToString() + " " + key + "=>" + data + Environment.NewLine +  txtLog.Text;
+        }
+
+        private void OnNotifyReceived(string title, string text)
+        {
+            notifyIcon1.ShowBalloonTip(3000, title, text, ToolTipIcon.Info);
         }
 
         private void button1_Click(object sender, EventArgs e)

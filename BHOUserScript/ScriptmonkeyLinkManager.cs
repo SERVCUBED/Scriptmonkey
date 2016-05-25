@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace BHOUserScript
@@ -6,6 +7,7 @@ namespace BHOUserScript
     class ScriptmonkeyLinkManager : IDisposable
     {
         private const int Port = 32888;
+        private readonly string _url = $"http://localhost:{Port}/";
         private string _key;
         private bool _ticking;
 
@@ -19,12 +21,12 @@ namespace BHOUserScript
 
         public void SendAction(string action)
         {
-            Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/action/" + _key + '/' + action, true);
+            Scriptmonkey.SendWebRequest(_url + "action/" + _key + '/' + action, true);
         }
 
         public void Verify(string currentUrl)
         {
-            Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/verify/" + _key + '/' + currentUrl.Replace('/', '§'), true);
+            Scriptmonkey.SendWebRequest(_url + "verify/" + _key + '/' + currentUrl.Replace('/', '§'), true);
         }
 
         public void TickAsync()
@@ -50,7 +52,7 @@ namespace BHOUserScript
         private void Tick()
         {
 
-            string data = Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/req/" + _key);
+            string data = Scriptmonkey.SendWebRequest(_url + "req/" + _key);
 
             if (data == "errinvalidkey")
             {
@@ -67,11 +69,16 @@ namespace BHOUserScript
                 return;
 
             string data =
-                    Scriptmonkey.SendWebRequest("http://localhost:" + Port + "/register", true);
+                    Scriptmonkey.SendWebRequest(_url + "register", true);
             if (data == "errinvalidgenkey")
                 RegisterNew();
             else if (!String.IsNullOrEmpty(data))
                 _key = data;
+        }
+
+        public void SendNotify(string title, string text, string currentUrl)
+        {
+            Scriptmonkey.SendWebRequest(_url + "notify/" + _key, true, title + '&' + text + '&' + currentUrl);
         }
 
         public void Dispose()
