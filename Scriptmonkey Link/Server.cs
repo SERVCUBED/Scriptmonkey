@@ -39,7 +39,7 @@ namespace Scriptmonkey_Link
 
         public Server()
         {
-            _savedWindowsPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+            _savedWindowsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                 Path.DirectorySeparatorChar + ".ScriptmonkeyLinkSavedWindows.tmp";
 
             _listener.Prefixes.Add("http://localhost:" + Port + "/");
@@ -336,7 +336,7 @@ namespace Scriptmonkey_Link
             {
                 var s = String.Empty;
 
-                ForEachInternetExplorer((iExplorer) =>
+                TryForEachInternetExplorer((iExplorer) =>
                 {
                     s += iExplorer.LocationURL + '\n';
                     iExplorer.Quit();
@@ -369,22 +369,29 @@ namespace Scriptmonkey_Link
 
                     // Open new tab, not a new window
                     var f = false;
-                    ForEachInternetExplorer((iExplorer) =>
+                    TryForEachInternetExplorer((iExplorer) =>
                     {
                         iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
                         f = true;
                     });
                     if (!f) // No IE instances. Open new window
                     {
-                        var p = new Process
+                        try
                         {
-                            StartInfo =
+                            var p = new Process
                             {
-                                FileName = "iexplore.exe",
-                                Arguments = url
-                            }
-                        };
-                        p.Start();
+                                StartInfo =
+                                {
+                                    FileName = "iexplore.exe",
+                                    Arguments = url
+                                }
+                            };
+                            p.Start();
+                        }
+                        catch (Exception)
+                        {
+                            OnReceived?.Invoke("iexplore", "Unable to start process");
+                        }
                         Thread.Sleep(200); // Allow IE to start before opening new tabs
                     }
                 }
@@ -393,28 +400,35 @@ namespace Scriptmonkey_Link
             });
         }
 
-        delegate void IEOperation(InternetExplorer iExplorer);
+        private delegate void IEOperation(InternetExplorer iExplorer);
 
         /// <summary>
         /// Performs an operation on each instance of Internet Explorer
         /// </summary>
         /// <param name="operation"></param>
-        private void ForEachInternetExplorer(IEOperation operation)
+        private void TryForEachInternetExplorer(IEOperation operation)
         {
             ShellWindows iExplorerInstances = new ShellWindows();
             foreach (var iExplorerInstance in iExplorerInstances)
             {
-                var iExplorer = (InternetExplorer)iExplorerInstance;
-                if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
+                try
                 {
-                    operation(iExplorer);
+                    var iExplorer = (InternetExplorer) iExplorerInstance;
+                    if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
+                    {
+                        operation(iExplorer);
+                    }
+                }
+                catch (Exception)
+                {
+                    OnReceived?.Invoke("iexplore", "Unable to perform action");
                 }
             }
         }
 
         public void RefreshAllInstances()
         {
-            ForEachInternetExplorer(i => i.Refresh2() );
+            TryForEachInternetExplorer(i => i.Refresh2() );
         }
 
         #region From Scriptmonkey
