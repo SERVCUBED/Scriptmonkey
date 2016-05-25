@@ -66,6 +66,9 @@ namespace BHOUserScript
         public static readonly string ResourcePath = InstallPath + "resources" + Path.DirectorySeparatorChar;
         public static readonly string SettingsFile = InstallPath + "settings.json";
         public static readonly string InstalledFile = InstallPath + "installed";
+        
+        // ReSharper disable once InconsistentNaming
+        private const uint RPC_E_DISCONNECTED = 0x80010108;
 
         private Db _prefs;
         #endregion
@@ -485,7 +488,8 @@ namespace BHOUserScript
 
             bool shouldThrow;
 
-            if (ex.HResult == -2147352319) // JScript Error
+            if (ex.HResult == -2147352319 /* JScript Error */
+                || ex.HResult == RPC_E_DISCONNECTED /* The object invoked has disconnected from its clients. */)
             {
                 if (_prefs.Settings.LogJScriptErrors)
                     WriteToLogFile("Error at script:" + name + (_prefs.Settings.LogScriptContentsOnRunError? content: String.Empty));
