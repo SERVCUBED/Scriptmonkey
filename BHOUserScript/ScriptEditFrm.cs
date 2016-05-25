@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using System.Net;
+using System.Runtime.InteropServices;
 using BHOUserScript.Properties;
 
 namespace BHOUserScript
@@ -222,6 +223,11 @@ namespace BHOUserScript
             CheckURLWarningLabel();
         }
 
+
+        [DllImport("shell32.dll", EntryPoint = "PathIsExe", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool PathIsExe([MarshalAs(UnmanagedType.LPWStr)]string szfile);
+
         private void editBtn_Click(object sender, EventArgs e)
         {
             if (FileName == String.Empty)
@@ -231,7 +237,7 @@ namespace BHOUserScript
             }
 
             var f = new FileEditForm(Scriptmonkey.ScriptPath + FileName, _isCss, nameTxt.Text);
-            if (f.ShowDialog() == DialogResult.Retry)
+            if (f.ShowDialog() == DialogResult.Retry && PathIsExe(EditPath))
             {
                 var p = new Process
                 {
