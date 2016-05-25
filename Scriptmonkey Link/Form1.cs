@@ -1,17 +1,29 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Scriptmonkey_Link
 {
     public partial class Form1 : Form
     {
+        private readonly string _location = Assembly.GetEntryAssembly().Location;
+        private readonly string _startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + Path.DirectorySeparatorChar +
+                           "Scriptmonkey Link.exe";
         private readonly Server _s = new Server();
         public Form1()
         {
             InitializeComponent();
             _s.OnReceived += OnServerReceived;
             _s.OnNotify += OnNotifyReceived;
+
+            // If startup file exists or is run from startup
+            if (_location.Contains(Environment.GetFolderPath(Environment.SpecialFolder.Startup)) || File.Exists(_startupPath))
+            {
+                runLinkAtStartupToolStripMenuItem.Visible = false;
+                Visible = false;
+            }
         }
 
         private void instanceNumTimer_Tick(object sender, EventArgs e)
@@ -110,6 +122,20 @@ namespace Scriptmonkey_Link
         private void showHideToolStripMenuItem_Click(object sender, EventArgs e)
         {
             notifyIcon1_MouseDoubleClick(null, null);
+        }
+
+        private void runLinkAtStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!File.Exists(_startupPath))
+                    File.Copy(_location, _startupPath);
+                runLinkAtStartupToolStripMenuItem.Visible = false;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"Unable to add to startup. Is access denied?");
+            }
         }
     }
 }
