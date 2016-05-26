@@ -824,6 +824,11 @@ namespace BHOUserScript
             StringBuilder sb = new StringBuilder();
             try
             {
+                var v = CurrentVersion();
+                var osV = Environment.OSVersion.Version;
+                wc.UserAgent = $"Scriptmonkey/{v.Major}.{v.Minor}.{v.Revision} (W{osV.Major}.{osV.Minor}.{osV.Revision}; webReq)";
+                wc.Referer = "application://Scriptmonkey/webReq";
+
                 if (postData != null)
                 {
                     wc.Method = "POST";
@@ -838,11 +843,6 @@ namespace BHOUserScript
                     stream.Write(data, 0, data.Length);
                     stream.Close();
                 }
-
-                var v = CurrentVersion();
-                var osV = Environment.OSVersion.Version;
-                wc.UserAgent = $"Scriptmonkey/{v.Major}.{v.Minor}.{v.Revision} (W{osV.Major}.{osV.Minor}.{osV.Revision}; webReq)";
-                wc.Referer = "application://Scriptmonkey/webReq";
 
                 var wr = wc.GetResponse();
                 Stream resStream = wr.GetResponseStream();
