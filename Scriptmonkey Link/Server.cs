@@ -116,7 +116,7 @@ namespace Scriptmonkey_Link
                     {
                         _instances.Add(genKey, new InstanceData());
                         content = genKey;
-                        OnReceived?.Invoke(genKey, "registered");
+                        OnReceived?.Invoke("instance", "registered");
                     }
                     else
                     {
@@ -167,7 +167,7 @@ namespace Scriptmonkey_Link
                                 i.Value.Queue.Add(action);
                         }
                         content = "success";
-                        OnReceived?.Invoke(key, action);
+                        OnReceived?.Invoke("action", action);
                     }
                     else
                         content = "errinvrequest";
@@ -180,7 +180,7 @@ namespace Scriptmonkey_Link
                         var key = split[0];
                         var url = Uri.UnescapeDataString(split[1]).Replace('§', '/');
 
-                        OnReceived?.Invoke(key, url);
+                        OnReceived?.Invoke("verify", url);
                     }
                     else
                         content = "errinvrequest";
@@ -208,12 +208,12 @@ namespace Scriptmonkey_Link
 
                     if (String.IsNullOrWhiteSpace(text))
                     {
-                        OnReceived?.Invoke(key, $"The page at {host} says:\r\n{title}");
+                        OnReceived?.Invoke("notify", $"The page at {host} says:\r\n{title}");
                         OnNotify?.Invoke(title, $"From {host}");
                     }
                     else
                     {
-                        OnReceived?.Invoke(key, $"The page at {host} says:\r\n{title}\r\n{text}");
+                        OnReceived?.Invoke("notify", $"The page at {host} says:\r\n{title}\r\n{text}");
                         OnNotify?.Invoke(title, $"The page at {host} says:\r\n{text}");
                     }
                 }
@@ -247,7 +247,7 @@ namespace Scriptmonkey_Link
                     break;
                 if (_instances.ElementAt(i).Value.LastRequestTime >= tPurge) continue;
 
-                OnReceived?.Invoke(_instances.ElementAt(i).Key, "purged");
+                OnReceived?.Invoke("instance", "purged");
                 _instances.Remove(_instances.ElementAt(i).Key);
                 i--;
             }
