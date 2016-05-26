@@ -839,6 +839,11 @@ namespace BHOUserScript
                     stream.Close();
                 }
 
+                var v = CurrentVersion();
+                var osV = Environment.OSVersion.Version;
+                wc.UserAgent = $"Scriptmonkey/{v.Major}.{v.Minor}.{v.Revision} (W{osV.Major}.{osV.Minor}.{osV.Revision}; webReq)";
+                wc.Referer = "application://Scriptmonkey/webReq";
+
                 var wr = wc.GetResponse();
                 Stream resStream = wr.GetResponseStream();
 

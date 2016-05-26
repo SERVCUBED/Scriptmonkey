@@ -91,7 +91,14 @@ namespace Scriptmonkey_Link
 
                 string content = String.Empty;
 
-                if (context.Request.Url.AbsolutePath == "/ping")
+                if ((context.Request.UserAgent == null || !context.Request.UserAgent.StartsWith("Scriptmonkey/"))
+                    || (context.Request.UrlReferrer == null || context.Request.UrlReferrer.OriginalString != "application://Scriptmonkey/webReq"))
+                {
+                    context.Response.StatusCode = 400;
+                    context.Response.StatusDescription = "Bad request: 400";
+                    content = "Bad request";
+                }
+                else if (context.Request.Url.AbsolutePath == "/ping")
                 {
                     var v = CurrentVersion();
                     content = "pong/ScriptmonkeyLink/" + v.Major + "." + v.Minor + "." + v.Revision;
@@ -217,7 +224,8 @@ namespace Scriptmonkey_Link
                 }
 
                 var bytes = Encoding.UTF8.GetBytes(content);
-                context.MakeError();
+                context.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                context.Response.OutputStream.Close();
             }
             catch (Exception)
             {
