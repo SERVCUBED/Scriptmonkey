@@ -91,7 +91,13 @@ namespace Scriptmonkey_Link
 
                 string content = String.Empty;
 
-                if ((context.Request.UserAgent == null || !context.Request.UserAgent.StartsWith("Scriptmonkey/"))
+                // /about can be viewed with standard browser
+                if (context.Request.Url.AbsolutePath == "/about" || context.Request.Url.AbsolutePath == "/")
+                {
+                    var v = CurrentVersion();
+                    content = "ScriptmonkeyLink HTTP Service v" + v.Major + "." + v.Minor;
+                } // If not valid request
+                else if ((context.Request.UserAgent == null || !context.Request.UserAgent.StartsWith("Scriptmonkey/"))
                     || (context.Request.UrlReferrer == null || context.Request.UrlReferrer.OriginalString != "application://Scriptmonkey/webReq"))
                 {
                     context.Response.StatusCode = 400;
@@ -102,11 +108,6 @@ namespace Scriptmonkey_Link
                 {
                     var v = CurrentVersion();
                     content = "pong/ScriptmonkeyLink/" + v.Major + "." + v.Minor + "." + v.Revision;
-                }
-                else if (context.Request.Url.AbsolutePath == "/about")
-                {
-                    var v = CurrentVersion();
-                    content = "ScriptmonkeyLink HTTP Service v" + v.Major + "." + v.Minor;
                 }
                 else if (context.Request.Url.AbsolutePath == "/register")
                 {
