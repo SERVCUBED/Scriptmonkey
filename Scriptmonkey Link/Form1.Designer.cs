@@ -44,6 +44,7 @@
             this.saveUrlsAndCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restoreSavedWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshAllWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageCookiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.backupSettingsFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -52,7 +53,7 @@
             this.purgeNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manageCookiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.acceptRemoteConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -177,6 +178,13 @@
             this.refreshAllWindowsToolStripMenuItem.Text = "R&efresh All Windows";
             this.refreshAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.refreshAllWindowsToolStripMenuItem_Click);
             // 
+            // manageCookiesToolStripMenuItem
+            // 
+            this.manageCookiesToolStripMenuItem.Name = "manageCookiesToolStripMenuItem";
+            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.manageCookiesToolStripMenuItem.Text = "Manage Cookies";
+            this.manageCookiesToolStripMenuItem.Click += new System.EventHandler(this.manageCookiesToolStripMenuItem_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -199,7 +207,8 @@
             this.advancedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.broadcastCommandToolStripMenuItem,
             this.purgeNowToolStripMenuItem,
-            this.stopServerToolStripMenuItem});
+            this.stopServerToolStripMenuItem,
+            this.acceptRemoteConnectionsToolStripMenuItem});
             this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
             this.advancedToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.advancedToolStripMenuItem.Text = "Advanced";
@@ -232,12 +241,12 @@
             this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
             this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
             // 
-            // manageCookiesToolStripMenuItem
+            // acceptRemoteConnectionsToolStripMenuItem
             // 
-            this.manageCookiesToolStripMenuItem.Name = "manageCookiesToolStripMenuItem";
-            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.manageCookiesToolStripMenuItem.Text = "Manage Cookies";
-            this.manageCookiesToolStripMenuItem.Click += new System.EventHandler(this.manageCookiesToolStripMenuItem_Click);
+            this.acceptRemoteConnectionsToolStripMenuItem.Name = "acceptRemoteConnectionsToolStripMenuItem";
+            this.acceptRemoteConnectionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.acceptRemoteConnectionsToolStripMenuItem.Text = "Accept Remote Connections";
+            this.acceptRemoteConnectionsToolStripMenuItem.Click += new System.EventHandler(this.acceptRemoteConnectionsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -286,6 +295,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runLinkAtStartupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manageCookiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem acceptRemoteConnectionsToolStripMenuItem;
     }
 }
 

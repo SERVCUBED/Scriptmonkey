@@ -143,5 +143,11 @@ namespace Scriptmonkey_Link
             var f = new CookieManager();
             f.ShowDialog();
         }
+
+        private void acceptRemoteConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _s.AllowRemote();
+            acceptRemoteConnectionsToolStripMenuItem.Visible = false;
+        }
     }
 }

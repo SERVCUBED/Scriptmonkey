@@ -484,6 +484,14 @@ namespace Scriptmonkey_Link
             });
         }
 
+        /// <summary>
+        /// Allow remote connections to Scriptmonkey Link
+        /// </summary>
+        public void AllowRemote()
+        {
+            _listener.Prefixes.Add("http://*:" + Port + "/");
+        }
+
         #region From Scriptmonkey
 
         /// <summary>

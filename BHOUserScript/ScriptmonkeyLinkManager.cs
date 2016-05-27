@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using mshtml;
 
 namespace BHOUserScript
 {
     class ScriptmonkeyLinkManager : IDisposable
     {
-        private const int Port = 32888;
-        private readonly string _url = $"http://localhost:{Port}/";
+        private readonly string _url;
         private string _key;
         private bool _ticking;
 
         public delegate void OnReceiveEventHandler(string action);
         public event OnReceiveEventHandler OnReceiveEvent;
 
-        public ScriptmonkeyLinkManager()
+        public ScriptmonkeyLinkManager(string url)
         {
+            _url = url;
             ThreadPool.QueueUserWorkItem(o => RegisterNew());
         }
 

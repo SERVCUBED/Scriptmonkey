@@ -887,16 +887,16 @@ namespace BHOUserScript
         /// <param name="action">The action to perform</param>
         private void OnReceiveLinkEvent(string action)
         {
-            if (action == "refresh")
+            if (action == "refresh" && _prefs.Settings.AllowedScriptmonkeyLinkCommands.refresh)
                 _prefs.ReloadData();
-            else if (action == "disableLink")
+            else if (action == "disableLink" && _prefs.Settings.AllowedScriptmonkeyLinkCommands.disableLink)
             {
                 _link.Dispose();
                 _link = null;
             }
-            else if (action == "testLink")
+            else if (action == "testLink" && _prefs.Settings.AllowedScriptmonkeyLinkCommands.testLink)
                 LogAndCheckDebugger(null, "Scriptmonkey Link alert: " + (_currentUrl ?? ""));
-            else if (action == "verify")
+            else if (action == "verify" && _prefs.Settings.AllowedScriptmonkeyLinkCommands.verify)
                 _link.Verify(_currentUrl.ToString());
         }
 
@@ -919,12 +919,6 @@ namespace BHOUserScript
                 if (_prefs == null)
                     _prefs = new Db(this);
 
-                if (_link == null)
-                {
-                    _link = new ScriptmonkeyLinkManager();
-                    _link.OnReceiveEvent += OnReceiveLinkEvent;
-                }
-
                 // Only need to check for install once per run.
                 if (!_installChecked)
                 {
@@ -937,6 +931,12 @@ namespace BHOUserScript
                     var s = new Thread(CheckScriptUpdate);
                     s.SetApartmentState(ApartmentState.STA);
                     s.Start();
+                }
+
+                if (_link == null)
+                {
+                    _link = new ScriptmonkeyLinkManager(_prefs.Settings.ScriptmonkeyLinkUrl);
+                    _link.OnReceiveEvent += OnReceiveLinkEvent;
                 }
             }
             catch (Exception ex)

@@ -50,5 +50,9 @@ namespace BHOUserScript
         public int ReloadAfterPages = 5;
 
         public bool UseScriptmonkeyLink = true;
+
+        public string ScriptmonkeyLinkUrl = "http://localhost:32888/";
+
+        public AllowedScriptmonkeyLinkCommands AllowedScriptmonkeyLinkCommands = new AllowedScriptmonkeyLinkCommands();
     }
 }
