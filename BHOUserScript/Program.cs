@@ -816,7 +816,17 @@ namespace BHOUserScript
         /// <returns>The requested resource</returns>
         public static string SendWebRequest(string url, bool quick = false, string postData = null)
         {
-            HttpWebRequest wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            HttpWebRequest wc;
+            try
+            {
+                wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            }
+            catch (Exception ex)
+            {
+                if (LogAndCheckDebugger(ex, "CreateWebRequest: " + url))
+                    throw;
+                return String.Empty;
+            }
             if (quick)
                 wc.Timeout = 1000;
             wc.KeepAlive = false;
