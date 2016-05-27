@@ -52,6 +52,7 @@
             this.purgeNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageCookiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -146,13 +147,14 @@
             this.saveUrlsAndCloseToolStripMenuItem,
             this.restoreSavedWindowsToolStripMenuItem,
             this.refreshAllWindowsToolStripMenuItem,
+            this.manageCookiesToolStripMenuItem,
             this.toolStripSeparator1,
             this.backupSettingsFileToolStripMenuItem,
             this.toolStripSeparator2,
             this.advancedToolStripMenuItem,
             this.runLinkAtStartupToolStripMenuItem});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 170);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 192);
             // 
             // saveUrlsAndCloseToolStripMenuItem
             // 
@@ -230,6 +232,13 @@
             this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
             this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
             // 
+            // manageCookiesToolStripMenuItem
+            // 
+            this.manageCookiesToolStripMenuItem.Name = "manageCookiesToolStripMenuItem";
+            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.manageCookiesToolStripMenuItem.Text = "Manage Cookies";
+            this.manageCookiesToolStripMenuItem.Click += new System.EventHandler(this.manageCookiesToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -276,6 +285,7 @@
         private System.Windows.Forms.ToolStripMenuItem showHideToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runLinkAtStartupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manageCookiesToolStripMenuItem;
     }
 }
 

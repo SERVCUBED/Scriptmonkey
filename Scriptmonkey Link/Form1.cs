@@ -137,5 +137,11 @@ namespace Scriptmonkey_Link
                 MessageBox.Show(@"Unable to add to startup. Is access denied?");
             }
         }
+
+        private void manageCookiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var f = new CookieManager();
+            f.ShowDialog();
+        }
     }
 }
