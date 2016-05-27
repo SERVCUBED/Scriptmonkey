@@ -53,6 +53,8 @@ namespace BHOUserScript
 
         public string ScriptmonkeyLinkUrl = "http://localhost:32888/";
 
+        public int ScriptmonkeyLinkPollDelay = 3000;
+
         public AllowedScriptmonkeyLinkCommands AllowedScriptmonkeyLinkCommands = new AllowedScriptmonkeyLinkCommands();
     }
 }

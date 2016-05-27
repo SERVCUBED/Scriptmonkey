@@ -10,13 +10,15 @@ namespace BHOUserScript
         private readonly string _url;
         private string _key;
         private bool _ticking;
+        private int _delay;
 
         public delegate void OnReceiveEventHandler(string action);
         public event OnReceiveEventHandler OnReceiveEvent;
 
-        public ScriptmonkeyLinkManager(string url)
+        public ScriptmonkeyLinkManager(string url, int delay)
         {
             _url = url;
+            _delay = delay;
             ThreadPool.QueueUserWorkItem(o => RegisterNew());
         }
 
@@ -40,7 +42,7 @@ namespace BHOUserScript
             {
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    Thread.Sleep(_delay);
 
                     if (String.IsNullOrEmpty(_key))
                         return;

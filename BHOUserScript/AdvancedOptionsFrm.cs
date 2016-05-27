@@ -22,6 +22,7 @@ namespace BHOUserScript
             cacheChk.Checked = Settings.CacheScripts;
             refreshPageChk.Checked = Settings.RefreshOnSave;
             injectApiChk.Checked = Settings.InjectAPI;
+            notifyApiChk.Checked = Settings.InjectNotificationAPI;
             useLinkChk.Checked = Settings.UseScriptmonkeyLink;
             updateDisabledChk.Checked = Settings.UpdateDisabledScripts;
             reloadNum.Value = Settings.ReloadAfterPages;
@@ -29,7 +30,7 @@ namespace BHOUserScript
             if (Settings.BlacklistedUrls.Length > 0)
                 listBox1.Items.AddRange(Settings.BlacklistedUrls);
 
-            publicApiChk.Enabled = injectApiChk.Checked;
+            publicApiChk.Enabled = notifyApiChk.Enabled = injectApiChk.Checked;
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
@@ -41,6 +42,7 @@ namespace BHOUserScript
             Settings.CacheScripts = cacheChk.Checked;
             Settings.RefreshOnSave = refreshPageChk.Checked;
             Settings.InjectAPI = injectApiChk.Checked;
+            Settings.InjectNotificationAPI = notifyApiChk.Checked;
             Settings.UseScriptmonkeyLink = useLinkChk.Checked;
             Settings.UpdateDisabledScripts = updateDisabledChk.Checked;
             Settings.ReloadAfterPages = (int)reloadNum.Value;
@@ -54,7 +56,7 @@ namespace BHOUserScript
 
         private void injectApiChk_CheckedChanged(object sender, EventArgs e)
         {
-            publicApiChk.Enabled = injectApiChk.Checked;
+            publicApiChk.Enabled = notifyApiChk.Enabled = injectApiChk.Checked;
         }
 
         private void lockSettingsBtn_Click(object sender, EventArgs e)

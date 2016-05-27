@@ -935,7 +935,7 @@ namespace BHOUserScript
 
                 if (_link == null)
                 {
-                    _link = new ScriptmonkeyLinkManager(_prefs.Settings.ScriptmonkeyLinkUrl);
+                    _link = new ScriptmonkeyLinkManager(_prefs.Settings.ScriptmonkeyLinkUrl, _prefs.Settings.ScriptmonkeyLinkPollDelay);
                     _link.OnReceiveEvent += OnReceiveLinkEvent;
                 }
             }

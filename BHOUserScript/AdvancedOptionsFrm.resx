@@ -131,7 +131,8 @@ This setting is intended for system administrators who want to prevent end users
 To disable this, you need to manually edit the settings file and change 'AllowUserEdit' to 'true'.</value>
   </data>
   <data name="addMatchBtn.ToolTip" xml:space="preserve">
-    <value>Scriptmonkey will never run on these URLs. Use this if Scriptmonkey causes problems on a website.
+    <value>Scriptmonkey will never run on these URLs. Use this if Scriptmonkey causes 
+problems on a website.
 
 For regex, start and end the input with a forward-slash. Otherwise * and ? 
 can be used as wildcard characters.</value>

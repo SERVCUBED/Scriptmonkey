@@ -45,12 +45,13 @@
             this.lockSettingsBtn = new System.Windows.Forms.Button();
             this.menuCssBtn = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.addMatchBtn = new System.Windows.Forms.Button();
             this.updateDisabledChk = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.editIncludeBtn = new System.Windows.Forms.Button();
             this.remMatchBtn = new System.Windows.Forms.Button();
-            this.addMatchBtn = new System.Windows.Forms.Button();
+            this.notifyApiChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -113,7 +114,7 @@
             // cacheChk
             // 
             this.cacheChk.AutoSize = true;
-            this.cacheChk.Location = new System.Drawing.Point(13, 132);
+            this.cacheChk.Location = new System.Drawing.Point(12, 155);
             this.cacheChk.Name = "cacheChk";
             this.cacheChk.Size = new System.Drawing.Size(90, 17);
             this.cacheChk.TabIndex = 6;
@@ -125,7 +126,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 229);
+            this.label1.Location = new System.Drawing.Point(11, 252);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 6;
@@ -133,7 +134,7 @@
             // 
             // reloadNum
             // 
-            this.reloadNum.Location = new System.Drawing.Point(122, 227);
+            this.reloadNum.Location = new System.Drawing.Point(121, 250);
             this.reloadNum.Name = "reloadNum";
             this.reloadNum.Size = new System.Drawing.Size(57, 20);
             this.reloadNum.TabIndex = 9;
@@ -144,7 +145,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(185, 229);
+            this.label2.Location = new System.Drawing.Point(184, 252);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 8;
@@ -153,7 +154,7 @@
             // refreshPageChk
             // 
             this.refreshPageChk.AutoSize = true;
-            this.refreshPageChk.Location = new System.Drawing.Point(13, 156);
+            this.refreshPageChk.Location = new System.Drawing.Point(12, 179);
             this.refreshPageChk.Name = "refreshPageChk";
             this.refreshPageChk.Size = new System.Drawing.Size(131, 17);
             this.refreshPageChk.TabIndex = 7;
@@ -176,7 +177,7 @@
             // useLinkChk
             // 
             this.useLinkChk.AutoSize = true;
-            this.useLinkChk.Location = new System.Drawing.Point(13, 179);
+            this.useLinkChk.Location = new System.Drawing.Point(12, 202);
             this.useLinkChk.Name = "useLinkChk";
             this.useLinkChk.Size = new System.Drawing.Size(211, 17);
             this.useLinkChk.TabIndex = 8;
@@ -214,10 +215,21 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ToolTipTitle = "Help";
             // 
+            // addMatchBtn
+            // 
+            this.addMatchBtn.Location = new System.Drawing.Point(426, 9);
+            this.addMatchBtn.Name = "addMatchBtn";
+            this.addMatchBtn.Size = new System.Drawing.Size(26, 23);
+            this.addMatchBtn.TabIndex = 21;
+            this.addMatchBtn.Text = "+";
+            this.toolTip1.SetToolTip(this.addMatchBtn, resources.GetString("addMatchBtn.ToolTip"));
+            this.addMatchBtn.UseVisualStyleBackColor = true;
+            this.addMatchBtn.Click += new System.EventHandler(this.addMatchBtn_Click);
+            // 
             // updateDisabledChk
             // 
             this.updateDisabledChk.AutoSize = true;
-            this.updateDisabledChk.Location = new System.Drawing.Point(13, 202);
+            this.updateDisabledChk.Location = new System.Drawing.Point(12, 225);
             this.updateDisabledChk.Name = "updateDisabledChk";
             this.updateDisabledChk.Size = new System.Drawing.Size(136, 17);
             this.updateDisabledChk.TabIndex = 12;
@@ -262,22 +274,24 @@
             this.remMatchBtn.UseVisualStyleBackColor = true;
             this.remMatchBtn.Click += new System.EventHandler(this.remMatchBtn_Click);
             // 
-            // addMatchBtn
+            // notifyApiChk
             // 
-            this.addMatchBtn.Location = new System.Drawing.Point(426, 9);
-            this.addMatchBtn.Name = "addMatchBtn";
-            this.addMatchBtn.Size = new System.Drawing.Size(26, 23);
-            this.addMatchBtn.TabIndex = 21;
-            this.addMatchBtn.Text = "+";
-            this.toolTip1.SetToolTip(this.addMatchBtn, resources.GetString("addMatchBtn.ToolTip"));
-            this.addMatchBtn.UseVisualStyleBackColor = true;
-            this.addMatchBtn.Click += new System.EventHandler(this.addMatchBtn_Click);
+            this.notifyApiChk.AutoSize = true;
+            this.notifyApiChk.Location = new System.Drawing.Point(32, 132);
+            this.notifyApiChk.Name = "notifyApiChk";
+            this.notifyApiChk.Size = new System.Drawing.Size(160, 17);
+            this.notifyApiChk.TabIndex = 24;
+            this.notifyApiChk.Text = "Add desktop notification API";
+            this.toolTip1.SetToolTip(this.notifyApiChk, "Enable this to allow websites to use the Notification API standard to send notifi" +
+        "cations.\r\n\r\nScriptmonkey Link must be running for this feature to work.");
+            this.notifyApiChk.UseVisualStyleBackColor = true;
             // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 286);
+            this.Controls.Add(this.notifyApiChk);
             this.Controls.Add(this.editIncludeBtn);
             this.Controls.Add(this.remMatchBtn);
             this.Controls.Add(this.addMatchBtn);
@@ -335,5 +349,6 @@
         private System.Windows.Forms.Button editIncludeBtn;
         private System.Windows.Forms.Button remMatchBtn;
         private System.Windows.Forms.Button addMatchBtn;
+        private System.Windows.Forms.CheckBox notifyApiChk;
     }
 }
