@@ -383,7 +383,8 @@ namespace Scriptmonkey_Link
 
                 TryForEachInternetExplorer((iExplorer) =>
                 {
-                    s += iExplorer.LocationURL + '\n';
+                    if (iExplorer.LocationURL != "about:blank")
+                        s += iExplorer.LocationURL + '\n';
                     iExplorer.Quit();
                 });
                 
