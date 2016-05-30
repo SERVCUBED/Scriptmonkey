@@ -9,19 +9,20 @@ namespace BHOUserScript
     /// <summary>
     /// Parses scripts for meta values and returns them.
     /// </summary>
-    static class ParseScriptMetadata
+    internal static class ParseScriptMetadata
     {
-        static readonly string Name = @"@name( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Description = @"@description( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Author = @"@author( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Version = @"@version( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Match = @"@match( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Include = @"@include( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Exclude = @"@exclude( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Require = @"@require( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string UpdateUrl = @"@updateURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string DownloadUrl = @"@downloadURL( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
-        static readonly string Resource = @"@resource( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)]+)";
+        private const string Value = @"( |\t)+([a-zA-Z\d :.,/\*_\+\?!\-\(\)\[\]]+)";
+        private const string Name = @"@name" + Value;
+        private const string Description = @"@description" + Value;
+        private const string Author = @"@author" + Value;
+        private const string Version = @"@version" + Value;
+        private const string Match = @"@match" + Value;
+        private const string Include = @"@include" + Value;
+        private const string Exclude = @"@exclude" + Value;
+        private const string Require = @"@require" + Value;
+        private const string UpdateUrl = @"@updateURL" + Value;
+        private const string DownloadUrl = @"@downloadURL" + Value;
+        private const string Resource = @"@resource" + Value + Value;
 
         public static Script Parse(string path, bool isCss)
         {
