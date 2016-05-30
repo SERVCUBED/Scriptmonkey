@@ -50,10 +50,14 @@ namespace Scriptmonkey_Link
         {
             if (listView1.SelectedItems.Count == 0)
                 return;
-            var filename = _path + Path.DirectorySeparatorChar + listView1.SelectedItems[0].SubItems[2].Text;
-            if (File.Exists(filename))
-                File.Delete(filename);
-            listView1.Items.Remove(listView1.SelectedItems[0]);
+
+            foreach (ListViewItem selectedItem in listView1.SelectedItems)
+            {
+                var filename = _path + Path.DirectorySeparatorChar + selectedItem.SubItems[2].Text;
+                if (File.Exists(filename))
+                    File.Delete(filename);
+                listView1.Items.Remove(selectedItem);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
