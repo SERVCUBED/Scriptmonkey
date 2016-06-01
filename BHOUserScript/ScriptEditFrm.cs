@@ -152,7 +152,7 @@ namespace BHOUserScript
 
                         File.Copy(form.Url, Scriptmonkey.ScriptPath + prefix + form.openFileDialog1.SafeFileName);
                         FileName = prefix + form.openFileDialog1.SafeFileName;
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, EditedScript));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, new Script()));
                         browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
@@ -168,7 +168,7 @@ namespace BHOUserScript
                         var webClient = new WebClient();
                         FileName = prefix + (_isCss? ".css" : ".user.js");
                         webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + FileName);
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, EditedScript));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, new Script()));
                         browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
@@ -227,6 +227,8 @@ namespace BHOUserScript
             updateTxt.Text = s.UpdateUrl;
             enabledChk.Checked = s.Enabled;
             CheckURLWarningLabel();
+
+            EditedScript = s;
         }
 
 
