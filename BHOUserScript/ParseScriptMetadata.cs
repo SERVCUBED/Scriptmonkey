@@ -25,24 +25,23 @@ namespace BHOUserScript
         private const string Resource = @"@resource" + Value + Value;
         private const string InstallDisabled = @"@install-disabled";
 
-        public static Script Parse(string path, bool isCss)
+        public static Script Parse(string path, bool isCss, Script s)
         {
             StreamReader str = new StreamReader(Scriptmonkey.ScriptPath + path);
             string contents = str.ReadToEnd();
             str.Close();
-            return ParseFromContents(contents, isCss);
+            return ParseFromContents(contents, isCss, s);
         }
 
-        public static Script ParseFromContents(string contents, bool isCss)
+        public static Script ParseFromContents(string contents, bool isCss, Script scr)
         {
-            Script scr = new Script();
             try
             {
-                scr.Name = GetContents(contents, Name);
+                scr.Name = GetContents(contents, Name, scr.Name);
 
-                scr.Description = GetContents(contents, Description);
+                scr.Description = GetContents(contents, Description, scr.Description);
 
-                scr.Author = GetContents(contents, Author);
+                scr.Author = GetContents(contents, Author, scr.Author);
 
                 if (!isCss)
                     scr.Version = GetContents(contents, Version);
@@ -61,18 +60,25 @@ namespace BHOUserScript
                 {
                     matches3.Add(matches2[i]);
                 }
-                scr.Include = new string[matches3.Count];
-                for (int i = 0; i < matches3.Count; i++)
+                // If script has matches, use the parsed values. Otherwise, preserve current matches
+                if (scr.Include.Length > 0 && matches3.Count > 0)
                 {
-                    scr.Include[i] = matches3[i].Groups[2].Value;
+                    scr.Include = new string[matches3.Count];
+                    for (int i = 0; i < matches3.Count; i++)
+                    {
+                        scr.Include[i] = matches3[i].Groups[2].Value;
+                    }
                 }
 
                 reg = new Regex(Exclude);
                 matches = reg.Matches(contents);
-                scr.Exclude = new string[matches.Count];
-                for (int i = 0; i < matches.Count; i++)
+                if (scr.Exclude.Length > 0 && matches.Count > 0)
                 {
-                    scr.Exclude[i] = matches[i].Groups[2].Value;
+                    scr.Exclude = new string[matches.Count];
+                    for (int i = 0; i < matches.Count; i++)
+                    {
+                        scr.Exclude[i] = matches[i].Groups[2].Value;
+                    }
                 }
 
                 if (!isCss)
@@ -154,14 +160,17 @@ namespace BHOUserScript
             return s;
         }
 
-        private static string GetContents(string c, string regex)
+        private static string GetContents(string c, string regex, string defaultValue = "")
         {
             var r = new Regex(regex);
             var m = r.Match(c);
             if (m == null)
-                return String.Empty;
+                return defaultValue;
             else
-                return m.Groups[2].Value;
+            {
+                var v = m.Groups[2].Value;
+                return String.IsNullOrEmpty(v) ? defaultValue : v;
+            }
         }
     }
 }

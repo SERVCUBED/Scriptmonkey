@@ -534,7 +534,7 @@ namespace BHOUserScript
                     webClient.DownloadFile(url, ScriptPath
                         + relativeScriptPath);
                     webClient.Dispose();
-                    var s = ParseScriptMetadata.Parse(relativeScriptPath, false);
+                    var s = ParseScriptMetadata.Parse(relativeScriptPath, false, new Script());
                     s.Path = relativeScriptPath;
                     if (s.Name == String.Empty)
                         s.Name = "Userscript from " + url;
@@ -713,7 +713,7 @@ namespace BHOUserScript
                     try
                     {
                         var content = SendWebRequest(s.UpdateUrl);
-                        var newScript = ParseScriptMetadata.ParseFromContents(content, false);
+                        var newScript = ParseScriptMetadata.ParseFromContents(content, false, new Script());
                         if (newScript.Version != s.Version)
                         {
                             var scriptContents = new ScriptWithContent(newScript) {Content = content};

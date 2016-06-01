@@ -152,7 +152,7 @@ namespace BHOUserScript
 
                         File.Copy(form.Url, Scriptmonkey.ScriptPath + prefix + form.openFileDialog1.SafeFileName);
                         FileName = prefix + form.openFileDialog1.SafeFileName;
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, EditedScript));
                         browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
@@ -168,7 +168,7 @@ namespace BHOUserScript
                         var webClient = new WebClient();
                         FileName = prefix + (_isCss? ".css" : ".user.js");
                         webClient.DownloadFile(form.Url, Scriptmonkey.ScriptPath + FileName);
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, EditedScript));
                         browseBtn.Enabled = false;
                     }
                     catch (Exception ex)
@@ -184,7 +184,7 @@ namespace BHOUserScript
                         // Show edit file dialog
                         editBtn_Click(null, null);
                         // As a template has been used, the complete metadata may have changed, so check again
-                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, EditedScript));
                     }
                 }
                 Enabled = true;
@@ -263,7 +263,7 @@ namespace BHOUserScript
 
             // Double check file actually exists
             if (File.Exists(Scriptmonkey.ScriptPath + FileName))
-                LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
+                LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss, EditedScript));
             else
             {
                 MessageBox.Show(@"File has been deleted or is inaccessible. Select another file.", Resources.Title,
