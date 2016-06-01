@@ -39,7 +39,7 @@ namespace BHOUserScript
                 browseBtn.Enabled = false;
             }
 
-            Text = (editing ? "Edit " : "New ") + (isCss ? "CSS" : "Userscript");
+            Text = (editing ? "Edit" : "New") + @" Users" + (isCss ? "tyle" : "cript");
         }
 
         public void LoadFromEditedScript()
@@ -128,12 +128,12 @@ namespace BHOUserScript
         private void button1_Click(object sender, EventArgs e)
         {
             AddScriptFrm form = new AddScriptFrm(_isCss);
-            if (form.ShowDialog() == DialogResult.OK && form.Url != String.Empty)
+            if (form.ShowDialog() == DialogResult.OK && !String.IsNullOrWhiteSpace(form.Url))
             {
                 Enabled = false; // Disable form while working
 
                 // Delete old script
-                if (File.Exists(Scriptmonkey.ScriptPath + FileName))
+                if (!String.IsNullOrEmpty(FileName) && File.Exists(Scriptmonkey.ScriptPath + FileName))
                     File.Delete(Scriptmonkey.ScriptPath + FileName);
 
                 string prefix = Scriptmonkey.GenerateRandomString();

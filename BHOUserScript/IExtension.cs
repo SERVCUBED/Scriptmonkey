@@ -33,6 +33,6 @@ namespace BHOUserScript
 
         void showOptions();
 
-        void showNotification(string title, string text, string currentUrl);
+        void showNotification(string title, string text);
     }
 }

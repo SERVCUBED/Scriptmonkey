@@ -1578,10 +1578,9 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="title">The notification title.</param>
         /// <param name="text">The text of the notification.</param>
-        /// <param name="currentUrl">The current URL of the document.</param>
-        public void showNotification(string title, string text, string currentUrl)
+        public void showNotification(string title, string text)
         {
-            _link.SendNotify(title, text, currentUrl);
+            _link.SendNotify(title, text, _currentUrl.ToString());
         }
 
         /// <summary>

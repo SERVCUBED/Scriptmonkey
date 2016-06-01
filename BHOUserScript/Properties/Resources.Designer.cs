@@ -136,7 +136,7 @@ namespace BHOUserScript.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to window.Notification=function(i,o){o?window.Scriptmonkey.showNotification(i,o.body,document.URL):window.Scriptmonkey.showNotification(i,&quot;&quot;,document.URL)},window.Notification.permission=&quot;granted&quot;,window.Notification.checkPermission=function(){return&quot;granted&quot;},window.Notification.requestPermission=function(i){i(&quot;granted&quot;)};.
+        ///   Looks up a localized string similar to window.Notification=function(i,o){o?window.Scriptmonkey.showNotification(i,o.body):window.Scriptmonkey.showNotification(i,&quot;&quot;)},window.Notification.permission=&quot;granted&quot;,window.Notification.checkPermission=function(){return&quot;granted&quot;},window.Notification.requestPermission=function(i){i(&quot;granted&quot;)};.
         /// </summary>
         public static string NotificationJS {
             get {

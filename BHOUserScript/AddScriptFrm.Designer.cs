@@ -122,11 +122,11 @@ namespace BHOUserScript
             // 
             // newBtn
             // 
-            this.newBtn.Location = new System.Drawing.Point(126, 64);
+            this.newBtn.Location = new System.Drawing.Point(113, 64);
             this.newBtn.Name = "newBtn";
-            this.newBtn.Size = new System.Drawing.Size(75, 23);
+            this.newBtn.Size = new System.Drawing.Size(88, 23);
             this.newBtn.TabIndex = 5;
-            this.newBtn.Text = "New File";
+            this.newBtn.Text = "Use Template";
             this.newBtn.UseVisualStyleBackColor = true;
             this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
