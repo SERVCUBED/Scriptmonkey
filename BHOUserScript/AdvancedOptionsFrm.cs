@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
+using BHOUserScript.Properties;
 using Microsoft.VisualBasic;
 
 namespace BHOUserScript
@@ -104,5 +106,22 @@ namespace BHOUserScript
         }
 
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e) => editIncludeBtn_Click(sender, e);
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(@"Are you sure? Manually editing settings files can cause serious problems.",
+                Resources.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            var p = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "explorer.exe",
+                    Arguments = Scriptmonkey.InstallPath
+                }
+            };
+            p.Start();
+        }
     }
 }

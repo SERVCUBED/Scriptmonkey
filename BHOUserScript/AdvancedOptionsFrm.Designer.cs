@@ -46,12 +46,13 @@
             this.menuCssBtn = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.addMatchBtn = new System.Windows.Forms.Button();
+            this.notifyApiChk = new System.Windows.Forms.CheckBox();
             this.updateDisabledChk = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.editIncludeBtn = new System.Windows.Forms.Button();
             this.remMatchBtn = new System.Windows.Forms.Button();
-            this.notifyApiChk = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reloadNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -226,6 +227,18 @@
             this.addMatchBtn.UseVisualStyleBackColor = true;
             this.addMatchBtn.Click += new System.EventHandler(this.addMatchBtn_Click);
             // 
+            // notifyApiChk
+            // 
+            this.notifyApiChk.AutoSize = true;
+            this.notifyApiChk.Location = new System.Drawing.Point(32, 132);
+            this.notifyApiChk.Name = "notifyApiChk";
+            this.notifyApiChk.Size = new System.Drawing.Size(160, 17);
+            this.notifyApiChk.TabIndex = 24;
+            this.notifyApiChk.Text = "Add desktop notification API";
+            this.toolTip1.SetToolTip(this.notifyApiChk, "Enable this to allow websites to use the Notification API standard to send notifi" +
+        "cations.\r\n\r\nScriptmonkey Link must be running for this feature to work.");
+            this.notifyApiChk.UseVisualStyleBackColor = true;
+            // 
             // updateDisabledChk
             // 
             this.updateDisabledChk.AutoSize = true;
@@ -274,23 +287,22 @@
             this.remMatchBtn.UseVisualStyleBackColor = true;
             this.remMatchBtn.Click += new System.EventHandler(this.remMatchBtn_Click);
             // 
-            // notifyApiChk
+            // button1
             // 
-            this.notifyApiChk.AutoSize = true;
-            this.notifyApiChk.Location = new System.Drawing.Point(32, 132);
-            this.notifyApiChk.Name = "notifyApiChk";
-            this.notifyApiChk.Size = new System.Drawing.Size(160, 17);
-            this.notifyApiChk.TabIndex = 24;
-            this.notifyApiChk.Text = "Add desktop notification API";
-            this.toolTip1.SetToolTip(this.notifyApiChk, "Enable this to allow websites to use the Notification API standard to send notifi" +
-        "cations.\r\n\r\nScriptmonkey Link must be running for this feature to work.");
-            this.notifyApiChk.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(466, 202);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 43);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "Open Install Directory";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // AdvancedOptionsFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 286);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.notifyApiChk);
             this.Controls.Add(this.editIncludeBtn);
             this.Controls.Add(this.remMatchBtn);
@@ -350,5 +362,6 @@
         private System.Windows.Forms.Button remMatchBtn;
         private System.Windows.Forms.Button addMatchBtn;
         private System.Windows.Forms.CheckBox notifyApiChk;
+        private System.Windows.Forms.Button button1;
     }
 }

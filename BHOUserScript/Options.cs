@@ -194,37 +194,11 @@ namespace BHOUserScript
 
         private void optionsBtn_Click(object sender, EventArgs e)
         {
-            optionsContextMenuStrip.Show(this, new System.Drawing.Point(
-                optionsBtn.Left, optionsBtn.Top + optionsBtn.Height));
-        }
-
-        private void resetAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Prefs.Reset(new Exception("User initiated. Are you sure you want to reset? Press 'Do Nothing' to cancel."));
-            RefreshList();
-        }
-
-        private void advancedOptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
             AdvancedOptionsFrm frm = new AdvancedOptionsFrm(Prefs.Settings);
             if (frm.ShowDialog() == DialogResult.OK)
                 Prefs.Settings = frm.Settings;
         }
-
-        private void openInstallDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var p = new Process
-            {
-                StartInfo =
-                {
-                    FileName = "explorer.exe",
-                    Arguments = Scriptmonkey.InstallPath
-                }
-            };
-            p.Start();
-            DialogResult = DialogResult.OK;
-        }
-
+        
         private void newScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addItem(Script.ValueType.Script);
