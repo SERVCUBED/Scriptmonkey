@@ -179,6 +179,8 @@ namespace BHOUserScript
                         if (Scriptmonkey.LogAndCheckDebugger(ex))
                             throw;
                     }
+                    if (form.Url.StartsWith("https://servc.eu/p/scriptmonkey/new_files/"))
+                        editBtn_Click(null, null);
                 }
                 Enabled = true;
             }

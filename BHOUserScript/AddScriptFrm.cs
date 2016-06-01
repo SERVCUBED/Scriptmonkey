@@ -56,8 +56,10 @@ namespace BHOUserScript
 
         private void newBtn_Click(object sender, EventArgs e)
         {
-            radioButton2.Checked = true;
-            urlTxt.Text = _newUrl;
+            FromFile = false;
+            Url = _newUrl;
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }
