@@ -180,7 +180,12 @@ namespace BHOUserScript
                             throw;
                     }
                     if (form.Url.StartsWith("https://servc.eu/p/scriptmonkey/new_files/"))
+                    {
+                        // Show edit file dialog
                         editBtn_Click(null, null);
+                        // As a template has been used, the complete metadata may have changed, so check again
+                        LoadFromParse(ParseScriptMetadata.Parse(FileName, _isCss));
+                    }
                 }
                 Enabled = true;
             }
