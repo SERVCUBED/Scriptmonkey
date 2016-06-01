@@ -46,7 +46,6 @@ namespace BHOUserScript
             this.button2 = new System.Windows.Forms.Button();
             this.optionsBtn = new System.Windows.Forms.Button();
             this.optionsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.setScriptEditorPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openInstallDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +53,7 @@ namespace BHOUserScript
             this.addContextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCSSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsContextMenuStrip.SuspendLayout();
             this.addContextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -191,19 +191,12 @@ namespace BHOUserScript
             // optionsContextMenuStrip
             // 
             this.optionsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setScriptEditorPathToolStripMenuItem,
             this.resetAllToolStripMenuItem,
             this.openInstallDirectoryToolStripMenuItem,
+            this.toolStripSeparator1,
             this.advancedOptionsToolStripMenuItem});
             this.optionsContextMenuStrip.Name = "optionsContextMenuStrip";
-            this.optionsContextMenuStrip.Size = new System.Drawing.Size(188, 114);
-            // 
-            // setScriptEditorPathToolStripMenuItem
-            // 
-            this.setScriptEditorPathToolStripMenuItem.Name = "setScriptEditorPathToolStripMenuItem";
-            this.setScriptEditorPathToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.setScriptEditorPathToolStripMenuItem.Text = "&Set script editor path";
-            this.setScriptEditorPathToolStripMenuItem.Click += new System.EventHandler(this.setScriptEditorPathToolStripMenuItem_Click);
+            this.optionsContextMenuStrip.Size = new System.Drawing.Size(188, 76);
             // 
             // resetAllToolStripMenuItem
             // 
@@ -253,6 +246,11 @@ namespace BHOUserScript
             this.newCSSToolStripMenuItem.Text = "New &CSS";
             this.newCSSToolStripMenuItem.Click += new System.EventHandler(this.newCSSToolStripMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(184, 6);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,7 +299,6 @@ namespace BHOUserScript
         private Button button2;
         private Button optionsBtn;
         private ContextMenuStrip optionsContextMenuStrip;
-        private ToolStripMenuItem setScriptEditorPathToolStripMenuItem;
         private ToolStripMenuItem resetAllToolStripMenuItem;
         private OpenFileDialog scriptEditorOpenFileDialog;
         private ToolStripMenuItem advancedOptionsToolStripMenuItem;
@@ -309,5 +306,6 @@ namespace BHOUserScript
         private ContextMenuStrip addContextMenuStrip1;
         private ToolStripMenuItem newScriptToolStripMenuItem;
         private ToolStripMenuItem newCSSToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
     }
 }

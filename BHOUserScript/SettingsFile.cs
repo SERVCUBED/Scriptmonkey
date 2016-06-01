@@ -12,8 +12,6 @@ namespace BHOUserScript
         
         public bool Enabled = true;
 
-        public string EditorPath = "notepad.exe";
-
         public string MenuCommandCSS =
             "position: fixed; bottom: 0; right: 0; font-size: 12px; width: 100px; padding: 5px; border-radius: 3px; background: #333; z-index: 2000000000;";
 

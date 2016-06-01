@@ -32,7 +32,6 @@
             this.saveBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.statusLbl = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.scintilla1 = new ScintillaNET.Scintilla();
             this.SuspendLayout();
             // 
@@ -68,17 +67,6 @@
             this.statusLbl.Size = new System.Drawing.Size(0, 13);
             this.statusLbl.TabIndex = 2;
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(438, 357);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(143, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Open in preferred editor";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // scintilla1
             // 
             this.scintilla1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -99,7 +87,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 381);
             this.Controls.Add(this.scintilla1);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.statusLbl);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.saveBtn);
@@ -117,7 +104,6 @@
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.Label statusLbl;
-        private System.Windows.Forms.Button button1;
         private ScintillaNET.Scintilla scintilla1;
     }
 }

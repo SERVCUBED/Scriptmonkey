@@ -12,13 +12,11 @@ namespace BHOUserScript
     public partial class Options : Form
     {
         public readonly Db Prefs;
-        private readonly string _editPath;
 
         public Options(Db prefs)
         {
             Prefs = prefs;
             InitializeComponent();
-            _editPath = Prefs.Settings.EditorPath;
             enabledChk.Checked = Prefs.Settings.Enabled;
             Debug.Assert(Text != null, "Text != null");
             Text += " v" + Scriptmonkey.CurrentVersion();
@@ -56,8 +54,7 @@ namespace BHOUserScript
                 ScriptEditFrm sw = new ScriptEditFrm(true, 
                     Prefs.AllScripts[listBox1.SelectedIndex].Type == Script.ValueType.StyleSheet)
                 {
-                    EditedScript = Prefs.AllScripts[listBox1.SelectedIndex],
-                    EditPath = _editPath
+                    EditedScript = Prefs.AllScripts[listBox1.SelectedIndex]
                 };
                 sw.LoadFromEditedScript();
                 if (sw.ShowDialog() == DialogResult.OK)
@@ -79,7 +76,7 @@ namespace BHOUserScript
 
         private void addItem(Script.ValueType type)
         {
-            var sw = new ScriptEditFrm(false, type == Script.ValueType.StyleSheet) { EditPath = _editPath};
+            var sw = new ScriptEditFrm(false, type == Script.ValueType.StyleSheet);
             
             if (sw.ShowDialog() == DialogResult.OK)
             {
@@ -199,13 +196,6 @@ namespace BHOUserScript
         {
             optionsContextMenuStrip.Show(this, new System.Drawing.Point(
                 optionsBtn.Left, optionsBtn.Top + optionsBtn.Height));
-        }
-
-        private void setScriptEditorPathToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            scriptEditorOpenFileDialog.FileName = Prefs.Settings.EditorPath;
-            if (scriptEditorOpenFileDialog.ShowDialog() == DialogResult.OK)
-                Prefs.Settings.EditorPath = scriptEditorOpenFileDialog.FileName;
         }
 
         private void resetAllToolStripMenuItem_Click(object sender, EventArgs e)
