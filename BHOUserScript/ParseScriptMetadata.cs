@@ -23,6 +23,7 @@ namespace BHOUserScript
         private const string UpdateUrl = @"@updateURL" + Value;
         private const string DownloadUrl = @"@downloadURL" + Value;
         private const string Resource = @"@resource" + Value + Value;
+        private const string InstallDisabled = @"@install-disabled";
 
         public static Script Parse(string path, bool isCss)
         {
@@ -85,7 +86,7 @@ namespace BHOUserScript
 
                 scr.SavedValues = new Dictionary<string, string>();
 
-                scr.Enabled = true;
+                scr.Enabled = !contents.Contains(InstallDisabled);
 
                 return scr;
             }

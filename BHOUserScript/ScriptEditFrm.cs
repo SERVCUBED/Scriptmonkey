@@ -225,6 +225,7 @@ namespace BHOUserScript
             }
             descriptionTxt.Text = s.Description;
             updateTxt.Text = s.UpdateUrl;
+            enabledChk.Checked = s.Enabled;
             CheckURLWarningLabel();
         }
 
