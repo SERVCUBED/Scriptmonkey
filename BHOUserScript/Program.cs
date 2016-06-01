@@ -819,7 +819,8 @@ namespace BHOUserScript
             HttpWebRequest wc;
             try
             {
-                wc = (HttpWebRequest)WebRequest.Create(new Uri(url));
+                var r = WebRequest.Create(new Uri(url));
+                wc = r as HttpWebRequest;
             }
             catch (Exception ex)
             {
