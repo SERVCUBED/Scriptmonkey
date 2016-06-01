@@ -43,7 +43,8 @@ namespace BHOUserScript
 
                 scr.Author = GetContents(contents, Author);
 
-                scr.Version = GetContents(contents, Version);
+                if (!isCss)
+                    scr.Version = GetContents(contents, Version);
 
                 Regex reg = new Regex(Match);
                 Regex reg2 = new Regex(Include);
@@ -73,11 +74,14 @@ namespace BHOUserScript
                     scr.Exclude[i] = matches[i].Groups[2].Value;
                 }
 
-                scr = UpdateParsedData(scr, contents, isCss);
+                if (!isCss)
+                {
+                    scr = UpdateParsedData(scr, contents, isCss);
 
-                scr.UpdateUrl = GetContents(contents, DownloadUrl);
+                    scr.UpdateUrl = GetContents(contents, DownloadUrl);
 
-                if (scr.UpdateUrl == String.Empty) scr.UpdateUrl = GetContents(contents, UpdateUrl);
+                    if (scr.UpdateUrl == String.Empty) scr.UpdateUrl = GetContents(contents, UpdateUrl);
+                }
 
                 scr.SavedValues = new Dictionary<string, string>();
 
