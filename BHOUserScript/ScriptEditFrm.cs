@@ -31,17 +31,15 @@ namespace BHOUserScript
                 clearValsBtn.Enabled = false;
                 versionTxt.Enabled = false;
                 EditedScript.Type = Script.ValueType.StyleSheet;
-                
-                Text = @"New CSS";
             }
 
             if (editing)
             {
                 clearValsBtn.Visible = true;
                 browseBtn.Enabled = false;
-                Text = isCss ? @"Edit CSS" : @"Edit Userscript";
             }
 
+            Text = (editing ? "Edit " : "New ") + (isCss ? "CSS" : "Userscript");
         }
 
         public void LoadFromEditedScript()

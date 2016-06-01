@@ -52,8 +52,8 @@
             this.broadcastCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.purgeNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acceptRemoteConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -98,7 +98,7 @@
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtLog.Size = new System.Drawing.Size(270, 157);
-            this.txtLog.TabIndex = 5;
+            this.txtLog.TabIndex = 1;
             this.txtLog.WordWrap = false;
             // 
             // button1
@@ -107,7 +107,7 @@
             this.button1.Location = new System.Drawing.Point(229, 9);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(54, 23);
-            this.button1.TabIndex = 6;
+            this.button1.TabIndex = 0;
             this.button1.Text = "More...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -155,7 +155,7 @@
             this.advancedToolStripMenuItem,
             this.runLinkAtStartupToolStripMenuItem});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 192);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(200, 170);
             // 
             // saveUrlsAndCloseToolStripMenuItem
             // 
@@ -216,30 +216,23 @@
             // broadcastCommandToolStripMenuItem
             // 
             this.broadcastCommandToolStripMenuItem.Name = "broadcastCommandToolStripMenuItem";
-            this.broadcastCommandToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.broadcastCommandToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.broadcastCommandToolStripMenuItem.Text = "Broadcast Command";
             this.broadcastCommandToolStripMenuItem.Click += new System.EventHandler(this.broadcastCommandToolStripMenuItem_Click);
             // 
             // purgeNowToolStripMenuItem
             // 
             this.purgeNowToolStripMenuItem.Name = "purgeNowToolStripMenuItem";
-            this.purgeNowToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.purgeNowToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.purgeNowToolStripMenuItem.Text = "Purge Now";
             this.purgeNowToolStripMenuItem.Click += new System.EventHandler(this.purgeNowToolStripMenuItem_Click);
             // 
             // stopServerToolStripMenuItem
             // 
             this.stopServerToolStripMenuItem.Name = "stopServerToolStripMenuItem";
-            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.stopServerToolStripMenuItem.Text = "Stop Server";
             this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
-            // 
-            // runLinkAtStartupToolStripMenuItem
-            // 
-            this.runLinkAtStartupToolStripMenuItem.Name = "runLinkAtStartupToolStripMenuItem";
-            this.runLinkAtStartupToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
-            this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
             // 
             // acceptRemoteConnectionsToolStripMenuItem
             // 
@@ -247,6 +240,13 @@
             this.acceptRemoteConnectionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.acceptRemoteConnectionsToolStripMenuItem.Text = "Accept Remote Connections";
             this.acceptRemoteConnectionsToolStripMenuItem.Click += new System.EventHandler(this.acceptRemoteConnectionsToolStripMenuItem_Click);
+            // 
+            // runLinkAtStartupToolStripMenuItem
+            // 
+            this.runLinkAtStartupToolStripMenuItem.Name = "runLinkAtStartupToolStripMenuItem";
+            this.runLinkAtStartupToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
+            this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
             // 
             // Form1
             // 

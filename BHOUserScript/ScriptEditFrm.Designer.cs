@@ -231,7 +231,7 @@ namespace BHOUserScript
             this.editBtn.Name = "editBtn";
             this.editBtn.Size = new System.Drawing.Size(75, 23);
             this.editBtn.TabIndex = 17;
-            this.editBtn.Text = "Edit File";
+            this.editBtn.Text = "Edit Content";
             this.toolTip1.SetToolTip(this.editBtn, "Edit the script file in the specified text editor. The editor used can be \r\nchang" +
         "ed from the options button on the main window.");
             this.editBtn.UseVisualStyleBackColor = true;
