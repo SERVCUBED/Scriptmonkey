@@ -61,7 +61,7 @@ namespace BHOUserScript
                     matches3.Add(matches2[i]);
                 }
                 // If script has matches, use the parsed values. Otherwise, preserve current matches
-                if (scr.Include.Length > 0 && matches3.Count > 0)
+                if (matches3.Count > 0)
                 {
                     scr.Include = new string[matches3.Count];
                     for (int i = 0; i < matches3.Count; i++)
@@ -72,7 +72,7 @@ namespace BHOUserScript
 
                 reg = new Regex(Exclude);
                 matches = reg.Matches(contents);
-                if (scr.Exclude.Length > 0 && matches.Count > 0)
+                if (matches.Count > 0)
                 {
                     scr.Exclude = new string[matches.Count];
                     for (int i = 0; i < matches.Count; i++)
