@@ -248,8 +248,11 @@ namespace Scriptmonkey_Link
                 if (_instances.ElementAt(i).Value.LastRequestTime >= tPurge) continue;
 
                 OnReceived?.Invoke("instance", "purged");
-                _instances.Remove(_instances.ElementAt(i).Key);
-                i--;
+                var key = _instances.ElementAt(i).Key;
+                _instances.Remove(key);
+                // For some reason .Remove often fails. If it has, just skip this one.
+                if (!_instances.ContainsKey(key))
+                    i--;
             }
         }
 
@@ -413,33 +416,7 @@ namespace Scriptmonkey_Link
 
                     OnReceived?.Invoke("restored", url);
 
-                    // Open new tab, not a new window
-                    var f = false;
-                    TryForEachInternetExplorer((iExplorer) =>
-                    {
-                        iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
-                        f = true;
-                    });
-                    if (!f) // No IE instances. Open new window
-                    {
-                        try
-                        {
-                            var p = new Process
-                            {
-                                StartInfo =
-                                {
-                                    FileName = "iexplore.exe",
-                                    Arguments = url
-                                }
-                            };
-                            p.Start();
-                        }
-                        catch (Exception)
-                        {
-                            OnReceived?.Invoke("iexplore", "Unable to start process");
-                        }
-                        Thread.Sleep(200); // Allow IE to start before opening new tabs
-                    }
+                    OpenUrl(url);
                 }
 
                 File.Delete(_savedWindowsPath);
@@ -452,7 +429,7 @@ namespace Scriptmonkey_Link
         /// Performs an operation on each instance of Internet Explorer
         /// </summary>
         /// <param name="operation"></param>
-        private void TryForEachInternetExplorer(IEOperation operation)
+        private void TryForEachInternetExplorer(IEOperation operation, bool justOnce = false)
         {
             ShellWindows iExplorerInstances = new ShellWindows();
             foreach (var iExplorerInstance in iExplorerInstances)
@@ -463,6 +440,8 @@ namespace Scriptmonkey_Link
                     if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
                     {
                         operation(iExplorer);
+                        if (justOnce)
+                            break;
                     }
                 }
                 catch (Exception)
@@ -490,6 +469,41 @@ namespace Scriptmonkey_Link
         public void AllowRemote()
         {
             _listener.Prefixes.Add("http://*:" + Port + "/");
+        }
+
+        /// <summary>
+        /// Attempt to open a url in a new tab if a browser is already open. If not, open a new window.
+        /// </summary>
+        /// <param name="url">The URL to open</param>
+        public void OpenUrl(string url)
+        {
+            // Open new tab, not a new window
+            var f = false;
+            TryForEachInternetExplorer((iExplorer) =>
+            {
+                iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
+                f = true;
+            }, true);
+            if (!f) // No IE instances. Open new window
+            {
+                try
+                {
+                    var p = new Process
+                    {
+                        StartInfo =
+                                {
+                                    FileName = "iexplore.exe",
+                                    Arguments = url
+                                }
+                    };
+                    p.Start();
+                }
+                catch (Exception)
+                {
+                    OnReceived?.Invoke("iexplore", "Unable to start process");
+                }
+                Thread.Sleep(200); // Allow IE to start before opening new tabs
+            }
         }
 
         #region From Scriptmonkey

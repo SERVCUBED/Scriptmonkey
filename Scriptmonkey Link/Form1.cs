@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Scriptmonkey_Link
@@ -148,6 +149,15 @@ namespace Scriptmonkey_Link
         {
             _s.AllowRemote();
             acceptRemoteConnectionsToolStripMenuItem.Visible = false;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var r = new Regex(@"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
+            var n = r.Match(Clipboard.GetText());
+            if (n.Length == 0)
+                return;
+            _s.OpenUrl(n.ToString());
         }
     }
 }
