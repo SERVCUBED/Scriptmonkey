@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO.Compression;
+using System.Runtime.Remoting.Messaging;
+using NetFwTypeLib;
 using SHDocVw;
 
 namespace Scriptmonkey_Link
@@ -42,7 +44,7 @@ namespace Scriptmonkey_Link
         {
             _savedWindowsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                 Path.DirectorySeparatorChar + ".ScriptmonkeyLinkSavedWindows.tmp";
-
+            
             _listener.Prefixes.Add("http://localhost:" + Port + "/");
             _listener.Prefixes.Add("http://127.0.0.1:" + Port + "/");
 
@@ -74,6 +76,7 @@ namespace Scriptmonkey_Link
         {
             if (_listener.IsListening)
                 _listener.Stop();
+            _listener?.Close();
         }
 
         /// <summary>
@@ -468,7 +471,24 @@ namespace Scriptmonkey_Link
         /// </summary>
         public void AllowRemote()
         {
-            _listener.Prefixes.Add("http://*:" + Port + "/");
+            try
+            {
+                if (FirewallManager.IsFirewallEnabled() &&
+                    !FirewallManager.AuthorizeApplication("Scriptmonkey Link", Assembly.GetEntryAssembly().Location,
+                        NET_FW_SCOPE_.NET_FW_SCOPE_ALL/*, NET_FW_IP_VERSION_.NET_FW_IP_VERSION_V4*/, 
+                        Port, NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP))
+                    return;
+
+                _listener.Prefixes.Add("http://*:" + Port + "/");
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Access is denied")
+                    MessageBox.Show(@"Access is denied. Make sure you are running as an administrator.",
+                        @"Scriptmonkey Link", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else if (Debugger.IsAttached)
+                    throw;
+            }
         }
 
         /// <summary>
