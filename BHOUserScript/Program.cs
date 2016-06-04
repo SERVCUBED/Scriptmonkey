@@ -217,12 +217,16 @@ namespace BHOUserScript
                     }
                 }
 
-                var runJs = true;
-                try
+                var toRun = new List<int>();
+                for (int i = 0; i < _prefs.AllScripts.Count; i++)
                 {
-                    runJs = window.navigator?.javaEnabled() != null;
+                    if (ShouldRunScript(i, url.ToString()))
+                         toRun.Add(i);
                 }
-                catch (Exception) { }
+
+                // If Notifications API is disabled and no scripts to run and not in docs path
+                if (!_prefs.Settings.InjectNotificationAPI && toRun.Count == 0 && !document2.url.Contains("https://servc.eu/p/scriptmonkey/"))
+                    return;
 
                 if (_prefs.Settings.InjectAPI)
                     SetupWindow(window);
@@ -247,15 +251,12 @@ namespace BHOUserScript
                 var menuContent = "<div style=\"" + _prefs.Settings.MenuCommandCSS.Replace('"','\'') + "\">"; // Replace double quotes with single to prevent escaping out of style
                 bool useMenuCommands = false;
 
-                for (int i = 0; i < _prefs.AllScripts.Count; i++)
+                foreach (var i in toRun)
                 {
-                    if (ShouldRunScript(i, url.ToString()))
-                    {
-                        if (_prefs[i].Type == Script.ValueType.Script && runJs)
-                            TryRunScript(i, window, ref useMenuCommands, ref menuContent);
-                        else if (_prefs[i].Type == Script.ValueType.StyleSheet)
-                            TryInjectCss(i, window);
-                    }
+                    if (_prefs[i].Type == Script.ValueType.Script)
+                        TryRunScript(i, window, ref useMenuCommands, ref menuContent);
+                    else
+                        TryInjectCss(i, window);
                 }
 
                 menuContent += "</div>";
