@@ -69,6 +69,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Consulgo.QrCode4cs.cs" />
+    <Compile Include="QROptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QROptions.Designer.cs">
+      <DependentUpon>QROptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="SelectBrowserWindowFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="QROptions.resx">
+      <DependentUpon>QROptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SelectBrowserWindowFrm.resx">
       <DependentUpon>SelectBrowserWindowFrm.cs</DependentUpon>
     </EmbeddedResource>

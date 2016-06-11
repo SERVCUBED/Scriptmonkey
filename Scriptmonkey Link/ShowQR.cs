@@ -10,8 +10,12 @@ namespace Scriptmonkey_Link
     public partial class ShowQR : Form
     {
         private readonly string _text;
-        private Color _darkColor = Color.Black;
+        private Color _darkColour = Color.Black;
+        private Color _borderColour = Color.Black;
+        private Color _backColour = Color.White;
+        private int _size = 256;
         private bool _border = false;
+        private int _borderWidth = 5;
 
         private ShowQR(string text)
         {
@@ -59,41 +63,39 @@ namespace Scriptmonkey_Link
             }
 
             var c = qr.GetModuleCount();
-            var bitmap = new bool[c][];
             var b = new Bitmap(c, c);
 
             for (var row = 0; row < c; row++)
             {
-                bitmap[row] = new bool[c];
-
                 for (var col = 0; col < c; col++)
                 {
                     var isDark = qr.IsDark(row, col);
-                    bitmap[row][col] = isDark;
-                    b.SetPixel(row, col, isDark ? _darkColor : Color.White);
+                    b.SetPixel(row, col, isDark ? _darkColour : _backColour);
                 }
             }
-
-            var size = 256;
-            var newImage = new Bitmap(size - 5, size - 5, PixelFormat.Format24bppRgb);
+            
+            var newImage = new Bitmap(_size, _size, PixelFormat.Format24bppRgb);
             var g = Graphics.FromImage(newImage);
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.SmoothingMode = SmoothingMode.None;
             if (_border)
             {
-                g.DrawImage(b, 5, 5, size - 10, size - 10);
-                RectangleF[] r = {new RectangleF(0,0,size,5), new RectangleF(0,0,5,size), new RectangleF(size - 5, 0, 5, size), new RectangleF(0, size - 5, size, 5)};
-                g.DrawRectangles(new Pen(_darkColor, 10), r);
+                g.DrawImage(b, _borderWidth, _borderWidth, _size - _borderWidth * 2, _size - _borderWidth * 2);
+                RectangleF[] r = {new RectangleF(0, 0, _size, _borderWidth), // Top
+                    new RectangleF(0, 0, _borderWidth, _size), // Left
+                    new RectangleF(_size - _borderWidth, 0, _borderWidth, _size), // Right
+                    new RectangleF(0, _size - _borderWidth, _size, _borderWidth)}; // Bottom
+                g.DrawRectangles(new Pen(_borderColour, _borderWidth), r);
             }
             else
-                g.DrawImage(b, 0, 0, size, size);
+                g.DrawImage(b, 0, 0, _size, _size);
             panel1.BackgroundImage = newImage;
         }
 
         public static void Show(string text)
         {
-            if (text == null)
+            if (String.IsNullOrWhiteSpace(text))
                 return;
             var f = new ShowQR(text);
             f.ShowDialog();
@@ -106,18 +108,29 @@ namespace Scriptmonkey_Link
             (panel1.BackgroundImage as Bitmap)?.Save(saveFileDialog1.FileName, ImageFormat.Png);
         }
 
-        private void setColourToolStripMenuItem_Click(object sender, EventArgs e)
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            colorDialog1.Color = _darkColor;
-            if (colorDialog1.ShowDialog() != DialogResult.OK)
-                return;
-            _darkColor = colorDialog1.Color;
-            Draw();
-        }
+            var f = new QROptions
+            {
+                borderChk = {Checked = _border},
+                foreBtn = {BackColor = _darkColour},
+                backBtn = {BackColor = _backColour},
+                borderBtn = { BackColor = _borderColour },
+                sizeNum = {Value = _size},
+                widthNum = {Value = _borderWidth, Enabled = _border}
+            };
 
-        private void toggleBorderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _border = !_border;
+            f.ShowDialog();
+
+            _border = f.borderChk.Checked;
+            _darkColour = f.foreBtn.BackColor;
+            _backColour = f.backBtn.BackColor;
+            _borderColour = f.borderBtn.BackColor;
+            _size = (int)f.sizeNum.Value;
+            _borderWidth = (int)f.widthNum.Value;
+
+            panel1.Size = new Size(_size, _size);
+            Size = new Size(_size + 34, _size + 82);
             Draw();
         }
     }
