@@ -173,5 +173,10 @@ namespace Scriptmonkey_Link
         {
             ShowQR.Show(Interaction.InputBox("Enter text:", "Scriptmonkey Link - Show QR Code™"));
         }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

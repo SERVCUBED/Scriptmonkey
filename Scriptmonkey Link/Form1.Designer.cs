@@ -48,6 +48,7 @@
             this.manageCookiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.shareURLViaQRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showQRCodeFromTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.backupSettingsFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -58,7 +59,7 @@
             this.acceptRemoteConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button2 = new System.Windows.Forms.Button();
-            this.showQRCodeFromTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -161,9 +162,10 @@
             this.backupSettingsFileToolStripMenuItem,
             this.toolStripSeparator2,
             this.advancedToolStripMenuItem,
-            this.runLinkAtStartupToolStripMenuItem});
+            this.runLinkAtStartupToolStripMenuItem,
+            this.exitToolStripMenuItem1});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(214, 242);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(214, 264);
             // 
             // saveUrlsAndCloseToolStripMenuItem
             // 
@@ -204,6 +206,13 @@
             this.shareURLViaQRCodeToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.shareURLViaQRCodeToolStripMenuItem.Text = "Share URL via &QR Code™";
             this.shareURLViaQRCodeToolStripMenuItem.Click += new System.EventHandler(this.shareURLViaQRCodeToolStripMenuItem_Click);
+            // 
+            // showQRCodeFromTextToolStripMenuItem
+            // 
+            this.showQRCodeFromTextToolStripMenuItem.Name = "showQRCodeFromTextToolStripMenuItem";
+            this.showQRCodeFromTextToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.showQRCodeFromTextToolStripMenuItem.Text = "Show QR Code™ from &text";
+            this.showQRCodeFromTextToolStripMenuItem.Click += new System.EventHandler(this.showQRCodeFromTextToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -278,12 +287,12 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // showQRCodeFromTextToolStripMenuItem
+            // exitToolStripMenuItem1
             // 
-            this.showQRCodeFromTextToolStripMenuItem.Name = "showQRCodeFromTextToolStripMenuItem";
-            this.showQRCodeFromTextToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.showQRCodeFromTextToolStripMenuItem.Text = "Show QR Code™ from &text";
-            this.showQRCodeFromTextToolStripMenuItem.Click += new System.EventHandler(this.showQRCodeFromTextToolStripMenuItem_Click);
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
+            this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -338,6 +347,7 @@
         private System.Windows.Forms.ToolStripMenuItem shareURLViaQRCodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem showQRCodeFromTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
     }
 }
 

@@ -158,7 +158,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(248, 26);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Warning: Verify the QR Code and still be read after \r\nchanging these settings.";
+            this.label3.Text = "Warning: Verify the QR Code can still be read after \r\nchanging these settings.";
             // 
             // QROptions
             // 

@@ -13,12 +13,11 @@ namespace Scriptmonkey_Link
 {
     public partial class SelectBrowserWindowFrm : Form
     {
-        private List<InternetExplorer> _instances; 
+        private List<InternetExplorer> _instances;
 
-        public InternetExplorer SelectedInstance => _instances[listBox1.SelectedIndex];
+        private InternetExplorer SelectedInstance => _instances[listBox1.SelectedIndex];
 
-
-        public SelectBrowserWindowFrm()
+        private SelectBrowserWindowFrm()
         {
             InitializeComponent();
             _refreshInstances();
