@@ -37,6 +37,9 @@ namespace Scriptmonkey_Link
 
         private void okBtn_Click(object sender, EventArgs e)
         {
+            if (listBox1.SelectedIndex < 0)
+                return;
+
             DialogResult = DialogResult.OK;
         }
 
