@@ -38,6 +38,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.borderBtn = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.widthNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sizeNum)).BeginInit();
             this.SuspendLayout();
@@ -150,11 +151,21 @@
             this.borderBtn.UseVisualStyleBackColor = true;
             this.borderBtn.Click += new System.EventHandler(this.foreBtn_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 95);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(248, 26);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Warning: Verify the QR Code and still be read after \r\nchanging these settings.";
+            // 
             // QROptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(355, 129);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.borderBtn);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.backBtn);
@@ -191,5 +202,6 @@
         public System.Windows.Forms.CheckBox borderChk;
         private System.Windows.Forms.ColorDialog colorDialog1;
         public System.Windows.Forms.Button borderBtn;
+        private System.Windows.Forms.Label label3;
     }
 }
