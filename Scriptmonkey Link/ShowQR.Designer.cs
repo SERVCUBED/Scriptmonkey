@@ -34,6 +34,7 @@
             this.setColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.toggleBorderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +50,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
-            this.setColourToolStripMenuItem});
+            this.setColourToolStripMenuItem,
+            this.toggleBorderToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(274, 24);
@@ -73,6 +75,13 @@
             // saveFileDialog1
             // 
             this.saveFileDialog1.Filter = "PNG files (*.png)|*.png|All files (*.*)|*.*";
+            // 
+            // toggleBorderToolStripMenuItem
+            // 
+            this.toggleBorderToolStripMenuItem.Name = "toggleBorderToolStripMenuItem";
+            this.toggleBorderToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
+            this.toggleBorderToolStripMenuItem.Text = "Toggle Border";
+            this.toggleBorderToolStripMenuItem.Click += new System.EventHandler(this.toggleBorderToolStripMenuItem_Click);
             // 
             // ShowQR
             // 
@@ -100,5 +109,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem setColourToolStripMenuItem;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ToolStripMenuItem toggleBorderToolStripMenuItem;
     }
 }

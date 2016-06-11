@@ -11,6 +11,7 @@ namespace Scriptmonkey_Link
     {
         private readonly string _text;
         private Color _darkColor = Color.Black;
+        private bool _border = false;
 
         private ShowQR(string text)
         {
@@ -74,12 +75,19 @@ namespace Scriptmonkey_Link
             }
 
             var size = 256;
-            var newImage = new Bitmap(size, size, PixelFormat.Format24bppRgb);
+            var newImage = new Bitmap(size - 5, size - 5, PixelFormat.Format24bppRgb);
             var g = Graphics.FromImage(newImage);
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.SmoothingMode = SmoothingMode.None;
-            g.DrawImage(b, 0, 0, size, size);
+            if (_border)
+            {
+                g.DrawImage(b, 5, 5, size - 10, size - 10);
+                RectangleF[] r = {new RectangleF(0,0,size,5), new RectangleF(0,0,5,size), new RectangleF(size - 5, 0, 5, size), new RectangleF(0, size - 5, size, 5)};
+                g.DrawRectangles(new Pen(_darkColor, 10), r);
+            }
+            else
+                g.DrawImage(b, 0, 0, size, size);
             panel1.BackgroundImage = newImage;
         }
 
@@ -104,6 +112,12 @@ namespace Scriptmonkey_Link
             if (colorDialog1.ShowDialog() != DialogResult.OK)
                 return;
             _darkColor = colorDialog1.Color;
+            Draw();
+        }
+
+        private void toggleBorderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _border = !_border;
             Draw();
         }
     }
