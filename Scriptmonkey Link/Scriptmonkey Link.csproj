@@ -48,6 +48,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CookieManager.cs">
@@ -56,6 +57,7 @@
     <Compile Include="CookieManager.Designer.cs">
       <DependentUpon>CookieManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="IETools.cs" />
     <Compile Include="InstanceData.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -66,7 +68,20 @@
     <Compile Include="FirewallManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Consulgo.QrCode4cs.cs" />
+    <Compile Include="SelectBrowserWindowFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectBrowserWindowFrm.Designer.cs">
+      <DependentUpon>SelectBrowserWindowFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Server.cs" />
+    <Compile Include="ShowQR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowQR.Designer.cs">
+      <DependentUpon>ShowQR.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CookieManager.resx">
       <DependentUpon>CookieManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -83,6 +98,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SelectBrowserWindowFrm.resx">
+      <DependentUpon>SelectBrowserWindowFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShowQR.resx">
+      <DependentUpon>ShowQR.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -387,7 +387,7 @@ namespace Scriptmonkey_Link
             {
                 var s = String.Empty;
 
-                TryForEachInternetExplorer((iExplorer) =>
+                IETools.TryForEachInternetExplorer((iExplorer) =>
                 {
                     if (iExplorer.LocationURL != "about:blank" && !s.Contains(iExplorer.LocationURL + '\n'))
                         s += iExplorer.LocationURL + '\n';
@@ -425,42 +425,14 @@ namespace Scriptmonkey_Link
                 File.Delete(_savedWindowsPath);
             });
         }
-
-        private delegate void IEOperation(InternetExplorer iExplorer);
-
-        /// <summary>
-        /// Performs an operation on each instance of Internet Explorer
-        /// </summary>
-        /// <param name="operation"></param>
-        private void TryForEachInternetExplorer(IEOperation operation, bool justOnce = false)
-        {
-            ShellWindows iExplorerInstances = new ShellWindows();
-            foreach (var iExplorerInstance in iExplorerInstances)
-            {
-                try
-                {
-                    var iExplorer = (InternetExplorer) iExplorerInstance;
-                    if (iExplorer.Name == "Internet Explorer" || iExplorer.Name == "Windows Internet Explorer")
-                    {
-                        operation(iExplorer);
-                        if (justOnce)
-                            break;
-                    }
-                }
-                catch (Exception)
-                {
-                    OnReceived?.Invoke("iexplore", "Unable to perform action");
-                }
-            }
-        }
-
+        
         public void RefreshAllInstances()
         {
-            TryForEachInternetExplorer(i =>
+            IETools.TryForEachInternetExplorer(i =>
             {
                 if (IsActive)   // Using .Refresh2() causes Scriptmonkey to not run if it is not set to run on refresh. 
                                 // Navigate to the same URL instead.
-                    i.Navigate2(i.LocationURL, BrowserNavConstants.navNoHistory);
+                    i.Navigate2(i.LocationURL, Server.BrowserNavConstants.navNoHistory);
                 else
                     i.Refresh2();
             });
@@ -499,7 +471,7 @@ namespace Scriptmonkey_Link
         {
             // Open new tab, not a new window
             var f = false;
-            TryForEachInternetExplorer((iExplorer) =>
+            IETools.TryForEachInternetExplorer((iExplorer) =>
             {
                 iExplorer.Navigate2(url, BrowserNavConstants.navOpenInNewTab);
                 f = true;

@@ -70,7 +70,7 @@ namespace Scriptmonkey_Link
             {
                 manager.LocalPolicy.CurrentProfile.GloballyOpenPorts.Add(port);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
