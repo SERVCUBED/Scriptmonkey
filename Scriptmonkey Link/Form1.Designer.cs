@@ -58,6 +58,7 @@
             this.acceptRemoteConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button2 = new System.Windows.Forms.Button();
+            this.showQRCodeFromTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -155,70 +156,71 @@
             this.manageCookiesToolStripMenuItem,
             this.toolStripSeparator1,
             this.shareURLViaQRCodeToolStripMenuItem,
+            this.showQRCodeFromTextToolStripMenuItem,
             this.toolStripSeparator3,
             this.backupSettingsFileToolStripMenuItem,
             this.toolStripSeparator2,
             this.advancedToolStripMenuItem,
             this.runLinkAtStartupToolStripMenuItem});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(205, 220);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(214, 242);
             // 
             // saveUrlsAndCloseToolStripMenuItem
             // 
             this.saveUrlsAndCloseToolStripMenuItem.Name = "saveUrlsAndCloseToolStripMenuItem";
-            this.saveUrlsAndCloseToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.saveUrlsAndCloseToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.saveUrlsAndCloseToolStripMenuItem.Text = "&Save URLs and Close";
             this.saveUrlsAndCloseToolStripMenuItem.Click += new System.EventHandler(this.saveUrlsAndCloseToolStripMenuItem_Click);
             // 
             // restoreSavedWindowsToolStripMenuItem
             // 
             this.restoreSavedWindowsToolStripMenuItem.Name = "restoreSavedWindowsToolStripMenuItem";
-            this.restoreSavedWindowsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.restoreSavedWindowsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.restoreSavedWindowsToolStripMenuItem.Text = "&Restore Saved Windows";
             this.restoreSavedWindowsToolStripMenuItem.Click += new System.EventHandler(this.restoreSavedWindowsToolStripMenuItem_Click);
             // 
             // refreshAllWindowsToolStripMenuItem
             // 
             this.refreshAllWindowsToolStripMenuItem.Name = "refreshAllWindowsToolStripMenuItem";
-            this.refreshAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.refreshAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.refreshAllWindowsToolStripMenuItem.Text = "R&efresh All Windows";
             this.refreshAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.refreshAllWindowsToolStripMenuItem_Click);
             // 
             // manageCookiesToolStripMenuItem
             // 
             this.manageCookiesToolStripMenuItem.Name = "manageCookiesToolStripMenuItem";
-            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.manageCookiesToolStripMenuItem.Text = "Manage Cookies";
             this.manageCookiesToolStripMenuItem.Click += new System.EventHandler(this.manageCookiesToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
             // 
             // shareURLViaQRCodeToolStripMenuItem
             // 
             this.shareURLViaQRCodeToolStripMenuItem.Name = "shareURLViaQRCodeToolStripMenuItem";
-            this.shareURLViaQRCodeToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.shareURLViaQRCodeToolStripMenuItem.Text = "Share URL via QR Code™";
+            this.shareURLViaQRCodeToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.shareURLViaQRCodeToolStripMenuItem.Text = "Share URL via &QR Code™";
             this.shareURLViaQRCodeToolStripMenuItem.Click += new System.EventHandler(this.shareURLViaQRCodeToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(210, 6);
             // 
             // backupSettingsFileToolStripMenuItem
             // 
             this.backupSettingsFileToolStripMenuItem.Name = "backupSettingsFileToolStripMenuItem";
-            this.backupSettingsFileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.backupSettingsFileToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.backupSettingsFileToolStripMenuItem.Text = "&Backup Settings File";
             this.backupSettingsFileToolStripMenuItem.Click += new System.EventHandler(this.backupSettingsFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(210, 6);
             // 
             // advancedToolStripMenuItem
             // 
@@ -228,7 +230,7 @@
             this.stopServerToolStripMenuItem,
             this.acceptRemoteConnectionsToolStripMenuItem});
             this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
-            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.advancedToolStripMenuItem.Text = "Advanced";
             // 
             // broadcastCommandToolStripMenuItem
@@ -262,7 +264,7 @@
             // runLinkAtStartupToolStripMenuItem
             // 
             this.runLinkAtStartupToolStripMenuItem.Name = "runLinkAtStartupToolStripMenuItem";
-            this.runLinkAtStartupToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.runLinkAtStartupToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
             this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
             // 
@@ -275,6 +277,13 @@
             this.button2.Text = "Paste URL";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // showQRCodeFromTextToolStripMenuItem
+            // 
+            this.showQRCodeFromTextToolStripMenuItem.Name = "showQRCodeFromTextToolStripMenuItem";
+            this.showQRCodeFromTextToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.showQRCodeFromTextToolStripMenuItem.Text = "Show QR Code™ from &text";
+            this.showQRCodeFromTextToolStripMenuItem.Click += new System.EventHandler(this.showQRCodeFromTextToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -328,6 +337,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripMenuItem shareURLViaQRCodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem showQRCodeFromTextToolStripMenuItem;
     }
 }
 

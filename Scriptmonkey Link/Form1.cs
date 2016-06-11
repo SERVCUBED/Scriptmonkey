@@ -166,68 +166,12 @@ namespace Scriptmonkey_Link
 
         private void shareURLViaQRCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var l = SelectBrowserWindowFrm.SelectBrowserWindow()?.LocationURL;
-            if (l == null)
-                return;
-            
-            int typeNumber;
-            if (l.Length < 26)
-                typeNumber = 2;
-            else if (l.Length < 72)
-                typeNumber = 5;
-            else if (l.Length < 125)
-                typeNumber = 7;
-            else if (l.Length < 203)
-                typeNumber = 10;
-            else if (l.Length < 298)
-                typeNumber = 12;
-            else if (l.Length < 407)
-                typeNumber = 15;
-            else if (l.Length < 534)
-                typeNumber = 17;
-            else if (l.Length < 669)
-                typeNumber = 20;
-            else
-                return;
+            ShowQR.Show(SelectBrowserWindowFrm.SelectBrowserWindow()?.LocationURL);
+        }
 
-            QRCode qr;
-            try
-            {
-                qr = new QRCode(typeNumber, QRErrorCorrectLevel.M);
-                qr.AddData(l);
-                qr.Make();
-            }
-            catch (Exception)
-            {
-                return;
-            }
-
-            var c = qr.GetModuleCount();
-            var bitmap = new bool[c][];
-            var b = new Bitmap(c, c);
-
-            for (var row = 0; row < c; row++)
-            {
-                bitmap[row] = new bool[c];
-
-                for (var col = 0; col < c; col++)
-                {
-                    var isDark = qr.IsDark(row, col);
-                    bitmap[row][col] = isDark;
-                    b.SetPixel(row, col, isDark ? Color.Black : Color.White);
-                }
-            }
-
-            var size = 256;
-            var newImage = new Bitmap(size, size, PixelFormat.Format24bppRgb);
-            var g = Graphics.FromImage(newImage);
-            g.InterpolationMode = InterpolationMode.NearestNeighbor;
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.SmoothingMode = SmoothingMode.None;
-            g.DrawImage(b, 0, 0, size, size);
-
-            var f = new ShowQR {panel1 = {BackgroundImage = newImage}};
-            f.ShowDialog();
+        private void showQRCodeFromTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowQR.Show(Interaction.InputBox("Enter text:", "Scriptmonkey Link - Show QR Code™"));
         }
     }
 }
