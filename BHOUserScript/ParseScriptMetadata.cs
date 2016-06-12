@@ -37,6 +37,8 @@ namespace BHOUserScript
         {
             try
             {
+                scr.Type = isCss ? Script.ValueType.StyleSheet : Script.ValueType.Script;
+
                 scr.Name = GetContents(contents, Name, scr.Name);
 
                 scr.Description = GetContents(contents, Description, scr.Description);
