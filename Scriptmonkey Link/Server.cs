@@ -248,7 +248,7 @@ namespace Scriptmonkey_Link
             {
                 if (i >= _instances.Count)
                     break;
-                if (_instances.ElementAt(i).Value.LastRequestTime >= tPurge) continue;
+                if (_instances.ElementAt(i).Value?.LastRequestTime >= tPurge) continue;
 
                 OnReceived?.Invoke("instance", "purged");
                 var key = _instances.ElementAt(i).Key;
