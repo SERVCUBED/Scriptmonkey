@@ -1,13 +1,11 @@
 ﻿using Microsoft.VisualBasic;
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
-using Consulgo.QrCode4cs;
 
 namespace Scriptmonkey_Link
 {
@@ -23,12 +21,27 @@ namespace Scriptmonkey_Link
             _s.OnReceived += OnServerReceived;
             _s.OnNotify += OnNotifyReceived;
 
-            // If startup file exists or is run from startup
-            if (_location.Contains(Environment.GetFolderPath(Environment.SpecialFolder.Startup)) || File.Exists(_startupPath))
+            if (!File.Exists(_startupPath)) return;
+
+            // Hide the statup option
+            runLinkAtStartupToolStripMenuItem.Visible = false;
+
+            ThreadPool.QueueUserWorkItem(callback =>
             {
-                runLinkAtStartupToolStripMenuItem.Visible = false;
-                Visible = false;
-            }
+                // If not run at startup
+                if (_location.Contains(Environment.GetFolderPath(Environment.SpecialFolder.Startup))) return;
+                try
+                {
+                    // If current version is newer than the startup version, replace the startup version with this one
+                    if (new Version(FileVersionInfo.GetVersionInfo(_startupPath).FileVersion) >=
+                        Server.CurrentVersion()) return;
+
+                    File.Delete(_startupPath);
+                    File.Copy(_location, _startupPath);
+                    txtLog.Text = @"Startup version updated" + Environment.NewLine + txtLog.Text;
+                }
+                catch (Exception) { }
+            });
         }
 
         private void instanceNumTimer_Tick(object sender, EventArgs e)
@@ -87,16 +100,6 @@ namespace Scriptmonkey_Link
         private void refreshAllWindowsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _s.RefreshAllInstances();
-        }
-
-        private void broadcastCommandToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var s = Interaction.InputBox("Enter command to broadcast:");
-            if (String.IsNullOrWhiteSpace((s)))
-                return;
-
-            txtLog.Text = @"Broadcast: " + s + Environment.NewLine + txtLog.Text;
-            _s.Broadcast(s);
         }
 
         private void purgeNowToolStripMenuItem_Click(object sender, EventArgs e)
@@ -177,6 +180,34 @@ namespace Scriptmonkey_Link
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void refreshSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtLog.Text = @"Broadcast: Refrsh Settings" + Environment.NewLine + txtLog.Text;
+            _s.Broadcast("refresh");
+        }
+
+        private void refreshScriptCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtLog.Text = @"Broadcast: Refrsh Script Cache" + Environment.NewLine + txtLog.Text;
+            _s.Broadcast("refreshCache");
+        }
+
+        private void verifyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtLog.Text = @"Broadcast: Verify" + Environment.NewLine + txtLog.Text;
+            _s.Broadcast("verify");
+        }
+
+        private void otherToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var s = Interaction.InputBox("Enter command to broadcast:");
+            if (String.IsNullOrWhiteSpace((s)))
+                return;
+
+            txtLog.Text = @"Broadcast: " + s + Environment.NewLine + txtLog.Text;
+            _s.Broadcast(s);
         }
     }
 }

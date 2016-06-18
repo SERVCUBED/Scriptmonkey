@@ -58,8 +58,12 @@
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acceptRemoteConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.button2 = new System.Windows.Forms.Button();
+            this.refreshSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshScriptCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.verifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.otherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -244,10 +248,14 @@
             // 
             // broadcastCommandToolStripMenuItem
             // 
+            this.broadcastCommandToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshSettingsToolStripMenuItem,
+            this.refreshScriptCacheToolStripMenuItem,
+            this.verifyToolStripMenuItem,
+            this.otherToolStripMenuItem});
             this.broadcastCommandToolStripMenuItem.Name = "broadcastCommandToolStripMenuItem";
             this.broadcastCommandToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.broadcastCommandToolStripMenuItem.Text = "Broadcast Command";
-            this.broadcastCommandToolStripMenuItem.Click += new System.EventHandler(this.broadcastCommandToolStripMenuItem_Click);
             // 
             // purgeNowToolStripMenuItem
             // 
@@ -277,6 +285,13 @@
             this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
             this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
             // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
+            this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(187, 9);
@@ -287,12 +302,33 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // exitToolStripMenuItem1
+            // refreshSettingsToolStripMenuItem
             // 
-            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
-            this.exitToolStripMenuItem1.Text = "Exit";
-            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            this.refreshSettingsToolStripMenuItem.Name = "refreshSettingsToolStripMenuItem";
+            this.refreshSettingsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.refreshSettingsToolStripMenuItem.Text = "Refresh Settings";
+            this.refreshSettingsToolStripMenuItem.Click += new System.EventHandler(this.refreshSettingsToolStripMenuItem_Click);
+            // 
+            // refreshScriptCacheToolStripMenuItem
+            // 
+            this.refreshScriptCacheToolStripMenuItem.Name = "refreshScriptCacheToolStripMenuItem";
+            this.refreshScriptCacheToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.refreshScriptCacheToolStripMenuItem.Text = "Refresh Script Cache";
+            this.refreshScriptCacheToolStripMenuItem.Click += new System.EventHandler(this.refreshScriptCacheToolStripMenuItem_Click);
+            // 
+            // verifyToolStripMenuItem
+            // 
+            this.verifyToolStripMenuItem.Name = "verifyToolStripMenuItem";
+            this.verifyToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.verifyToolStripMenuItem.Text = "Verify";
+            this.verifyToolStripMenuItem.Click += new System.EventHandler(this.verifyToolStripMenuItem_Click);
+            // 
+            // otherToolStripMenuItem
+            // 
+            this.otherToolStripMenuItem.Name = "otherToolStripMenuItem";
+            this.otherToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.otherToolStripMenuItem.Text = "Other...";
+            this.otherToolStripMenuItem.Click += new System.EventHandler(this.otherToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -348,6 +384,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem showQRCodeFromTextToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem refreshSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshScriptCacheToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem verifyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem otherToolStripMenuItem;
     }
 }
 

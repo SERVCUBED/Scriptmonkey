@@ -504,7 +504,7 @@ namespace Scriptmonkey_Link
         /// Gets the version of the current assembly.
         /// </summary>
         /// <returns>Assembly version</returns>
-        private static Version CurrentVersion()
+        public static Version CurrentVersion()
         {
             var thisApp = Assembly.GetExecutingAssembly();
             AssemblyName name = new AssemblyName(thisApp.FullName);
