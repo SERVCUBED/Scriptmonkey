@@ -9,5 +9,7 @@
         public bool testLink { get; set; } = true;
 
         public bool verify { get; set; } = true;
+
+        public bool refreshCache { get; set; } = true;
     }
 }

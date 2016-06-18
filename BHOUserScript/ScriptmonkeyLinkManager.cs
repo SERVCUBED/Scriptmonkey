@@ -11,6 +11,7 @@ namespace BHOUserScript
         private string _key;
         private bool _ticking;
         private int _delay;
+        private readonly Version _minLinkVersion = new Version(1, 1);
 
         public delegate void OnReceiveEventHandler(string action);
         public event OnReceiveEventHandler OnReceiveEvent;
@@ -24,7 +25,8 @@ namespace BHOUserScript
 
         public void SendAction(string action)
         {
-            Scriptmonkey.SendWebRequest(_url + "action/" + _key + '/' + action, true);
+            if (_key != String.Empty)
+                Scriptmonkey.SendWebRequest(_url + "action/" + _key + '/' + action, true);
         }
 
         public void Verify(string currentUrl)
@@ -68,7 +70,13 @@ namespace BHOUserScript
 
         private void RegisterNew()
         {
-            if (!String.IsNullOrEmpty(_key))
+            var test = Scriptmonkey.SendWebRequest(_url + "ping", true);
+            if (String.IsNullOrEmpty(test))
+                return;
+            var aTest = test.Split('/');
+            if (aTest.Length != 3 || aTest[0] != "pong" || aTest[1] != "ScriptmonkeyLink")
+                return;
+            if (new Version(aTest[2]) < _minLinkVersion)
                 return;
 
             string data =

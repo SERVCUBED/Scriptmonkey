@@ -910,6 +910,8 @@ namespace BHOUserScript
                 LogAndCheckDebugger(null, "Scriptmonkey Link alert: " + (_currentUrl ?? ""));
             else if (action == "verify" && _prefs.Settings.AllowedScriptmonkeyLinkCommands.verify)
                 _link.Verify(_currentUrl.ToString());
+            else if (action == "refreshCache" && _prefs.Settings.AllowedScriptmonkeyLinkCommands.refreshCache)
+                _scriptCache.Clear();
         }
 
         #endregion
