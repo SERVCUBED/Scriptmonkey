@@ -184,13 +184,13 @@ namespace Scriptmonkey_Link
 
         private void refreshSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            txtLog.Text = @"Broadcast: Refrsh Settings" + Environment.NewLine + txtLog.Text;
+            txtLog.Text = @"Broadcast: Refersh Settings" + Environment.NewLine + txtLog.Text;
             _s.Broadcast("refresh");
         }
 
         private void refreshScriptCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            txtLog.Text = @"Broadcast: Refrsh Script Cache" + Environment.NewLine + txtLog.Text;
+            txtLog.Text = @"Broadcast: Refersh Script Cache" + Environment.NewLine + txtLog.Text;
             _s.Broadcast("refreshCache");
         }
 

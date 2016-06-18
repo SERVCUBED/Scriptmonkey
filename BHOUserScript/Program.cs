@@ -60,11 +60,16 @@ namespace BHOUserScript
         private int _refreshCounter;
         private ScriptmonkeyLinkManager _link;
 
+        [ComVisible(false)]
         public static readonly string InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             + Path.DirectorySeparatorChar + ".Scriptmonkey" + Path.DirectorySeparatorChar;
+        [ComVisible(false)]
         public static readonly string ScriptPath = InstallPath + "scripts" + Path.DirectorySeparatorChar;
+        [ComVisible(false)]
         public static readonly string ResourcePath = InstallPath + "resources" + Path.DirectorySeparatorChar;
+        [ComVisible(false)]
         public static readonly string SettingsFile = InstallPath + "settings.json";
+        [ComVisible(false)]
         public static readonly string InstalledFile = InstallPath + "installed";
         
         // ReSharper disable once InconsistentNaming
@@ -88,6 +93,7 @@ namespace BHOUserScript
         /// <summary>
         /// Checks for a valid installation. If Scriptmonkey is not installed, it creates the config files and directories.
         /// </summary>
+        [ComVisible(false)]
         public void CheckInstall()
         {
             if(!File.Exists(InstalledFile))
@@ -558,6 +564,7 @@ namespace BHOUserScript
         /// Gets the version of the current assembly.
         /// </summary>
         /// <returns>Assembly version</returns>
+        [ComVisible(false)]
         public static Version CurrentVersion()
         {
             var thisApp = Assembly.GetExecutingAssembly();
@@ -602,6 +609,7 @@ namespace BHOUserScript
         /// <param name="ex">Exception</param>
         /// <param name="extraInfo">Any extra info (debug notes, vars)</param>
         /// <returns>If the exception should be thrown</returns>
+        [ComVisible(false)]
         public static bool LogAndCheckDebugger(Exception ex, string extraInfo = null)
         {
             var text = String.Empty;
@@ -815,6 +823,7 @@ namespace BHOUserScript
         /// <param name="quick">True to set a timeout of 1000ms</param>
         /// <param name="postData">The data to include in the POST request</param>
         /// <returns>The requested resource</returns>
+        [ComVisible(false)]
         public static string SendWebRequest(string url, bool quick = false, string postData = null)
         {
             HttpWebRequest wc;
@@ -887,6 +896,7 @@ namespace BHOUserScript
         /// Generate a random number to use as a script prefix and avoid duplicate installs
         /// </summary>
         /// <returns>A random number from 0 to 100,000</returns>
+        [ComVisible(false)]
         public static string GenerateRandomString()
         {
             Random r = new Random();
