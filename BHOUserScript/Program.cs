@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices.Expando;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using BHOUserScript.Properties;
 
@@ -424,6 +425,7 @@ namespace BHOUserScript
         /// Exposes the IExtension interface to the browser window.
         /// </summary>
         /// <param name="window"></param>
+        [HandleProcessCorruptedStateExceptions]
         private void SetupWindow(IHTMLWindow2 window)
         {
             // Prevent multiple injections of API
@@ -447,6 +449,10 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
+                if (ex is AccessViolationException) // Exception: "Attempted to read or write protected memory. _
+                    return;                         // This is often an indication that other memory is corrupt." _
+                                                    // This is thrown when the memory of the IE process is corrupted, _
+                                                    // and thus write protected.
                 if (LogAndCheckDebugger(ex, "SetupWindow"))
                     throw;
             }
