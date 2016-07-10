@@ -466,6 +466,9 @@ namespace BHOUserScript
             }
             catch (Exception ex)
             {
+                if (ex is AccessViolationException)
+                    return;
+
                 if (ShouldThrowScriptException(ex, "NotificationWrapper", Resources.NotificationJS))
                     throw;
             }
