@@ -20,6 +20,11 @@ namespace BHOUserScript
             enabledChk.Checked = Prefs.Settings.Enabled;
             Debug.Assert(Text != null, "Text != null");
             Text += " v" + Scriptmonkey.CurrentVersion();
+#if DEBUG
+            Text += @"d";
+#else
+            Text += @"r";
+#endif
         }
         
         private void okBtn_Click(object sender, EventArgs e)
