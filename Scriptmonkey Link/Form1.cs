@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -15,6 +16,9 @@ namespace Scriptmonkey_Link
         private readonly string _startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + Path.DirectorySeparatorChar +
                            "Scriptmonkey Link.exe";
         private readonly Server _s = new Server();
+        private List<string> _blockedNotificationHosts = new List<string>();
+        private readonly Dictionary<string, int> _notificationHosts = new Dictionary<string, int>();
+        
         public Form1()
         {
             InitializeComponent();
@@ -64,9 +68,27 @@ namespace Scriptmonkey_Link
             txtLog.Text = DateTime.Now.TimeOfDay.ToString() + " " + key + "=>" + data + Environment.NewLine +  txtLog.Text;
         }
 
-        private void OnNotifyReceived(string title, string text)
+        private void OnNotifyReceived(string title, string text, string host)
         {
+            if (_notificationHosts.ContainsKey(host))
+                _notificationHosts[host]++;
+            else
+                _notificationHosts.Add(host, 1);
+
+            if (_blockedNotificationHosts.Contains(host))
+                return;
+            
+            if (_notificationHosts[host] == 20)
+            {
+                notifyIcon1.ShowBalloonTip(3000, $"Too many notifications from {host}", $"The host {host} has sent too " + 
+                    "many notifications and has been blocked. Go to More -> Unblock Notification Hosts to remove.", 
+                    ToolTipIcon.Info);
+                OnServerReceived("notify", $"Too many notifications from {host}");
+                _blockedNotificationHosts.Add(host);
+            }
+            else
             notifyIcon1.ShowBalloonTip(3000, title, text, ToolTipIcon.Info);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -208,6 +230,11 @@ namespace Scriptmonkey_Link
 
             txtLog.Text = @"Broadcast: " + s + Environment.NewLine + txtLog.Text;
             _s.Broadcast(s);
+        }
+
+        private void unblockNotificationHostsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _blockedNotificationHosts = ManageBlockedHosts.Manage(_blockedNotificationHosts, this);
         }
     }
 }

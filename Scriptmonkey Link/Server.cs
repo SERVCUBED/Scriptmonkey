@@ -35,7 +35,7 @@ namespace Scriptmonkey_Link
         private string _savedWindowsPath = String.Empty;
 
         public delegate void OnReceivedEvent(string key, string data);
-        public delegate void OnNotifyEvent(string title, string text);
+        public delegate void OnNotifyEvent(string title, string text, string host);
 
         public event OnReceivedEvent OnReceived;
         public event OnNotifyEvent OnNotify;
@@ -212,12 +212,12 @@ namespace Scriptmonkey_Link
                     if (String.IsNullOrWhiteSpace(text))
                     {
                         OnReceived?.Invoke("notify", $"The page at {host} says:\r\n{title}");
-                        OnNotify?.Invoke(title, $"From {host}");
+                        OnNotify?.Invoke(title, $"From {host}", host);
                     }
                     else
                     {
                         OnReceived?.Invoke("notify", $"The page at {host} says:\r\n{title}\r\n{text}");
-                        OnNotify?.Invoke(title, $"The page at {host} says:\r\n{text}");
+                        OnNotify?.Invoke(title, $"The page at {host} says:\r\n{text}", host);
                     }
                 }
                 else

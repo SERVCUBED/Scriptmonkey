@@ -54,16 +54,17 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.broadcastCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshScriptCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.verifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.otherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.purgeNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acceptRemoteConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runLinkAtStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.button2 = new System.Windows.Forms.Button();
-            this.refreshSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshScriptCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.verifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.otherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unblockNotificationHostsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIconContextMenuStrip.SuspendLayout();
             this.moreContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -166,74 +167,75 @@
             this.backupSettingsFileToolStripMenuItem,
             this.toolStripSeparator2,
             this.advancedToolStripMenuItem,
+            this.unblockNotificationHostsToolStripMenuItem,
             this.runLinkAtStartupToolStripMenuItem,
             this.exitToolStripMenuItem1});
             this.moreContextMenuStrip.Name = "moreContextMenuStrip";
-            this.moreContextMenuStrip.Size = new System.Drawing.Size(214, 264);
+            this.moreContextMenuStrip.Size = new System.Drawing.Size(218, 286);
             // 
             // saveUrlsAndCloseToolStripMenuItem
             // 
             this.saveUrlsAndCloseToolStripMenuItem.Name = "saveUrlsAndCloseToolStripMenuItem";
-            this.saveUrlsAndCloseToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.saveUrlsAndCloseToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.saveUrlsAndCloseToolStripMenuItem.Text = "&Save URLs and Close";
             this.saveUrlsAndCloseToolStripMenuItem.Click += new System.EventHandler(this.saveUrlsAndCloseToolStripMenuItem_Click);
             // 
             // restoreSavedWindowsToolStripMenuItem
             // 
             this.restoreSavedWindowsToolStripMenuItem.Name = "restoreSavedWindowsToolStripMenuItem";
-            this.restoreSavedWindowsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.restoreSavedWindowsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.restoreSavedWindowsToolStripMenuItem.Text = "&Restore Saved Windows";
             this.restoreSavedWindowsToolStripMenuItem.Click += new System.EventHandler(this.restoreSavedWindowsToolStripMenuItem_Click);
             // 
             // refreshAllWindowsToolStripMenuItem
             // 
             this.refreshAllWindowsToolStripMenuItem.Name = "refreshAllWindowsToolStripMenuItem";
-            this.refreshAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.refreshAllWindowsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.refreshAllWindowsToolStripMenuItem.Text = "R&efresh All Windows";
             this.refreshAllWindowsToolStripMenuItem.Click += new System.EventHandler(this.refreshAllWindowsToolStripMenuItem_Click);
             // 
             // manageCookiesToolStripMenuItem
             // 
             this.manageCookiesToolStripMenuItem.Name = "manageCookiesToolStripMenuItem";
-            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.manageCookiesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.manageCookiesToolStripMenuItem.Text = "Manage Cookies";
             this.manageCookiesToolStripMenuItem.Click += new System.EventHandler(this.manageCookiesToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(214, 6);
             // 
             // shareURLViaQRCodeToolStripMenuItem
             // 
             this.shareURLViaQRCodeToolStripMenuItem.Name = "shareURLViaQRCodeToolStripMenuItem";
-            this.shareURLViaQRCodeToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.shareURLViaQRCodeToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.shareURLViaQRCodeToolStripMenuItem.Text = "Share URL via &QR Code™";
             this.shareURLViaQRCodeToolStripMenuItem.Click += new System.EventHandler(this.shareURLViaQRCodeToolStripMenuItem_Click);
             // 
             // showQRCodeFromTextToolStripMenuItem
             // 
             this.showQRCodeFromTextToolStripMenuItem.Name = "showQRCodeFromTextToolStripMenuItem";
-            this.showQRCodeFromTextToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.showQRCodeFromTextToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.showQRCodeFromTextToolStripMenuItem.Text = "Show QR Code™ from &text";
             this.showQRCodeFromTextToolStripMenuItem.Click += new System.EventHandler(this.showQRCodeFromTextToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
             // backupSettingsFileToolStripMenuItem
             // 
             this.backupSettingsFileToolStripMenuItem.Name = "backupSettingsFileToolStripMenuItem";
-            this.backupSettingsFileToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.backupSettingsFileToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.backupSettingsFileToolStripMenuItem.Text = "&Backup Settings File";
             this.backupSettingsFileToolStripMenuItem.Click += new System.EventHandler(this.backupSettingsFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(214, 6);
             // 
             // advancedToolStripMenuItem
             // 
@@ -243,7 +245,7 @@
             this.stopServerToolStripMenuItem,
             this.acceptRemoteConnectionsToolStripMenuItem});
             this.advancedToolStripMenuItem.Name = "advancedToolStripMenuItem";
-            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.advancedToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.advancedToolStripMenuItem.Text = "Advanced";
             // 
             // broadcastCommandToolStripMenuItem
@@ -256,51 +258,6 @@
             this.broadcastCommandToolStripMenuItem.Name = "broadcastCommandToolStripMenuItem";
             this.broadcastCommandToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.broadcastCommandToolStripMenuItem.Text = "Broadcast Command";
-            // 
-            // purgeNowToolStripMenuItem
-            // 
-            this.purgeNowToolStripMenuItem.Name = "purgeNowToolStripMenuItem";
-            this.purgeNowToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.purgeNowToolStripMenuItem.Text = "Purge Now";
-            this.purgeNowToolStripMenuItem.Click += new System.EventHandler(this.purgeNowToolStripMenuItem_Click);
-            // 
-            // stopServerToolStripMenuItem
-            // 
-            this.stopServerToolStripMenuItem.Name = "stopServerToolStripMenuItem";
-            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.stopServerToolStripMenuItem.Text = "Stop Server";
-            this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
-            // 
-            // acceptRemoteConnectionsToolStripMenuItem
-            // 
-            this.acceptRemoteConnectionsToolStripMenuItem.Name = "acceptRemoteConnectionsToolStripMenuItem";
-            this.acceptRemoteConnectionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.acceptRemoteConnectionsToolStripMenuItem.Text = "Accept Remote Connections";
-            this.acceptRemoteConnectionsToolStripMenuItem.Click += new System.EventHandler(this.acceptRemoteConnectionsToolStripMenuItem_Click);
-            // 
-            // runLinkAtStartupToolStripMenuItem
-            // 
-            this.runLinkAtStartupToolStripMenuItem.Name = "runLinkAtStartupToolStripMenuItem";
-            this.runLinkAtStartupToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
-            this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem1
-            // 
-            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
-            this.exitToolStripMenuItem1.Text = "Exit";
-            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(187, 9);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(72, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Paste URL";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // refreshSettingsToolStripMenuItem
             // 
@@ -329,6 +286,58 @@
             this.otherToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.otherToolStripMenuItem.Text = "Other...";
             this.otherToolStripMenuItem.Click += new System.EventHandler(this.otherToolStripMenuItem_Click);
+            // 
+            // purgeNowToolStripMenuItem
+            // 
+            this.purgeNowToolStripMenuItem.Name = "purgeNowToolStripMenuItem";
+            this.purgeNowToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.purgeNowToolStripMenuItem.Text = "Purge Now";
+            this.purgeNowToolStripMenuItem.Click += new System.EventHandler(this.purgeNowToolStripMenuItem_Click);
+            // 
+            // stopServerToolStripMenuItem
+            // 
+            this.stopServerToolStripMenuItem.Name = "stopServerToolStripMenuItem";
+            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.stopServerToolStripMenuItem.Text = "Stop Server";
+            this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
+            // 
+            // acceptRemoteConnectionsToolStripMenuItem
+            // 
+            this.acceptRemoteConnectionsToolStripMenuItem.Name = "acceptRemoteConnectionsToolStripMenuItem";
+            this.acceptRemoteConnectionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.acceptRemoteConnectionsToolStripMenuItem.Text = "Accept Remote Connections";
+            this.acceptRemoteConnectionsToolStripMenuItem.Click += new System.EventHandler(this.acceptRemoteConnectionsToolStripMenuItem_Click);
+            // 
+            // runLinkAtStartupToolStripMenuItem
+            // 
+            this.runLinkAtStartupToolStripMenuItem.Name = "runLinkAtStartupToolStripMenuItem";
+            this.runLinkAtStartupToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.runLinkAtStartupToolStripMenuItem.Text = "Run Link At Startup";
+            this.runLinkAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runLinkAtStartupToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(217, 22);
+            this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(187, 9);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(72, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Paste URL";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // unblockNotificationHostsToolStripMenuItem
+            // 
+            this.unblockNotificationHostsToolStripMenuItem.Name = "unblockNotificationHostsToolStripMenuItem";
+            this.unblockNotificationHostsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.unblockNotificationHostsToolStripMenuItem.Text = "Unblock Notification Hosts";
+            this.unblockNotificationHostsToolStripMenuItem.Click += new System.EventHandler(this.unblockNotificationHostsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -388,6 +397,7 @@
         private System.Windows.Forms.ToolStripMenuItem refreshScriptCacheToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem verifyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem otherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unblockNotificationHostsToolStripMenuItem;
     }
 }
 
