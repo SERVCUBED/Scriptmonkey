@@ -148,6 +148,7 @@ namespace BHOUserScript
         /// </summary>
         /// <param name="pDisp">Browser object (for page currently displayed)</param>
         /// <param name="url">Current URL</param>
+        [HandleProcessCorruptedStateExceptions]
         private void Run(object pDisp, ref object url) // OnDocumentComplete handler
         {
             _currentUrl = url;
@@ -718,7 +719,7 @@ namespace BHOUserScript
         private void CheckScriptUpdate()
         {
             DateTime now = DateTime.UtcNow;
-            var updated = false;
+            var updatedScriptData = false;
             var toUpdate = new List<Script>();
             var toUpdateTo = new List<ScriptWithContent>();
             foreach (Script s in _prefs.AllScripts)
@@ -731,6 +732,8 @@ namespace BHOUserScript
                     try
                     {
                         var content = SendWebRequest(s.UpdateUrl);
+                        if (content == String.Empty) // Request failed, try again later
+                            continue;
                         var newScript = ParseScriptMetadata.ParseFromContents(content, false, new Script());
                         if (newScript.Version != s.Version)
                         {
@@ -745,11 +748,11 @@ namespace BHOUserScript
                             throw;
                     }
                     s.InstallDate = now;
-                    updated = true;
+                    updatedScriptData = true;
                 }
             }
 
-            if (updated)
+            if (updatedScriptData)
             {
                 _prefs.Save();
             }
